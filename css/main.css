@@ -8,8 +8,14 @@ body {
 	font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
 
+a {
+	color: #5efc82;
+	text-decoration: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
+	margin-bottom: 10px;
 }
 
 h1 {
@@ -36,12 +42,105 @@ h6 {
 	font-size: 1rem;
 }
 
+input:focus, button:focus {
+	outline: none;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+button,
+.button {
+	padding: 8px 12px;
+    background: white;
+    border: 1px solid #4d4d4d;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover,
+.button:hover {
+	background: #e6e6e6;
+	cursor: pointer;
+}
+
+input[type="text"], input[type="password"] {
+	padding: 8px 12px;
+    background: white;
+    border: 1px solid #4d4d4d;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
 #jumbotron {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 250px;
-	background: #26d988;
+	height: 400px;
+	background: #00c853;
 	color: #f5f5f5;
+}
+
+#jumbotron .logo {
+	width: 192px;
+}
+
+#navbar {
+	height: 60px;
+	background: #353535;
+	padding: 0 50px;
+}
+
+#navbar a {
+	color: white;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+#navbar .logo {
+	height: 100%;
+	margin-right: 15px;
+}
+
+#navbar .left-pane {
+	float: left;
+}
+
+#navbar .right-pane {
+	float: right;
+}
+
+#navbar .left-pane, #navbar .right-pane {
+	height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#navbar a.brand {
+	padding: 10px;
+	display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+#navbar .navbar-menu {
+	display: flex;
+	list-style: none;
+	height: 100%;
+}
+
+#navbar .navbar-menu li {
+	margin: 0 10px;
+}
+
+#navbar .navbar-menu .navbar-user-avatar {
+	height: 45px;
+	width: 45px;
+    border-radius: 30px;
+	margin-right: 10px;
 }
