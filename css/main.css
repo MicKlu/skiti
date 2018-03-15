@@ -126,6 +126,8 @@ input[type="text"], input[type="password"] {
 	display: flex;
     height: 100%;
     align-items: center;
+	font-size: 1.75rem;
+	margin-right: 15px;
 }
 
 #navbar .navbar-menu {
@@ -143,4 +145,15 @@ input[type="text"], input[type="password"] {
 	width: 45px;
     border-radius: 30px;
 	margin-right: 10px;
+}
+
+.input-search input {
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.input-search button {
+	margin-left: -5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
