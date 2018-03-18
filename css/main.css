@@ -75,7 +75,7 @@ input[type="text"], input[type="password"] {
     font-size: 0.9rem;
 }
 
-#jumbotron {
+.jumbotron {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -85,9 +85,34 @@ input[type="text"], input[type="password"] {
 	color: #f5f5f5;
 }
 
-#jumbotron .logo {
+.jumbotron .logo {
 	width: 192px;
 }
+
+.container {
+	padding: 15px 100px;
+}
+
+.row {
+	display: flex;
+}
+
+.col-4 {
+	flex-grow: 4;
+	flex-basis: 0;
+}
+
+#features .feature {
+	text-align: center;
+	margin: 15px;
+}
+
+#features .feature .feature-icon {
+	font-size: 4.5rem;
+	color: #00c853;
+}
+
+
 
 #navbar {
 	height: 60px;
