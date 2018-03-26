@@ -4,7 +4,7 @@
 		<img class="logo" src="img/logo.svg" />
 		<h1>dsa</h1>
 		<h2>Kolejny portal społecznościowy</h2>
-		<button>Zarejestruj się</button>
+		<a class="button" href="#register">Zarejestruj się</a>
 	</section>
 	<section class="container" id="features">
 		<div class="row">
@@ -32,7 +32,40 @@
 		</div>
 	</section>
 	<section class="container" id="register">
-		
+		<h1 class="text-center">Zarejestruj się</h1>
+		<div id="register-container">
+			<form>
+				<div class="input-group">
+					<input type="text" name="firstname" placeholder="Imię" />
+					<input type="text" name="surname" placeholder="Nazwisko" />
+				</div>
+				<div class="input-group">
+					<input type="text" name="email" placeholder="Email" />
+				</div>
+				<div class="input-group">
+					<input type="password" name="password" placeholder="Hasło" />
+					<input type="password" name="rpassword" placeholder="Powtórz hasło" />
+				</div>
+				<label>Data urodzenia</label>
+				<div class="input-group" id="birthdate">
+					<select class="form-input" name="birthday"></select>
+					<select class="form-input" name="birthmonth"></select>
+					<select class="form-input" name="birthyear"></select>
+				</div>
+				<label>Płeć</label>
+				<div class="input-group">
+					<label class="form-input">
+						<input type="radio" name="sex" value="m" />
+						Mężczyzna
+					</label>
+					<label class="form-input">
+						<input type="radio" name="sex" value="k" />
+						Kobieta
+					</label>
+				</div>
+				<input class="button-primary" type="submit" value="Zarejestruj" />
+			</form>
+		</div>
 	</section>
 </main>
 <?php require "footer.php" ?>

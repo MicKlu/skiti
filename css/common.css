@@ -1,0 +1,139 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+	color: #5efc82;
+	text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	margin-bottom: 10px;
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+h3 {
+	font-size: 1.75rem;
+}
+
+h4 {
+	font-size: 1.5rem;
+}
+
+h5 {
+	font-size: 1.25rem;
+}
+
+h6 {
+	font-size: 1rem;
+}
+
+input {
+	display: block;
+}
+
+input[type="radio"], input[type="checkbox"] {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+input:focus, button:focus, select:focus {
+	outline: none;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+button,
+.button {
+	padding: 8px 12px;
+    background: white;
+    border: 1px solid #4d4d4d;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-family: Arial;
+    color: buttontext;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover,
+.button:hover {
+	background: #e6e6e6;
+	cursor: pointer;
+}
+
+input.button-primary {
+	background: #00c652;
+    border: 1px solid #00c652 ;
+    color: white ;
+}
+
+input.button-primary:hover {
+	background: #009940;
+}
+
+input[type="text"], input[type="password"], select {
+	padding: 8px 12px;
+    background: white;
+    border: 1px solid #4d4d4d;
+    border-radius: 5px;
+    font-size: 0.9rem;
+	height: 34.8px;
+}
+
+.input-group {
+	display: flex;
+	margin: 5px 0;
+}
+
+.input-group > input,
+.input-group > select {
+	margin-right: 5px;
+	width: 100%;
+}
+
+.input-group > label.form-input {
+	margin-right: 20px;
+}
+
+.input-group > :last-child {
+	margin-right: 0;
+}
+
+input.form-input,
+select.form-input {
+	width: initial;
+}
+
+.container {
+	padding: 15px 100px;
+}
+
+.row {
+	display: flex;
+}
+
+.col-4 {
+	flex-grow: 4;
+	flex-basis: 0;
+}
+
+.text-center {
+	text-align: center;
+}

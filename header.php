@@ -6,10 +6,12 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<meta name="author" content="" />
+		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" href="css/main.css" />
 		<link rel="icon" href="img/favicon.png" />
 		<script src="scripts/jquery-3.3.1.min.js"></script>
 		<script src="scripts/fontawesome-all.min.js"></script>
+		<script src="scripts/common.js"></script>
 		<script src="scripts/main.js"></script>
 	</head>
 	<body>
