@@ -1,3 +1,4 @@
+<?php require_once "common.php"; ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
 	<head>

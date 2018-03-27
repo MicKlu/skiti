@@ -13,11 +13,16 @@
 	</div>
 	<div id="profile-menu">
 		<ul>
-			<li><a href="#">Informacje</a></li>
-			<li><a href="#">Tablica wiadomości</a></li>
-			<li><a href="#">Znajomi</a></li>
-			<li><a href="#">Zdjęcia</a></li>
+			<li><a href="profil.php?id=">Informacje</a></li>
+			<li><a href="profil.php?id=&tab=tablica">Tablica wiadomości</a></li>
+			<li><a href="profil.php?id=&tab=znajomi">Znajomi</a></li>
+			<li><a href="profil.php?id=&tab=zdjecia">Zdjęcia</a></li>
 		</ul>
+	</div>
+	<div id="profile-content">
+		<?php
+			get_profile_page();
+		?>
 	</div>
 </main>
 <?php require "footer.php" ?>
