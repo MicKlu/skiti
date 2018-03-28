@@ -155,6 +155,12 @@
 	height: inherit;
 }
 
+.profile-avatar-mini {
+	width: 45px;
+	height: 45px;
+	border-radius: 50px;
+}
+
 #profile-menu {
 	padding: 0 20px;
 	height: 45px;
@@ -192,8 +198,6 @@
 
 #profile-content {
 	margin: 30px 10px 0 15px;
-	/* border: 1px solid #565656; */
-	/* border-radius: 10px; */
 }
 
 #profile-about h2 {
@@ -212,4 +216,107 @@
 	font-weight: bold;
 	width: 150px;
 	font-size: 1.2rem;
+}
+
+#profile-photos-menu {
+	margin: 0 15px 15px 15px;
+}
+
+.profile-image-box {
+	border: 1px solid #565656;
+	border-radius: 10px;
+	padding: 5px;
+	margin: 0 7px 15px 7px;
+    background: #fdfdfd;
+}
+
+.profile-image-wrapper {
+	text-align: center;
+	overflow: hidden;
+	min-height: 300px;
+    background: #fafafa;
+    line-height: 0;
+	cursor: pointer;
+}
+
+.profile-image-wrapper img {
+	max-width: 100%;
+	position: relative;
+}
+
+.profile-image-buttons {
+	border-top: 1px solid #565656;
+	padding-top: 5px;
+	text-align: right;
+    margin-top: 10px;
+}
+
+.profile-image-panel {
+	position: relative;
+}
+
+.profile-image-comment-box {
+	position: absolute;
+    background: #fdfdfddd;
+    width: 400px;
+    height: 500px;
+    bottom: 31px;
+    right: 0px;
+    border: 1px solid #565656;
+    border-radius: 10px;
+	padding: 15px;
+}
+
+.profile-image-comment-inner-box {
+	height: 100%;
+	/* background: red; */
+	position: relative;
+}
+
+.profile-image-comments {
+	width: 100%;
+	/* border: 1px solid #565656; */
+	max-height: 350px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 2px;
+}
+
+.profile-comment {
+	margin-bottom: 10px;
+}
+
+.profile-comment-avatar {
+    display: table-cell;
+	padding-right: 5px;
+}
+
+.profile-comment-content {
+	display: table-cell;
+    vertical-align: top;
+}
+
+.profile-comment-content h6 {
+	font-weight: bold;
+	font-size: 0.9rem;
+	margin: 0;
+}
+
+.profile-comment-content p {
+	font-size: 0.8rem;
+}
+
+.profile-image-comment-form {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: right;
+	border-top: 1px solid #565656;
+	padding-top: 10px;
+}
+
+.profile-image-comment-form textarea {
+	width: 100%;
+	height: 50px;
+	resize: none;
 }

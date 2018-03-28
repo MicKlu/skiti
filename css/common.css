@@ -67,6 +67,7 @@ button,
     font-size: 0.9rem;
     font-family: Arial;
     color: buttontext;
+	display: inline-block;
 }
 
 input[type="button"]:hover,
@@ -78,12 +79,14 @@ button:hover,
 	cursor: pointer;
 }
 
+.button-primary,
 input.button-primary {
 	background: #00c652;
     border: 1px solid #00c652 ;
     color: white ;
 }
 
+.button-primary:hover,
 input.button-primary:hover {
 	background: #009940;
 }
@@ -95,6 +98,11 @@ input[type="text"], input[type="password"], select {
     border-radius: 5px;
     font-size: 0.9rem;
 	height: 34.8px;
+}
+
+.button-light {
+	font-size: 0.8rem;
+	padding: 4px 6px;
 }
 
 .input-group {
@@ -129,8 +137,8 @@ select.form-input {
 	display: flex;
 }
 
-.col-4 {
-	flex-grow: 4;
+.col-1 {
+	flex-grow: 1;
 	flex-basis: 0;
 }
 
@@ -139,8 +147,18 @@ select.form-input {
 	flex-basis: 0;
 }
 
-.col-1 {
-	flex-grow: 1;
+.col-3 {
+	flex-grow: 3;
+	flex-basis: 0;
+}
+
+.col-4 {
+	flex-grow: 4;
+	flex-basis: 0;
+}
+
+.col-5 {
+	flex-grow: 5;
 	flex-basis: 0;
 }
 
