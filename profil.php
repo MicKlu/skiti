@@ -6,7 +6,7 @@
 		</div>
 		<div id="profile-header">
 			<div id="profile-avatar">
-				<img src="img/placeholder.png" />
+				<img src="img/avatar_placeholder.png" />
 			</div>
 			<h2>{Imię i nazwisko}</h2>
 		</div>

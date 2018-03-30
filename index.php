@@ -1,7 +1,7 @@
 <?php require "header.php" ?>
 <main>
 	<section class="jumbotron">
-		<img class="logo" src="img/logo.svg" />
+		<img class="logo" src="img/logo.png" />
 		<h1>dsa</h1>
 		<h2>Kolejny portal społecznościowy</h2>
 		<a class="button" href="#register">Zarejestruj się</a>

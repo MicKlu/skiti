@@ -19,7 +19,7 @@
 		<nav id="navbar">
 			<div class="left-pane">
 				<a class="brand" href="/">
-					<img class="logo" src="img/logo.svg" /> dsa
+					<img class="logo" src="img/logo.png" /> dsa
 				</a>
 				<!-- Zalogowany -->
 				<form class="input-search" action="">
@@ -30,7 +30,7 @@
 			<div class="right-pane">
 				<!-- Zalogowany -->
 				<ul class="navbar-menu">
-					<li><a href="#"><img class="navbar-user-avatar" src="img/placeholder.png" />{Imię i nazwisko}</a></li>
+					<li><a href="#"><img class="navbar-user-avatar" src="img/avatar_placeholder.png" />{Imię i nazwisko}</a></li>
 					<li><a href="#">Ustawienia</a></li>
 					<li><a href="#">Wyloguj</a></li>
 				</ul>
