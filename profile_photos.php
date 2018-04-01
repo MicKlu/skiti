@@ -229,3 +229,26 @@
 	</div>
 	<!-- itd -->
 </section>
+<!--
+<div class="gallery-container">
+	<div class="galery-image-box">
+		<div class="gallery-arrow gallery-arrow-left">
+			<span><i class="fas fa-angle-left"></i></span>
+		</div>
+		<div class="gallery-arrow gallery-arrow-right">
+			<span><i class="fas fa-angle-right"></i></span>
+		</div>
+		<div class="galery-image-wrapper">
+			<img src="img/placeholder.png" />
+		</div>
+		<div class="gallery-panel">
+			<div class="profile-image-info">
+				<h3>{Nazwa pliku}</h3>
+				<p>{Podpis}</p>
+			</div>
+		</div>
+		<div class="gallery-close">
+			<i class="fas fa-times"></i>
+		</div>
+	</div>
+</div>-->

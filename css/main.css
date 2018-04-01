@@ -255,6 +255,94 @@
 	position: relative;
 }
 
+.gallery-container {
+	display: flex;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: #000000aa;
+	justify-content: center;
+    align-items: center;
+	z-index: 100;
+}
+
+.galery-image-box {
+	position: relative;
+	background: #424242;
+	border: 5px solid #5d5d5d;
+	height: 90%;
+	width: 75%;
+}
+
+.galery-image-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+
+.galery-image-wrapper img {
+	/* max-height: 100%; */
+}
+
+.gallery-arrow {
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	font-size: 7rem;
+	cursor: pointer;
+	margin: 0 15px;
+}
+
+.gallery-arrow-left {
+	top: 0;
+	left: 0;
+}
+
+.gallery-arrow-left span {
+	left: 0;
+}
+
+.gallery-arrow-right {
+	top: 0;
+	right: 0;
+}
+
+.gallery-arrow-right span {
+	right: 0;
+}
+
+.gallery-arrow span {
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+	transition: 250ms;
+	opacity: 0;
+}
+
+.gallery-arrow:hover span {
+	opacity: 1;
+}
+
+.gallery-panel {
+	position: absolute;
+	bottom: 0;
+	background: #808080b3;
+	width: 100%;
+	padding: 5px;
+	opacity: 0;
+	transition: 250ms;
+}
+
+.gallery-close {
+	position: absolute;
+	top: 0;
+	right: -30px;
+	cursor: pointer;
+	font-size: 1.5rem;
+}
+
 .profile-image-comment-box {
 	position: absolute;
     background: #fdfdfddd;

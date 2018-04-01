@@ -1,6 +1,11 @@
+var timers = {};
+
 $(function () {
-	$(window).on("resize", normalizeProfileImages)
+	
+	$(window).on("resize", normalizeProfileImages);
+	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
+	$(".profile-image-wrapper").addGallery();
 })
 
 function normalizeProfileImages() {	
@@ -53,3 +58,112 @@ function normalizeProfileImages() {
 		}
 	});
 }
+
+function galleryOpen() {
+	if($(".gallery-container").length)
+		return;
+	
+	galleryCreate();
+	galleryResize();
+}
+
+function galleryCreate() {
+	//Bloki
+	var galleryContainer = $("<div>").addClass("gallery-container");
+	var galleryImageBox = $("<div>").addClass("galery-image-box");
+	var galleryArrowLeft = $("<div>").addClass("gallery-arrow").addClass("gallery-arrow-left");
+	var galleryArrowRight = $("<div>").addClass("gallery-arrow").addClass("gallery-arrow-right");
+	var galleryArrowLeftI = $("<i>").addClass("fas").addClass("fa-angle-left");
+	var galleryArrowRightI = $("<i>").addClass("fas").addClass("fa-angle-right");
+	var galleryImageWrapper = $("<div>").addClass("galery-image-wrapper");
+	var galleryImage =  $("<img>");
+	var galleryPanel = $("<div>").addClass("gallery-panel");
+	var galleryProfileImageInfo = $("<div>").addClass("profile-image-info");
+	var galleryProfileImageInfoH3 = $("<h3>");
+	var galleryProfileImageInfoP = $("<p>");
+	var galleryCloseDiv = $("<div>").addClass("gallery-close");
+	var galleryCloseI = $("<i>").addClass("fas").addClass("fa-times");
+	
+	//Wpisywanie danych
+	galleryImage.attr({src: "img/placeholder.png"});
+	galleryProfileImageInfoH3.text("{Nazwa pliku}");
+	galleryProfileImageInfoP.text("{Podpis}");
+	
+	//Appendy
+	galleryContainer.append(galleryImageBox);
+	galleryImageBox.append(galleryArrowLeft);
+	galleryImageBox.append(galleryArrowRight);
+	galleryImageBox.append(galleryImageWrapper);
+	galleryImageBox.append(galleryPanel);
+	galleryImageBox.append(galleryCloseDiv);
+	galleryArrowLeft.append($("<span>").append(galleryArrowLeftI));
+	galleryArrowRight.append($("<span>").append(galleryArrowRightI));
+	galleryImageWrapper.append(galleryImage);
+	galleryPanel.append(galleryProfileImageInfo);
+	galleryProfileImageInfo.append(galleryProfileImageInfoH3);
+	galleryProfileImageInfo.append(galleryProfileImageInfoP);
+	galleryCloseDiv.append(galleryCloseI);
+	
+	//Eventy
+	galleryContainer.click(galleryClose);
+	galleryImageBox.mousemove(galleryShowPanel);
+	galleryImageBox.mouseout(galleryHidePanel);
+	galleryImageBox.click(function (event) {
+		event.stopPropagation();
+	});
+	galleryCloseDiv.click(galleryClose);
+	galleryArrowLeft.click(galleryPrev);
+	galleryArrowRight.click(galleryNext);
+	
+	//Wyświetlanie
+	$("main").append(galleryContainer);
+}
+
+function galleryResize() {
+	//Dostosowanie wielkości kontenera do wielkości dostępnej na ekranie
+	var galleryContainer = {};
+	galleryContainer.object = $(".gallery-container");
+	galleryContainer.width = $(window).width();
+	galleryContainer.height = $(window).height();
+	
+	galleryContainer.object.width(galleryContainer.width);
+	galleryContainer.object.height(galleryContainer.height);
+	
+	//Skalowanie obrazu wewnącz wrappera
+	var galleryImage = $(".galery-image-wrapper img");
+	galleryImage.css({maxHeight: "100%"});
+}
+
+function galleryClose(event) {
+	$(".gallery-container").remove();
+}
+
+function galleryShowPanel() {
+	if(timers.galleryPanel)
+		clearTimeout(timers.galleryPanel);
+	
+	timers.galleryPanel = setTimeout(galleryHidePanel, 1500);
+	$(".gallery-panel").css({opacity: 1});
+}
+
+function galleryHidePanel() {
+	if(timers.galleryPanel)
+		clearTimeout(timers.galleryPanel);
+	$(".gallery-panel").css({opacity: 0});
+}
+
+function galleryNext() {
+	
+}
+
+function galleryPrev() {
+	
+}
+
+$.fn.extend({
+	addGallery: function () {
+		$(this).each(function () {
+			$(this).click(galleryOpen);
+		})
+	}
+})
