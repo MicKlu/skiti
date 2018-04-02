@@ -266,7 +266,7 @@
 	z-index: 100;
 }
 
-.galery-image-box {
+.gallery-image-box {
 	position: relative;
 	background: #424242;
 	border: 5px solid #5d5d5d;
@@ -274,7 +274,7 @@
 	width: 75%;
 }
 
-.galery-image-wrapper {
+.gallery-image-wrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -282,8 +282,8 @@
 	width: 100%;
 }
 
-.galery-image-wrapper img {
-	/* max-height: 100%; */
+.gallery-image-wrapper img {
+	user-select: none;
 }
 
 .gallery-arrow {
