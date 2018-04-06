@@ -72,56 +72,56 @@
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>
 								<div class="profile-comment">
 									<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
 									<div class="profile-comment-content">
-										<h6>{Imię} {Nazwisko}</h6>
+										<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 										<p>{Komentarz}</p>
 									</div>
 								</div>

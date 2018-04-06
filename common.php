@@ -9,7 +9,7 @@ function get_profile_page()
 		switch($_GET["tab"])
 		{
 			case "tablica":
-				include "profile_board.php";
+				include "profile_wall.php";
 				break;
 			case "znajomi":
 				include "profile_friends.php";
