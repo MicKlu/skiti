@@ -54,6 +54,7 @@ input[type="checkbox"] {
 
 textarea {
 	padding: 5px;
+	resize: none;
 }
 
 input:focus,
@@ -99,13 +100,20 @@ input.button-primary:hover {
 	background: #009940;
 }
 
-input[type="text"], input[type="password"], select {
+input[type="text"],
+input[type="password"],
+select,
+.input {
 	padding: 8px 12px;
     background: white;
     border: 1px solid #4d4d4d;
     border-radius: 5px;
     font-size: 0.9rem;
 	height: 34.8px;
+}
+
+textarea.input {
+	height: 100px;
 }
 
 .button-light {
@@ -119,7 +127,8 @@ input[type="text"], input[type="password"], select {
 }
 
 .input-group > input,
-.input-group > select {
+.input-group > select,
+.input-group > textarea {
 	margin-right: 5px;
 	width: 100%;
 }
@@ -135,6 +144,11 @@ input[type="text"], input[type="password"], select {
 input.form-input,
 select.form-input {
 	width: initial;
+}
+
+label {
+	display: inline-block;
+	margin-top: 10px;
 }
 
 .container {
@@ -172,4 +186,8 @@ select.form-input {
 
 .text-center {
 	text-align: center;
+}
+
+.text-right {
+	text-align: right;
 }

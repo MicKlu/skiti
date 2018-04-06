@@ -1,4 +1,20 @@
 <section id="profile-wall">
+	<div id="profile-wall-new-topic">
+		<button class="button-primary">Zostaw wiadomość</button>
+		<form id="profile-wall-new-topic-form">
+			<label>Temat:</label>
+			<div class="input-group">
+				<input class="" type="text" />
+			</div>
+			<label>Treść wiadomości:</label>
+			<div class="input-group">
+				<textarea class="input" ></textarea>
+			</div>
+			<div class="text-right">
+				<button class="button-primary">Wyślij wiadomość</button>
+			</div>
+		</form>
+	</div>
 	<div class="row">
 		<div class="col-2">
 			<div class="profile-topic-container">
