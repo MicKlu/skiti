@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(!isset($_SESSION["user_id"]))
+	{
+		header("Location: index.php");
+		die();
+	}
+?>
 <?php require "header.php" ?>
 <main id="profile-container">
 	<div id="profile-header-container">

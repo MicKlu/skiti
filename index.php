@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(isset($_SESSION["user_id"]))
+	{
+		header("Location: profil.php");
+		die();
+	}
+?>
 <?php require "header.php" ?>
 <main>
 	<section class="jumbotron">
@@ -34,7 +42,11 @@
 	<section class="container" id="register">
 		<h1 class="text-center">Zarejestruj się</h1>
 		<div id="register-container">
-			<form>
+			<div id="register-error">
+				<p><?php get_register_alert(); ?></p>
+				<script>showRegisterAlert();</script>
+			</div>
+			<form action="register.php" method="post">
 				<div class="input-group">
 					<input type="text" name="firstname" placeholder="Imię" />
 					<input type="text" name="surname" placeholder="Nazwisko" />

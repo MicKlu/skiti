@@ -1,10 +1,22 @@
 <?php
 
-$database = array(
-	"host"		=> "127.0.0.1",
-	"user" 		=> "",
-	"password" 	=> "",
-	"db" 		=> ""
-);
+function db_connect()
+{
+	$database = array (
+		"host"		=> "127.0.0.1",
+		"user" 		=> "root",
+		"password" 	=> "123",
+		"db" 		=> "skiti"
+	);
+	$db = mysqli_connect($database["host"], $database["user"], $database["password"], $database["db"]);
+	$db -> query("SET NAMES utf8");
+	return $db;
+}
+
+$sqls = array (
+	"register_user" => "INSERT INTO users(firstname, surname, email, password, birthdate, sex, registerdate) VALUES(?, ?, ?, ?, ?, ?, ?)",
+	"select_registered_user_id" => "SELECT u_id FROM users WHERE email = ?",
+	"login_user" => "SELECT u_id, password FROM users WHERE email = ?"
+)
 
 ?>

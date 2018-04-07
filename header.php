@@ -21,25 +21,28 @@
 				<a class="brand" href="/">
 					<img class="logo" src="img/logo.png" /> dsa
 				</a>
-				<!-- Zalogowany -->
+				<?php if(isset($_SESSION["user_id"])) : ?>
 				<form class="input-search" action="">
 					<input type="text" placeholder="Wyszukaj" size="48" />
 					<button type="submit"><i class="fas fa-search"></i></button>
 				</form>
+				<?php endif; ?>
 			</div>
 			<div class="right-pane">
-				<!-- Zalogowany -->
+				<?php if(isset($_SESSION["user_id"])) : ?>
 				<ul class="navbar-menu">
 					<li><a href="#"><img class="navbar-user-avatar" src="img/avatar_placeholder.png" />{Imię i nazwisko}</a></li>
 					<li><a href="#">Ustawienia</a></li>
-					<li><a href="#">Wyloguj</a></li>
+					<li><a href="logout.php">Wyloguj</a></li>
 				</ul>
-				<!-- Nie zalogowany -->
-				<form action="" method="post">
-					<input type="text" id="email" placeholder="Email" />
-					<input type="password" id="password" placeholder="Hasło" />
+				<?php else : ?>
+				<span id="login-error"><?php get_login_alert(); ?></span>
+				<script>showLoginAlert();</script>
+				<form action="login.php" method="post">
+					<input type="text" name="email" placeholder="Email" />
+					<input type="password" name="password" placeholder="Hasło" />
 					<input type="submit" value="Zaloguj" />
 				</form>
-				
+				<?php endif; ?>
 			</div>
 		</nav>

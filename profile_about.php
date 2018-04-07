@@ -17,7 +17,7 @@
 			<div class="col-2">
 				<dl>
 					<dt>Biografia</dt>
-					<dl>{Biografia}</dl>
+					<dd>{Biografia}</dd>
 				</dl>
 			</div>
 		</div>
