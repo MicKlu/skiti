@@ -3,6 +3,7 @@
 var timers = {};
 
 $(function () {
+	$("#friend-send-invite").click(ajaxSendInvite);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
@@ -21,6 +22,25 @@ function showLoginAlert() {
 		$("#login-error").show();
 		deleteCookie("login-error");
 	}
+}
+
+function ajaxSendInvite() {
+	var profileId = $(this).data("id");
+	$.ajax("common.php?action=friend_send_invite", {
+		method: "post",
+		dataType: "json",
+		data: {
+			"friend-id": profileId
+		},
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#friend-send-invite").hide();
+			$("#friend-delete").hide();
+			$("#friend-cancel-invite").show();
+		}
+	});
 }
 
 function normalizeProfileImages() {	

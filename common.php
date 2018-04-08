@@ -3,6 +3,9 @@
 include_once "consts.php";
 include_once "db.php";
 
+if($_SERVER["REQUEST_METHOD"] == "POST")
+	call_ajax($_GET["action"]);
+
 function get_profile_page()
 {
 	if(empty($_GET["tab"]))
@@ -165,11 +168,66 @@ function user_registerdate($u_id = null)
 	echo date("d.m.Y", $timestamp);
 }
 
-function does_user_exists($u_id)
+function does_user_exist($u_id)
 {
 	if(get_user_info("u_id", $u_id) === null)
 		return 0;
 	return 1;
+}
+
+function escape_input($input) {
+	$input = htmlspecialchars($input);
+	$input = trim($input);
+	return $input;
+}
+
+function call_ajax($action)
+{
+	switch($action)
+	{
+		case "friend_send_invite":
+			send_friend_invite();
+			break;
+	}
+}
+
+function send_friend_invite()
+{
+	global $sqls;
+	session_start();
+	$_SESSION["user_id"];
+	$_POST["friend-id"];
+	
+	if(is_friend_invited($_POST["friend-id"]) !== null)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["friend-invite"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $_POST["friend-id"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		echo '{"success": false}';
+	else
+		echo '{"success": true}';
+	$db -> close();
+}
+
+function is_friend_invited($friend_id)
+{
+	global $sqls;
+	$invited = null;
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is-friend-invited"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $friend_id);
+	$stmt -> execute();
+	$stmt -> bind_result($invited);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	return $invited;
 }
 
 ?>

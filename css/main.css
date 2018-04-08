@@ -189,6 +189,7 @@
 	list-style: none;
 	display: flex;
 	height: 100%;
+	float: left;
 }
 
 #profile-menu > ul > li {
@@ -210,6 +211,17 @@
 	height: 100%;
 	display: flex;
     align-items: center;
+}
+
+#profile-manage-friend {
+	display: flex;
+	float: right;
+	height: 100%;
+	align-items: center;
+}
+
+#profile-manage-friend button {
+	display: none;
 }
 
 #profile-content {
