@@ -10,6 +10,7 @@ $(function () {
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
+	$("#profile-friends").ajaxGetFriends();
 	$(".profile-image-wrapper").addGallery();
 })
 
@@ -29,11 +30,12 @@ function showLoginAlert() {
 
 function ajaxSendInvite() {
 	var profileId = $(this).data("id");
+	console.log(profileId);
 	$.ajax("common.php?action=friend_send_invite", {
 		method: "post",
 		dataType: "json",
 		data: {
-			"friend-id": profileId
+			"friend_id": profileId
 		},
 		success: function (data) {
 			if(!data.success)
@@ -52,7 +54,7 @@ function ajaxCancelInvite() {
 		method: "post",
 		dataType: "json",
 		data: {
-			"friend-id": profileId
+			"friend_id": profileId
 		},
 		success: function (data) {
 			if(!data.success)
@@ -71,7 +73,7 @@ function ajaxAcceptInvite() {
 		method: "post",
 		dataType: "json",
 		data: {
-			"friend-id": profileId
+			"friend_id": profileId
 		},
 		success: function (data) {
 			if(!data.success)
@@ -92,7 +94,7 @@ function ajaxRejectInvite() {
 		method: "post",
 		dataType: "json",
 		data: {
-			"friend-id": profileId
+			"friend_id": profileId
 		},
 		success: function (data) {
 			if(!data.success)
@@ -319,5 +321,46 @@ $.fn.extend({
 		$(this).each(function () {
 			$(this).click(galleryOpen);
 		})
+	},
+	ajaxGetFriends: function () {
+		$(this).each(function () {
+			var row = $(this).find(".row");
+			//$(this).find(".row").html("<p>Użytkownik nie ma znajomych.</p>");
+			$.ajax("common.php?action=get_friends_list", {
+				method: "post",
+				dataType: "json",
+				data: {
+					user_id: getQueryString().id
+				},
+				success: function(data) {
+					if(!data.length) {
+						row.html("<p>Użytkownik nie ma znajomych.</p>");
+						return;
+					}
+					
+					var cols = row.children(".col-1");
+					
+					for(var i = 0; i < data.length; i++) {
+						var profileFriendBox = $("<a>").addClass("profile-friend-box");
+						var profileFriendAvatar = $("<div>").addClass("profile-friend-avatar");
+						var profileAvatarMini = $("<img>").addClass("profile-avatar-mini");
+						var profileFriendInfo = $("<div>").addClass("profile-friend-info");
+						var profileFriendInfoH6 = $("<h6>");
+						
+						profileAvatarMini.attr({src: "img/avatar_placeholder.png"});
+						
+						profileFriendBox.append(profileFriendAvatar);
+						profileFriendBox.append(profileFriendInfo);
+						profileFriendAvatar.append(profileAvatarMini);
+						profileFriendInfo.append(profileFriendInfoH6);
+					
+						profileFriendBox.attr({href: "profil.php?id=" + data[i].id});
+						profileFriendInfoH6.text(data[i].fullname);
+						//profileAvatarMini.attr({src: data[i].avatar});
+						cols.eq(i % 3).append(profileFriendBox);
+					}
+				}
+			});
+		});
 	}
-})
+});
