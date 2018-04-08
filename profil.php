@@ -5,6 +5,8 @@
 		header("Location: index.php");
 		die();
 	}
+	
+
 ?>
 <?php require "header.php" ?>
 <main id="profile-container">
@@ -16,7 +18,7 @@
 			<div id="profile-avatar">
 				<img src="img/avatar_placeholder.png" />
 			</div>
-			<h2>{Imię i nazwisko}</h2>
+			<h2><?php user_full_name(); ?></h2>
 		</div>
 	</div>
 	<div id="profile-menu">
@@ -28,9 +30,7 @@
 		</ul>
 	</div>
 	<div id="profile-content">
-		<?php
-			get_profile_page();
-		?>
+		<?php get_profile_page(); ?>
 	</div>
 </main>
 <?php require "footer.php" ?>

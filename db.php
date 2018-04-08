@@ -16,7 +16,9 @@ function db_connect()
 $sqls = array (
 	"register_user" => "INSERT INTO users(firstname, surname, email, password, birthdate, sex, registerdate) VALUES(?, ?, ?, ?, ?, ?, ?)",
 	"select_registered_user_id" => "SELECT u_id FROM users WHERE email = ?",
-	"login_user" => "SELECT u_id, password FROM users WHERE email = ?"
+	"login_user" => "SELECT u_id, password FROM users WHERE email = ?",
+	"user_full_name" => "SELECT firstname, surname, nickname FROM users WHERE u_id = ?",
+	"user_info" => "SELECT {info_col} FROM users WHERE u_id = ?"
 )
 
 ?>
