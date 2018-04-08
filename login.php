@@ -1,8 +1,6 @@
 <?php
 require_once "common.php";
 
-print_r($_POST);
-
 if($_SERVER["REQUEST_METHOD"] != "POST")
 	login_error(LOGIN_ERROR_DEFAULT);
 

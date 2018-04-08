@@ -206,7 +206,7 @@ function send_friend_invite()
 	$_SESSION["user_id"];
 	$_POST["friend-id"];
 	
-	if(is_friend_invited($_POST["friend-id"]) !== null)
+	if(is_friend_invited($_POST["friend-id"]) !== null || is_user_invited($_POST["friend-id"]) !== null)
 	{
 		echo '{"success": false}';
 		return;
