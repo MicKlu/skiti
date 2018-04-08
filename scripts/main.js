@@ -4,6 +4,7 @@ var timers = {};
 
 $(function () {
 	$("#friend-send-invite").click(ajaxSendInvite);
+	$("#friend-cancel-invite").click(ajaxCancelInvite);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
@@ -39,6 +40,25 @@ function ajaxSendInvite() {
 			$("#friend-send-invite").hide();
 			$("#friend-delete").hide();
 			$("#friend-cancel-invite").show();
+		}
+	});
+}
+
+function ajaxCancelInvite() {
+	var profileId = $(this).data("id");
+	$.ajax("common.php?action=friend_cancel_invite", {
+		method: "post",
+		dataType: "json",
+		data: {
+			"friend-id": profileId
+		},
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#friend-send-invite").show();
+			$("#friend-delete").hide();
+			$("#friend-cancel-invite").hide();
 		}
 	});
 }

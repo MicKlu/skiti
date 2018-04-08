@@ -19,6 +19,7 @@ $sqls = array (
 	"login_user" => "SELECT u_id, password FROM users WHERE email = ?",
 	"user_info" => "SELECT {info_col} FROM users WHERE u_id = ?",
 	"friend-invite" => "INSERT INTO friends(u1_id, u2_id) VALUES (?, ?)",
+	"friend-cancel" => "DELETE FROM friends WHERE u1_id = ? AND u2_id = ?",
 	"is-friend-invited" => "SELECT pending FROM friends WHERE u1_id = ? AND u2_id = ?"
 )
 

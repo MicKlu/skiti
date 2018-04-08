@@ -1,5 +1,4 @@
 <?php
-
 include_once "consts.php";
 include_once "db.php";
 
@@ -188,6 +187,9 @@ function call_ajax($action)
 		case "friend_send_invite":
 			send_friend_invite();
 			break;
+		case "friend_cancel_invite":
+			cancel_friend_invite();
+			break;
 	}
 }
 
@@ -215,6 +217,30 @@ function send_friend_invite()
 	$db -> close();
 }
 
+function cancel_friend_invite()
+{
+	global $sqls;
+	session_start();
+	$_SESSION["user_id"];
+	$_POST["friend-id"];
+	if(is_friend_invited($_POST["friend-id"]) !== 1)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["friend-cancel"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $_POST["friend-id"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		echo '{"success": false}';
+	else
+		echo '{"success": true}';
+	$db -> close();
+}
+
+//Zwraca null jeśli nie wysłano zaproszenia, 1 jeśli wysłano, 0 jeśli zaakceptowano (są znajomymi)
 function is_friend_invited($friend_id)
 {
 	global $sqls;
