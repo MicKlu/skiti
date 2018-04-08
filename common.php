@@ -190,6 +190,12 @@ function call_ajax($action)
 		case "friend_cancel_invite":
 			cancel_friend_invite();
 			break;
+		case "friend_accept_invite":
+			accept_friend_invite();
+			break;
+		case "friend_reject_invite":
+			reject_friend_invite();
+			break;
 	}
 }
 
@@ -240,7 +246,58 @@ function cancel_friend_invite()
 	$db -> close();
 }
 
-//Zwraca null jeśli nie wysłano zaproszenia, 1 jeśli wysłano, 0 jeśli zaakceptowano (są znajomymi)
+function accept_friend_invite()
+{
+	global $sqls;
+	session_start();
+	$_SESSION["user_id"];
+	$_POST["friend-id"];
+	
+	if(is_user_invited($_POST["friend-id"]) !== 1)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["friend-accept"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $_POST["friend-id"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		echo '{"success": false}';
+	else
+		echo '{"success": true}';
+	$db -> close();
+}
+
+function reject_friend_invite()
+{
+	global $sqls;
+	session_start();
+	$_SESSION["user_id"];
+	$_POST["friend-id"];
+	
+	if(is_user_invited($_POST["friend-id"]) !== 1)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["friend-reject"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $_POST["friend-id"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		echo '{"success": false}';
+	else
+		echo '{"success": true}';
+	$db -> close();
+}
+
+/**
+ * Czy użytkownik wysłał zaproszenie
+ * Zwraca null jeśli nie wysłano zaproszenia, 1 jeśli wysłano, 0 jeśli zaakceptowano (są znajomymi)
+ */
 function is_friend_invited($friend_id)
 {
 	global $sqls;
@@ -255,5 +312,25 @@ function is_friend_invited($friend_id)
 	$db -> close();
 	return $invited;
 }
+
+/**
+ * Czy użytkownik otrzymał zaproszenie
+ * Zwraca null jeśli nie wysłano zaproszenia, 1 jeśli wysłano, 0 jeśli zaakceptowano (są znajomymi)
+ */
+function is_user_invited($friend_id)
+{
+	global $sqls;
+	$invited = null;
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is-user-invited"]);
+	$stmt -> bind_param("ii", $_SESSION["user_id"], $friend_id);
+	$stmt -> execute();
+	$stmt -> bind_result($invited);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	return $invited;
+}
+
 
 ?>

@@ -33,9 +33,11 @@
 		</ul>
 		<?php if($profile_id) : ?>
 		<div id="profile-manage-friend">
-			<button class="button-light button-primary" style="<?php echo (is_friend_invited($profile_id) === null) ? "display: inline" : "" ?>" id="friend-send-invite" data-id="<?php echo $profile_id ?>" ><i class="fas fa-user-plus"></i> Dodaj do znajomych</button>
+			<button class="button-light button-primary" style="<?php echo (is_friend_invited($profile_id) === null && is_user_invited($profile_id) === null) ? "display: inline" : "" ?>" id="friend-send-invite" data-id="<?php echo $profile_id ?>" ><i class="fas fa-user-plus"></i> Dodaj do znajomych</button>
 			<button class="button-light button-primary" style="<?php echo (is_friend_invited($profile_id)) ? "display: inline" : "" ?>" id="friend-cancel-invite" data-id="<?php echo $profile_id ?>" ><i class="fas fa-check"></i> Wysłano zaproszenie</button>
-			<button class="button-light button-primary" style="<?php echo (is_friend_invited($profile_id) === 0) ? "display: inline" : "" ?>" id="friend-delete" data-id="<?php echo $profile_id ?>" ><i class="fas fa-times"></i> Usuń ze znajomych</button>
+			<button class="button-light button-primary" style="<?php echo (is_friend_invited($profile_id) === 0 || is_user_invited($profile_id) === 0) ? "display: inline" : "" ?>" id="friend-delete" data-id="<?php echo $profile_id ?>" ><i class="fas fa-times"></i> Usuń ze znajomych</button>
+			<button class="button-light button-primary" style="<?php echo (is_user_invited($profile_id)) ? "display: inline" : "" ?>" id="friend-accept" data-id="<?php echo $profile_id ?>" ><i class="fas fa-check"></i> Akceptuj</button>
+			<button class="button-light button-primary" style="<?php echo (is_user_invited($profile_id)) ? "display: inline" : "" ?>" id="friend-reject" data-id="<?php echo $profile_id ?>" ><i class="fas fa-times"></i> Odrzuć</button>
 		</div>
 		<?php endif; ?>
 	</div>

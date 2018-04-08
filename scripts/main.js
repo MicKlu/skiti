@@ -5,6 +5,8 @@ var timers = {};
 $(function () {
 	$("#friend-send-invite").click(ajaxSendInvite);
 	$("#friend-cancel-invite").click(ajaxCancelInvite);
+	$("#friend-accept").click(ajaxAcceptInvite);
+	$("#friend-reject").click(ajaxRejectInvite);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
@@ -59,6 +61,48 @@ function ajaxCancelInvite() {
 			$("#friend-send-invite").show();
 			$("#friend-delete").hide();
 			$("#friend-cancel-invite").hide();
+		}
+	});
+}
+
+function ajaxAcceptInvite() {
+	var profileId = $(this).data("id");
+	$.ajax("common.php?action=friend_accept_invite", {
+		method: "post",
+		dataType: "json",
+		data: {
+			"friend-id": profileId
+		},
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#friend-send-invite").hide();
+			$("#friend-delete").show();
+			$("#friend-cancel-invite").hide();
+			$("#friend-accept").hide();
+			$("#friend-reject").hide();
+		}
+	});
+}
+
+function ajaxRejectInvite() {
+	var profileId = $(this).data("id");
+	$.ajax("common.php?action=friend_reject_invite", {
+		method: "post",
+		dataType: "json",
+		data: {
+			"friend-id": profileId
+		},
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#friend-send-invite").show();
+			$("#friend-delete").hide();
+			$("#friend-cancel-invite").hide();
+			$("#friend-accept").hide();
+			$("#friend-reject").hide();
 		}
 	});
 }
