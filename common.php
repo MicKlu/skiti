@@ -141,7 +141,7 @@ function user_sex($u_id = null)
 		echo "Kobieta";
 }
 
-function user_www()
+function user_www($u_id = null)
 {
 	$www = get_user_info("www", $u_id);
 	if(!$www)
@@ -164,4 +164,12 @@ function user_registerdate($u_id = null)
 	$timestamp = get_user_info("registerdate", $u_id);
 	echo date("d.m.Y", $timestamp);
 }
+
+function does_user_exists($u_id)
+{
+	if(get_user_info("u_id", $u_id) === null)
+		return 0;
+	return 1;
+}
+
 ?>
