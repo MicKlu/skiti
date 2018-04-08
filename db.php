@@ -22,6 +22,7 @@ $sqls = array (
 	"friend-cancel" => "DELETE FROM friends WHERE u1_id = ? AND u2_id = ?",
 	"friend-accept" => "UPDATE friends SET pending = 0 WHERE u2_id = ? AND u1_id = ?",
 	"friend-reject" => "DELETE FROM friends WHERE u2_id = ? AND u1_id = ?",
+	"friend-delete" => "DELETE FROM friends WHERE (u1_id = ? AND u2_id = ?) OR (u2_id = ? AND u1_id = ?)",
 	"is-friend-invited" => "SELECT pending FROM friends WHERE u1_id = ? AND u2_id = ?",
 	"is-user-invited" => "SELECT pending FROM friends WHERE u2_id = ? AND u1_id = ?"
 )
