@@ -324,8 +324,9 @@ $.fn.extend({
 	},
 	ajaxGetFriends: function () {
 		$(this).each(function () {
-			var row = $(this).find(".row");
-			//$(this).find(".row").html("<p>Użytkownik nie ma znajomych.</p>");
+			var ProfileFriendsAccepted = $(this).find("#profile-friends-accepted");
+			var ProfileFriendsFriendsInvited = $(this).find("#profile-friends-friends-invited");
+			var ProfileFriendsUserInvited = $(this).find("#profile-friends-user-invited");
 			$.ajax("common.php?action=get_friends_list", {
 				method: "post",
 				dataType: "json",
@@ -334,11 +335,15 @@ $.fn.extend({
 				},
 				success: function(data) {
 					if(!data.length) {
-						row.html("<p>Użytkownik nie ma znajomych.</p>");
+						ProfileFriendsAccepted.html("<p>Użytkownik nie ma znajomych.</p>");
 						return;
 					}
+
+					var PFAcols = ProfileFriendsAccepted.children(".col-1");
+					var PFFIcols = ProfileFriendsFriendsInvited.children(".col-1");
+					var PFUIcols = ProfileFriendsUserInvited.children(".col-1");
 					
-					var cols = row.children(".col-1");
+					var j = 0, k = 0, l = 0;
 					
 					for(var i = 0; i < data.length; i++) {
 						var profileFriendBox = $("<a>").addClass("profile-friend-box");
@@ -357,7 +362,18 @@ $.fn.extend({
 						profileFriendBox.attr({href: "profil.php?id=" + data[i].id});
 						profileFriendInfoH6.text(data[i].fullname);
 						//profileAvatarMini.attr({src: data[i].avatar});
-						cols.eq(i % 3).append(profileFriendBox);
+						
+						if(data[i].friendInvited) {
+							PFFIcols.eq(j % 3).append(profileFriendBox);
+							j++;
+						} else if(data[i].userInvited) {
+							PFUIcols.eq(k % 3).append(profileFriendBox);
+							k++;
+						} else
+						{
+							PFAcols.eq(l % 3).append(profileFriendBox);
+							l++;
+						}
 					}
 				}
 			});

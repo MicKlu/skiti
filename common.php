@@ -333,6 +333,49 @@ function is_user_invited($friend_id)
 	return $invited;
 }
 
+function is_user_invited_by_user($u1_id, $u2_id)
+{
+	global $sqls;
+	$invited = null;
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is_user_invited_by_user"]);
+	$stmt -> bind_param("iiii", $u1_id, $u2_id, $u1_id, $u2_id);
+	$stmt -> execute();
+	$stmt -> bind_result($invited);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	return $invited;
+}
+
+function is_user_invited_by_anyone() {
+	global $sqls;
+	$invited = null;
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is_user_invited_by_anyone"]);
+	$stmt -> bind_param("i", $_SESSION["user_id"]);
+	$stmt -> execute();
+	$stmt -> bind_result($invited);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	return $invited;
+}
+
+function is_any_friend_invited() {
+	global $sqls;
+	$invited = null;
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is_any_friend_invited"]);
+	$stmt -> bind_param("i", $_SESSION["user_id"]);
+	$stmt -> execute();
+	$stmt -> bind_result($invited);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	return $invited;
+}
+
 function json_get_friends_list($user_id)
 {
 	global $sqls;
@@ -352,10 +395,25 @@ function json_get_friends_list($user_id)
 	
 	while($stmt -> fetch())
 	{
-		$friends_list[] = array (
+		$friend_list_data = array(
 			"id" => $friend_id,
 			"fullname" => get_user_full_name($friend_id)
 		);
+		
+		if($user_id != $_SESSION["user_id"])
+		{
+			if(is_user_invited_by_user($friend_id, $user_id))
+				continue;
+		}
+		else
+		{
+			if(is_user_invited($friend_id))
+				$friend_list_data["userInvited"] = true;
+			if(is_friend_invited($friend_id))
+				$friend_list_data["friendInvited"] = true;			
+		}
+		
+		$friends_list[] = $friend_list_data;
 	}
 	$db -> close();
 	echo json_encode($friends_list);
