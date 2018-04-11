@@ -117,10 +117,15 @@
 	padding: 5px;
 }
 
-#profile-container {
+#profile-container,
+#profile-settings {
 	width: 1024px;
 	margin: 100px auto;
 	position: relative;
+}
+
+#profile-settings {
+	margin: 50px auto;
 }
 
 #profile-header-container {
@@ -509,4 +514,40 @@
 	border-top: 1px solid #bfbfbf;
 	padding-top: 10px;
 	text-align: right;
+}
+
+.settings-panel {
+	margin-bottom: 15px;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+}
+
+.settings-panel-header {
+	padding: 5px;
+	border-bottom: 1px solid #e6e6e6;
+	background: #fafafa;
+	border-radius: 5px 5px 0 0;
+	cursor: pointer;
+	user-select: none;
+}
+
+.settings-panel.collapsed .settings-panel-header {
+	border-radius: 5px;
+	border-bottom: none;
+}
+
+.settings-panel-header h4 {
+	margin: 0;
+}
+
+.settings-panel-content {
+	padding: 10px 5px;
+}
+
+.settings-panel-collapse {
+	text-align: center;
+	background: #fafafa;
+	border-radius: 0 0 5px 5px;
+	font-size: 1.5rem;
+	cursor: pointer;
 }

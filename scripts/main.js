@@ -12,6 +12,7 @@ $(function () {
 	normalizeProfileImages();
 	$("#profile-friends").ajaxGetFriends();
 	$(".profile-image-wrapper").addGallery();
+	$(".settings-panel").collapsiblePanel();
 })
 
 function showRegisterAlert() {
@@ -322,6 +323,19 @@ $.fn.extend({
 			$(this).click(galleryOpen);
 		})
 	},
+	collapsiblePanel: function () {
+		$(this).each(function (index) {
+			var panel = $(this);
+			if(index != 0) {
+				hidePanel(panel);
+			}
+			var panelHeader = panel.find(".settings-panel-header");
+			var panelCollapseButton = panel.find(".settings-panel-collapse");
+			
+			panelHeader.click(togglePanelEvt);
+			panelCollapseButton.click(hidePanelEvt);
+		})
+	},
 	ajaxGetFriends: function () {
 		$(this).each(function () {
 			var ProfileFriendsAccepted = $(this).find("#profile-friends-accepted");
@@ -380,3 +394,30 @@ $.fn.extend({
 		});
 	}
 });
+
+function togglePanelEvt(event) {
+	var panelHeader = $(event.currentTarget);
+	var panel = panelHeader.parents(".settings-panel");
+	if(panel.hasClass("collapsed"))
+		showPanel(panel);
+	else 
+		hidePanel(panel);
+}
+
+function hidePanelEvt(event) {
+	var panelCollapseButton = $(event.currentTarget);
+	var panel = panelCollapseButton.parents(".settings-panel");
+	hidePanel(panel);
+}
+
+function showPanel(panel) {
+	var panelContentWrapper = panel.find(".settings-panel-content-wrapper");
+	panel.removeClass("collapsed");
+	panelContentWrapper.show();
+}
+
+function hidePanel(panel) {
+	var panelContentWrapper = panel.find(".settings-panel-content-wrapper");
+	panel.addClass("collapsed");
+	panelContentWrapper.hide();
+}
