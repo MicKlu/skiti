@@ -551,3 +551,12 @@
 	font-size: 1.5rem;
 	cursor: pointer;
 }
+
+.settings-form {
+	margin: 15px 30px;
+}
+
+.settings-form textarea.input {
+	width: 100%;
+	height: 200px;
+}
