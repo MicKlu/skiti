@@ -119,6 +119,9 @@ function ajaxDeleteFriend() {
 		data: {
 			"friend-id": profileId
 		},
+		error: function (x) {
+			console.log(x);
+		},
 		success: function (data) {
 			if(!data.success)
 				return;

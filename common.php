@@ -312,7 +312,7 @@ function delete_friend()
 	}
 	
 	$db = db_connect();
-	$stmt = $db -> prepare($sqls["friend-delete"]);
+	$stmt = $db -> prepare($sqls["friend_delete"]);
 	$stmt -> bind_param("iiii", $_SESSION["user_id"], $_POST["friend-id"], $_SESSION["user_id"], $_POST["friend-id"]);
 	$stmt -> execute();
 	if($stmt -> errno)
