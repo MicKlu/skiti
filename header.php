@@ -31,7 +31,7 @@
 			<div class="right-pane">
 				<?php if(isset($_SESSION["user_id"])) : ?>
 				<ul class="navbar-menu">
-					<li><a href="#"><img class="navbar-user-avatar" src="img/avatar_placeholder.png" />{Imię i nazwisko}</a></li>
+					<li><a href="profil.php"><img class="navbar-user-avatar" src="img/avatar_placeholder.png" /><?php user_full_name(); ?></a></li>
 					<li><a href="#">Ustawienia</a></li>
 					<li><a href="logout.php">Wyloguj</a></li>
 				</ul>

@@ -60,4 +60,116 @@ function get_login_alert()
 	}
 }
 
+function get_user_info($info_col, $u_id = null)
+{
+	global $sqls;
+	$data = null;
+	
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$query = str_replace("{info_col}", $info_col, $sqls["user_info"]);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($query);
+	$stmt -> bind_param("i", $u_id);
+	$stmt -> execute();
+	$stmt -> bind_result($data);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	
+	return $data;
+}
+
+//Tylko dane niewymagające "obróbki"
+function user_info($info_col, $u_id = null)
+{
+	$data = get_user_info($info_col, $u_id);
+	if(!$data)
+		$data = "brak danych";
+	echo $data;
+}
+
+function user_full_name($u_id = null)
+{
+	global $sqls;
+	
+	if($u_id == -1)
+		$u_id = $_SESSION["user_id"];
+	
+	$fname = get_user_info("firstname", $u_id);
+	$nick = get_user_info("nickname", $u_id);
+	$sname = get_user_info("surname", $u_id);
+	
+	echo "$fname " . (($nick) ? "\"$nick\"" : "") . $sname;
+}
+
+function user_birthdate($u_id = null)
+{
+	$timestamp = get_user_info("birthdate", $u_id);
+	echo date("d.m.Y", $timestamp);
+}
+
+function user_age($u_id = null)
+{
+	$timestamp = get_user_info("birthdate", $u_id);
+	$year = date("Y", $timestamp);
+	$currentYear = date("Y");
+	$age = $currentYear - $year;
+	
+	$month = date("n", $timestamp);
+	$currentMonth = date("n");
+	if($currentMonth < $month)
+		$age--;
+	else
+	{
+		$day = date("j", $timestamp);
+		$currentDay = date("j");
+		if($currentDay < $day)
+			$age--;
+	}
+	echo $age;
+}
+
+function user_sex($u_id = null)
+{
+	$sex = get_user_info("sex", $u_id);
+	if($sex == "m")
+		echo "Mężczyzna";
+	else if($sex == "k")
+		echo "Kobieta";
+}
+
+function user_www($u_id = null)
+{
+	$www = get_user_info("www", $u_id);
+	if(!$www)
+	{
+		echo "brak danych";
+		return;
+	}
+	
+	$href = $www;
+	if(strpos($href, "http") === false)
+		$href = "https://" . $href;
+	else
+		$www = preg_replace("/https?:\/\//", "", $www, 1);
+	
+	echo '<a href="' . $href . '">' . $www . '</a>';		
+}
+
+function user_registerdate($u_id = null)
+{
+	$timestamp = get_user_info("registerdate", $u_id);
+	echo date("d.m.Y", $timestamp);
+}
+
+function does_user_exists($u_id)
+{
+	if(get_user_info("u_id", $u_id) === null)
+		return 0;
+	return 1;
+}
+
 ?>
