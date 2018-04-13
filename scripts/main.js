@@ -10,10 +10,11 @@ $(function () {
 	$("#friend-delete").click(ajaxDeleteFriend);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
+	
 	normalizeProfileImages();
 	$("#profile-friends").ajaxGetFriends();
 	$(".profile-image-wrapper").addGallery();
-	$(".settings-panel").collapsiblePanel();
+	$(".settings-panel").collapsiblePanel();	
 })
 
 function showRegisterAlert() {

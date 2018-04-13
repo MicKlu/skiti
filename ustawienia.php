@@ -20,7 +20,7 @@
 							<label>Imię:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="firstname" />
+							<input type="text" name="firstname" value="<?php user_info("firstname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -28,7 +28,7 @@
 							<label>Drugie imię:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="secondname" />
+							<input type="text" name="secondname" value="<?php user_info("secondname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -36,7 +36,7 @@
 							<label>Nazwisko:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="surname" />
+							<input type="text" name="surname" value="<?php user_info("surname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -44,7 +44,7 @@
 							<label>Ksywka:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="nickname" />
+							<input type="text" name="nickname" value="<?php user_info("nickname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -52,7 +52,7 @@
 							<label>Data urodzenia:</label>
 						</div>
 						<div class="col-4">
-							<div class="input-group" id="birthdate">
+							<div class="input-group" id="birthdate" data-default-date="<?php user_birthdate() ?>">
 								<select class="form-input" name="birthday"></select>
 								<select class="form-input" name="birthmonth"></select>
 								<select class="form-input" name="birthyear"></select>
@@ -66,11 +66,11 @@
 						<div class="col-4">
 							<div class="input-group">
 								<label class="form-input">
-									<input type="radio" name="sex" value="m" />
+									<input type="radio" name="sex" value="m" <?php echo (get_user_info("sex") == "m") ? "checked" : "" ?>/>
 									Mężczyzna
 								</label>
 								<label class="form-input">
-									<input type="radio" name="sex" value="k" />
+									<input type="radio" name="sex" value="k" <?php echo (get_user_info("sex") == "k") ? "checked" : "" ?> />
 									Kobieta
 								</label>
 							</div>
@@ -85,6 +85,7 @@
 								<label class="button file-button">
 									<i class="fas fa-upload"></i> Prześlij plik... <input type="file">
 								</label>
+								<?php?>
 								<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
 							</div>
 						</div>
@@ -97,6 +98,7 @@
 							<label class="button file-button">
 								<i class="fas fa-upload"></i> Prześlij plik... <input type="file">
 							</label>
+							<?php?>
 							<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
 						</div>
 					</div>
@@ -115,7 +117,7 @@
 							<label>Kraj:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="country" />
+							<input type="text" name="country" value="<?php user_info("country", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -123,7 +125,7 @@
 							<label>Region:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="region" />
+							<input type="text" name="region" value="<?php user_info("region", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -131,7 +133,7 @@
 							<label>Miasto:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="city" />
+							<input type="text" name="city" value="<?php user_info("city", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -139,7 +141,7 @@
 							<label>Telefon:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="phone_number" />
+							<input type="text" name="phone_number" value="<?php user_info("phone_number", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -147,7 +149,7 @@
 							<label>Skype:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="skype" />
+							<input type="text" name="skype" value="<?php user_info("skype", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -155,7 +157,7 @@
 							<label>Strona WWW:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="www" />
+							<input type="text" name="www" value="<?php user_info("www", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -163,7 +165,7 @@
 							<label>Biografia:</label>
 						</div>
 						<div class="col-4">
-							<textarea class="input" name="bio"></textarea>
+							<textarea class="input" name="bio"><?php user_info("bio", null, true) ?></textarea>
 						</div>
 					</div>
 				</div>
@@ -197,7 +199,7 @@
 							<label>Email:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="email" />
+							<input type="text" name="email" value="<?php user_info("email", null, true) ?>" />
 						</div>
 					</div>
 				</div>

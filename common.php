@@ -98,10 +98,10 @@ function get_user_full_name($u_id = null)
 }
 
 //Tylko dane niewymagające "obróbki"
-function user_info($info_col, $u_id = null)
+function user_info($info_col, $u_id = null, $clean = false)
 {
 	$data = get_user_info($info_col, $u_id);
-	if(!$data)
+	if(!$data && !$clean)
 		$data = "brak danych";
 	echo $data;
 }

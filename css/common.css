@@ -55,6 +55,7 @@ input[type="checkbox"] {
 textarea {
 	padding: 5px;
 	resize: none;
+	font-family: Arial;
 }
 
 input:focus,

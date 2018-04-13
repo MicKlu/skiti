@@ -2,6 +2,7 @@
 
 $(function () {
 	$("#birthdate").fillDateSelect();
+	$("#birthdate").selectDefaultDate();
 })
 
 $.fn.extend({
@@ -49,6 +50,25 @@ $.fn.extend({
 			option.text(i);
 			select.append(option);
 		}
+	},
+	selectDefaultDate: function () {
+		var birthdateDiv = $(this);
+		var defaultDate = birthdateDiv.data("default-date");
+		if(!defaultDate)
+			return;
+		var selects = birthdateDiv.find("select");
+		var daySelect = $(selects[0]);
+		var monthSelect = $(selects[1]);
+		var yearSelect = $(selects[2]);
+		
+		defaultDate = defaultDate.split(".");
+		var day = parseInt(defaultDate[0]);
+		var month = parseInt(defaultDate[1]);
+		var year = parseInt(defaultDate[2]);
+		
+		daySelect.find("option").eq(day - 1).prop("selected", true);
+		monthSelect.find("option").eq(month - 1).prop("selected", true);
+		yearSelect.find("option").eq(year - 1970).attr("selected", true);
 	}
 });
 
