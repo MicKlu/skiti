@@ -7,6 +7,7 @@ $(function () {
 	$("#friend-cancel-invite").click(ajaxCancelInvite);
 	$("#friend-accept").click(ajaxAcceptInvite);
 	$("#friend-reject").click(ajaxRejectInvite);
+	$("#friend-delete").click(ajaxDeleteFriend);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
@@ -96,6 +97,27 @@ function ajaxRejectInvite() {
 		dataType: "json",
 		data: {
 			"friend_id": profileId
+		},
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#friend-send-invite").show();
+			$("#friend-delete").hide();
+			$("#friend-cancel-invite").hide();
+			$("#friend-accept").hide();
+			$("#friend-reject").hide();
+		}
+	});
+}
+
+function ajaxDeleteFriend() {
+	var profileId = $(this).data("id");
+	$.ajax("common.php?action=friend_delete", {
+		method: "post",
+		dataType: "json",
+		data: {
+			"friend-id": profileId
 		},
 		success: function (data) {
 			if(!data.success)
