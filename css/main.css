@@ -108,13 +108,18 @@
 	margin: 0 auto;
 }
 
-#register-error {
+#register-error,
+#user-info-update-error {
 	display: none;
 	border: 1px solid #bd0000;
 	background: #ffcccc;
 	color: #bd0000;
 	border-radius: 5px;
 	padding: 5px;
+}
+
+#user-info-update-error {
+    margin-bottom: 10px;
 }
 
 #profile-container,

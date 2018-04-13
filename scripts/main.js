@@ -31,6 +31,13 @@ function showLoginAlert() {
 	}
 }
 
+function showUserUpdateInfoAlert() {
+	if(getCookie("user-info-update-error")) {
+		$("#user-info-update-error").show();
+		deleteCookie("user-info-update-error");
+	}
+}
+
 function ajaxSendInvite() {
 	var profileId = $(this).data("id");
 	console.log(profileId);

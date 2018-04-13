@@ -1,7 +1,8 @@
 <?php
 include_once "consts.php";
 include_once "db.php";
-if($_SERVER["REQUEST_METHOD"] == "POST")
+
+if(basename($_SERVER["PHP_SELF"]) == "common.php" && $_SERVER["REQUEST_METHOD"] == "POST")
 	call_ajax($_GET["action"]);
 
 function get_profile_page()
@@ -27,7 +28,6 @@ function get_profile_page()
 
 function register_error($errno)
 {
-	print_r($errno . "<br />");
 	setcookie("register-error", $errno);
 	header("Location: index.php#register");
 	die();
@@ -35,7 +35,6 @@ function register_error($errno)
 
 function login_error($errno)
 {
-	print_r($errno . "<br />");
 	setcookie("login-error", $errno);
 	header("Location: index.php");
 	die();
@@ -445,4 +444,127 @@ function json_get_friends_list($user_id)
 	$db -> close();
 	echo json_encode($friends_list);
 }
+
+function process_update_user_info()
+{
+	global $regexps;
+	
+	//Walidacja
+	///Wypełnienie wymaganych pól
+	if(empty($_POST["firstname"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_FNAME);
+	
+	if(empty($_POST["surname"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SNAME);
+
+	if(empty($_POST["email"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_EMAIL);
+
+	if(empty($_POST["birthday"]) || empty($_POST["birthmonth"]) || empty($_POST["birthyear"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_BIRTH);
+
+	if(empty($_POST["sex"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SEX);
+	
+	///Poprawność pól
+	
+	if(!preg_match($regexps["name"], $_POST["firstname"]) || mb_strlen($_POST["firstname"]) < 3)
+		user_info_update_error(USER_INFO_UPDATE_ERROR_FNAME_FORMAT);
+
+	if(!preg_match($regexps["surname"], $_POST["surname"]) || mb_strlen($_POST["surname"]) < 3)
+		user_info_update_error(USER_INFO_UPDATE_ERROR_SNAME_FORMAT);
+
+	if(!preg_match($regexps["email"], $_POST["email"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_EMAIL_FORMAT);
+	
+	if(!is_date_correct($_POST["birthday"], $_POST["birthmonth"], $_POST["birthyear"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_DATE_FAKE);
+
+	if(!($_POST["sex"] == "m" || $_POST["sex"] == "k"))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_SEX_FAKE);
+	
+	///Zmiana hasła
+	if(!empty($_POST["password"]))
+	{
+		if(empty($_POST["rpassword"]))
+			user_info_update_error(USER_INFO_UPDATE_ERROR_NO_PASSWORD);
+		
+		if(!is_safe_password($_POST["password"]))
+			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_FORMAT);
+
+		if($_POST["password"] != $_POST["rpassword"])
+			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_NO_MATCH);
+	}
+	
+	///Pola opcjonalne
+	if(!empty($_POST["secondname"]))
+	{
+		
+	}
+	//...
+	
+}
+
+function user_info_update_error($errno)
+{
+	setcookie("user-info-update-error", $errno);
+	header("Location: ustawienia.php");
+	die();
+}
+
+function get_user_info_update_alert()
+{
+	global $msgs;
+	if(isset($_COOKIE["user-info-update-error"]))
+	{
+		$errno = $_COOKIE["user-info-update-error"];
+		echo $msgs["user_info_update"][$errno];
+	}
+}
+
+function is_safe_password($password)
+{
+	global $regexps;
+	
+	if(mb_strlen($password) < 8)
+		return 0;
+
+	if(!preg_match($regexps["lowercase_letters"], $password))
+		return 0;
+
+	if(!preg_match($regexps["uppercase_letters"],$password))
+		return 0;
+
+	if(!preg_match($regexps["numbers"], $password))
+		return 0;
+
+	if(!preg_match($regexps["special_characters"], $password))
+		return 0;
+
+	if(preg_match("/\s/", $password))
+		return 0;
+	
+	return 1;
+}
+
+function is_date_correct($day, $month, $year)
+{
+	$current_year = date("Y");
+	
+	if($day < 1 || $month < 1 || $year < 1970 || $month > 12 || $year > $current_year)
+		return 0;
+		
+	if(in_array($month, array(1, 3, 5, 7, 8, 10, 12)) && $day > 31)
+		return 0;
+
+	if(in_array($month, array(4, 6, 9, 11)) && $day > 30)
+		return 0;
+
+	if($month == 2)
+		if($day > 29 || ($year % 4 && $day > 28))
+			return 0;
+	
+	return 1;
+}
+
 ?>

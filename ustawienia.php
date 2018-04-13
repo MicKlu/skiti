@@ -5,10 +5,19 @@
 		header("Location: index.php");
 		die();
 	}
+	
+	require_once "common.php";
+	
+	if($_SERVER["REQUEST_METHOD"] == "POST")
+		process_update_user_info();
 ?>
 <?php require "header.php" ?>
 <main id="profile-settings">
-	<form>
+	<div id="user-info-update-error">
+		<p><?php get_user_info_update_alert(); ?></p>
+		<script>showUserUpdateInfoAlert();</script>
+	</div>
+	<form method="post">
 		<div class="settings-panel">
 			<div class="settings-panel-header">
 				<h4>Ustawienia profilu (informacje podstawowe)</h4>
@@ -17,7 +26,7 @@
 				<div class="settings-panel-content settings-form">
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Imię:</label>
+							<label>Imię*:</label>
 						</div>
 						<div class="col-4">
 							<input type="text" name="firstname" value="<?php user_info("firstname", null, true) ?>" />
@@ -33,7 +42,7 @@
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Nazwisko:</label>
+							<label>Nazwisko*:</label>
 						</div>
 						<div class="col-4">
 							<input type="text" name="surname" value="<?php user_info("surname", null, true) ?>" />
@@ -49,7 +58,7 @@
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Data urodzenia:</label>
+							<label>Data urodzenia*:</label>
 						</div>
 						<div class="col-4">
 							<div class="input-group" id="birthdate" data-default-date="<?php user_birthdate() ?>">
@@ -61,7 +70,7 @@
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Płeć:</label>
+							<label>Płeć*:</label>
 						</div>
 						<div class="col-4">
 							<div class="input-group">
@@ -196,7 +205,7 @@
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Email:</label>
+							<label>Email*:</label>
 						</div>
 						<div class="col-4">
 							<input type="text" name="email" value="<?php user_info("email", null, true) ?>" />
