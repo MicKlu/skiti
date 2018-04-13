@@ -1,3 +1,5 @@
+"use strict";
+
 $(function () {
 	$("#birthdate").fillDateSelect();
 })
@@ -28,7 +30,7 @@ $.fn.extend({
 	},
 	fillMonthSelect: function () {
 		var select = $(this);
-		var months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
+		var months = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
 		var option;
 		for(var i = 0; i < 12; i++) {
 			option = $("<option>");
@@ -39,13 +41,43 @@ $.fn.extend({
 	},
 	fillYearSelect: function () {
 		var select = $(this);
-		var option;
+		var option; 
 		var thisYear = new Date().getFullYear();
-		for(var i = 1900; i <= thisYear; i++) {
+		for(var i = 1970; i <= thisYear; i++) {
 			option = $("<option>");
 			option.prop("value", i);
 			option.text(i);
 			select.append(option);
 		}
 	}
-})
+});
+
+function setCookie(key, value, expires, path, domain, maxAge) {
+	var cookieString = key + "=" + value;
+	if(expires) {
+		var date = new Date();
+		date.setTime(date.getTime() + expires * 1000);
+		expires = date.toUTCString();		
+		cookieString += ";expires=" + expires;
+	}
+	if(path)
+		cookieString += ";path=" + path;
+	if(domain)
+		cookieString += ";domain=" + domain;
+	if(maxAge)
+		cookieString += ";max-age=" + maxAge;
+	document.cookie = cookieString;
+}
+
+function getCookie(key) {
+	var cookies = document.cookie.split(";");
+	for(var i = 0; i < cookies.length; i++) {
+		var cookie = cookies[i].split("=");
+		if(cookie[0] == key)
+			return cookie[1];
+	}
+}
+
+function deleteCookie(key) {
+	setCookie(key, "", -1);
+}

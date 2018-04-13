@@ -1,12 +1,27 @@
+"use strict";
+
 var timers = {};
 
 $(function () {
-	
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	normalizeProfileImages();
 	$(".profile-image-wrapper").addGallery();
 })
+
+function showRegisterAlert() {
+	if(getCookie("register-error")) {
+		$("#register-error").show();
+		deleteCookie("register-error");
+	}
+}
+
+function showLoginAlert() {
+	if(getCookie("login-error")) {
+		$("#login-error").show();
+		deleteCookie("login-error");
+	}
+}
 
 function normalizeProfileImages() {	
 	//Środkowanie małych obrazów

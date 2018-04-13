@@ -61,6 +61,13 @@
 	margin-right: 10px;
 }
 
+#login-error {
+	display: none;
+	color: #ff7070;
+	margin-right: 5px;
+	font-size: 0.9rem;
+}
+
 .input-search input {
 	border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -99,6 +106,15 @@
 #register-container {
 	width: 50%;
 	margin: 0 auto;
+}
+
+#register-error {
+	display: none;
+	border: 1px solid #bd0000;
+	background: #ffcccc;
+	color: #bd0000;
+	border-radius: 5px;
+	padding: 5px;
 }
 
 #profile-container {
