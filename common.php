@@ -201,6 +201,9 @@ function call_ajax($action)
 		case "friend_reject_invite":
 			reject_friend_invite();
 			break;
+		case "friend_delete":
+			delete_friend();
+			break;
 		case "get_friends_list":
 			json_get_friends_list($_POST["user_id"]);
 			break;
@@ -287,6 +290,30 @@ function reject_friend_invite()
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["friend_reject"]);
 	$stmt -> bind_param("ii", $_SESSION["user_id"], $_POST["friend_id"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		echo '{"success": false}';
+	else
+		echo '{"success": true}';
+	$db -> close();
+}
+
+function delete_friend()
+{
+	global $sqls;
+	session_start();
+	$_SESSION["user_id"];
+	$_POST["friend-id"];
+	
+	if(!(is_friend_invited($_POST["friend-id"]) === 0 || is_user_invited($_POST["friend-id"]) === 0))
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["friend-delete"]);
+	$stmt -> bind_param("iiii", $_SESSION["user_id"], $_POST["friend-id"], $_SESSION["user_id"], $_POST["friend-id"]);
 	$stmt -> execute();
 	if($stmt -> errno)
 		echo '{"success": false}';
