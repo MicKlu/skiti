@@ -37,4 +37,10 @@ CREATE TABLE friends (
 	FOREIGN KEY (u2_id) REFERENCES users(u_id)
 );
 
+CREATE VIEW users_friends AS
+SELECT f_id, u1_id, u2_id FROM friends AS f
+UNION
+SELECT f_id, u2_id, u1_id FROM friends AS f
+ORDER BY f_id ASC
+
 COMMIT;
