@@ -189,6 +189,7 @@
 	list-style: none;
 	display: flex;
 	height: 100%;
+	float: left;
 }
 
 #profile-menu > ul > li {
@@ -212,11 +213,23 @@
     align-items: center;
 }
 
+#profile-manage-friend {
+	display: flex;
+	float: right;
+	height: 100%;
+	align-items: center;
+}
+
+#profile-manage-friend button {
+	display: none;
+}
+
 #profile-content {
 	margin: 30px 10px 0 15px;
 }
 
-#profile-about h2 {
+#profile-about h2,
+#profile-friends h2 {
 	border-bottom: 1px solid #565656;
 	padding-bottom: 5px;
 	margin-top: 30px;

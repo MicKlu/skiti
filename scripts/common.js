@@ -81,3 +81,13 @@ function getCookie(key) {
 function deleteCookie(key) {
 	setCookie(key, "", -1);
 }
+
+function getQueryString() {
+	var qsObject = {};
+	var pairs = location.search.substr(1).split("&");
+	for(var i = 0; i < pairs.length; i++) {
+		var pair = pairs[i].split("=");
+		qsObject[pair[0]] = pair[1];
+	}
+	return qsObject;
+}

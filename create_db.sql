@@ -27,6 +27,20 @@ CREATE TABLE users (
 	PRIMARY KEY(u_id)
 );
 
+CREATE TABLE friends (
+	f_id int AUTO_INCREMENT,
+	u1_id int NOT NULL,
+	u2_id int NOT NULL,
+	pending int NOT NULL DEFAULT 1,
+	PRIMARY KEY(f_id),
+	FOREIGN KEY (u1_id) REFERENCES users(u_id),
+	FOREIGN KEY (u2_id) REFERENCES users(u_id)
+);
 
+CREATE VIEW users_friends AS
+SELECT f_id, u1_id, u2_id FROM friends AS f
+UNION
+SELECT f_id, u2_id, u1_id FROM friends AS f
+ORDER BY f_id ASC
 
 COMMIT;
