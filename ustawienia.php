@@ -21,7 +21,7 @@
 		<p>Zmiany zostały zapisane</p>
 		<script></script>
 	</div>
-	<form method="post">
+	<form method="post" enctype="multipart/form-data">
 		<div class="settings-panel">
 			<div class="settings-panel-header">
 				<h4>Ustawienia profilu (informacje podstawowe)</h4>
@@ -94,13 +94,11 @@
 							<label>Zdjęcie profilowe:</label>
 						</div>
 						<div class="col-4">
-							<div class="col-4">
-								<label class="button file-button">
-									<i class="fas fa-upload"></i> Prześlij plik... <input type="file">
-								</label>
-								<?php?>
-								<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
-							</div>
+							<label class="button file-button">
+								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="avatar">
+							</label>
+							<?php?>
+							<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
 						</div>
 					</div>
 					<div class="row input-group">
@@ -109,7 +107,7 @@
 						</div>
 						<div class="col-4">
 							<label class="button file-button">
-								<i class="fas fa-upload"></i> Prześlij plik... <input type="file">
+								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="background">
 							</label>
 							<?php?>
 							<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>

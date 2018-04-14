@@ -45,6 +45,10 @@ $msgs["user_info_update"] = array (
 	USER_INFO_UPDATE_ERROR_WWW_FORMAT			=> "Podaj prawidłowy adres WWW.",
 	USER_INFO_UPDATE_ERROR_NO_COUNTRY			=> "Podaj kraj.",
 	USER_INFO_UPDATE_ERROR_COUNTRY_FAKE			=> "Podaj prawidłowy kraj.",
+	USER_INFO_UPDATE_ERROR_AVATAR_SMALL			=> "Zdjęcie profilowe musi mieć wymiary co najmniej 192x192 pikseli.",
+	USER_INFO_UPDATE_ERROR_AVATAR_FORMAT		=> "Nieprawidłowy typ pliku.",
+	USER_INFO_UPDATE_ERROR_AVATAR_BIG_SIZE		=> "Maksymalny rozmiar obrazka 8 MB.",
+	USER_INFO_UPDATE_ERROR_BACKGROUND_SMALL		=> "Tło profilu musi mieć wymiary co najmniej 1024x250 pikseli."
 );
 
 ?>

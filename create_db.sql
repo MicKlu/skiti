@@ -24,6 +24,8 @@ CREATE TABLE users (
 	phone_number varchar(15),
 	skype varchar(255),
 	registerdate varchar(31) NOT NULL,
+	avatar varchar(255),
+	background varchar(255),
 	PRIMARY KEY(u_id)
 );
 

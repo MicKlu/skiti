@@ -149,6 +149,8 @@
 #profile-background img {
 	width: 100%;
 	z-index: 1;
+	margin-top: 125px;
+	transform: translateY(-50%);
 }
 
 #profile-header {
@@ -177,8 +179,9 @@
 }
 
 #profile-avatar img {
-	width: inherit;
-	height: inherit;
+	max-height: 100%;
+	margin-left: 50%;
+	transform: translateX(-50%);
 }
 
 .profile-avatar-mini {

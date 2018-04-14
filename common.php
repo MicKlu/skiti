@@ -84,8 +84,6 @@ function get_user_info($info_col, $u_id = null)
 
 function get_user_full_name($u_id = null)
 {
-	global $sqls;
-	
 	if($u_id == null)
 		$u_id = $_SESSION["user_id"];
 	
@@ -94,6 +92,64 @@ function get_user_full_name($u_id = null)
 	$sname = get_user_info("surname", $u_id);
 	
 	return "$fname " . (($nick) ? "\"$nick\" " : "") . $sname;
+}
+
+function get_user_avatar_type($u_id = null)
+{
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$avatar = get_user_info("avatar", $u_id);
+	
+	if(!$avatar)
+		return AVATAR_PLACEHOLDER;
+	else
+	{
+		
+		if(file_exists(AVATARS_PATH . $u_id . DIRECTORY_SEPARATOR . $avatar))
+			return AVATAR_MAIN;
+		else if(file_exists(AVATARS_OLD_PATH . $u_id))
+			return AVATAR_OLD;
+		else
+			return AVATAR_PLACEHOLDER;
+	}
+}
+
+function get_user_avatar($u_id = null)
+{
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$default_avatar = "img/avatar_placeholder.png";
+	$avatar = get_user_info("avatar", $u_id);
+	$avatar_type = get_user_avatar_type($u_id);
+	
+	if($avatar_type == AVATAR_PLACEHOLDER)
+		$avatar = $default_avatar;
+	else if($avatar_type == AVATAR_MAIN)
+		$avatar = "img/avatars/" . $u_id . "/" . $avatar;
+	else if($avatar_type == AVATAR_OLD)
+		$avatar = "img/avatars/old/" . $u_id;
+	
+	return $avatar;
+}
+
+function get_user_background($u_id = null)
+{
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$background = get_user_info("background", $u_id);
+	$background_type = get_user_background_type($u_id);
+	
+	if($background_type == BACKGROUND_NONE)
+		$background = null;
+	else if($background_type == BACKGROUND_MAIN)
+		$background = "img/backgrounds/" . $u_id . "/" . $background;
+	else if($background_type == BACKGROUND_OLD)
+		$background = "img/backgrounds/old/" . $u_id;
+	
+	return $background;
 }
 
 //Tylko dane niewymagające "obróbki"
@@ -108,6 +164,16 @@ function user_info($info_col, $u_id = null, $clean = false)
 function user_full_name($u_id = null)
 {
 	echo get_user_full_name($u_id);
+}
+
+function user_avatar($u_id = null)
+{
+	echo get_user_avatar($u_id);
+}
+
+function user_background($u_id = null)
+{
+	echo get_user_background($u_id);
 }
 
 function user_birthdate($u_id = null)
@@ -453,6 +519,9 @@ function process_update_user_info()
 	$db = db_connect();
 	$db -> begin_transaction();
 	
+	if(empty($_POST))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_DEFAULT, $db);
+	
 	//Walidacja
 	///Wypełnienie wymaganych pól
 	if(empty($_POST["firstname"]))
@@ -555,12 +624,63 @@ function process_update_user_info()
 	udpate_user_info("bio", $_POST["bio"], null, $db);
 	
 	//Przesyłanie zdjęcia i tła profilowego
-	//...
-	
-	//Aktualizacja bazy danych
-	//...
+	if(!empty($_FILES["avatar"]["name"]))
+	{
+		if($_FILES["avatar"]["size"] > 8 * 1024 * 1024)	//Sprawdzamy rozmiar
+			user_info_update_error(USER_INFO_UPDATE_ERROR_AVATAR_BIG_SIZE, $db);
+		if(strpos(mime_content_type($_FILES["avatar"]["tmp_name"]), "image/") === false) //Sprawdzamy typ
+			user_info_update_error(USER_INFO_UPDATE_ERROR_AVATAR_FORMAT, $db);
+			
+		$image_info = getimagesize($_FILES["avatar"]["tmp_name"]);
+
+		if($image_info[0] < 192 || $image_info[1] < 192)	//Sprawdzamy wymiary
+			user_info_update_error(USER_INFO_UPDATE_ERROR_AVATAR_SMALL, $db);
+		
+		//Zmieniamy nazwę pliku
+		if(get_user_avatar_type() == AVATAR_MAIN)
+			rename(get_user_avatar_path(), AVATARS_OLD_PATH . $_SESSION["user_id"]);
+		
+		//Aktualizujemy bazę danych
+		udpate_user_info("avatar", $_FILES["avatar"]["name"], null, $db);
+		
+	}
+	if(!empty($_FILES["background"]["name"]))
+	{
+		if($_FILES["background"]["size"] > 8 * 1024 * 1024)	//Sprawdzamy rozmiar
+			user_info_update_error(USER_INFO_UPDATE_ERROR_AVATAR_BIG_SIZE, $db);
+		if(strpos(mime_content_type($_FILES["background"]["tmp_name"]), "image/") === false) //Sprawdzamy typ
+			user_info_update_error(USER_INFO_UPDATE_ERROR_AVATAR_FORMAT, $db);
+			
+		$image_info = getimagesize($_FILES["background"]["tmp_name"]);
+
+		if($image_info[0] < 1024 || $image_info[1] < 250)	//Sprawdzamy wymiary
+			user_info_update_error(USER_INFO_UPDATE_ERROR_BACKGROUND_SMALL, $db);
+			
+		//Zmieniamy nazwę pliku
+		if(get_user_background_type() == BACKGROUND_MAIN)
+			rename(get_user_background_path(), BACKGROUNDS_OLD_PATH . $_SESSION["user_id"]);
+		
+		//Aktualizujemy bazę danych
+		udpate_user_info("background", $_FILES["background"]["name"], null, $db);
+	}
 	
 	$db -> commit();
+	
+	//Przenosimy pliki
+	if(!empty($_FILES["avatar"]["name"]))
+	{
+		if(!file_exists(AVATARS_PATH . $_SESSION["user_id"]))
+			mkdir(AVATARS_PATH . $_SESSION["user_id"]);
+		move_uploaded_file($_FILES["avatar"]["tmp_name"], AVATARS_PATH . $_SESSION["user_id"] . DIRECTORY_SEPARATOR . $_FILES["avatar"]["name"]);
+	}
+	if(!empty($_FILES["background"]["name"]))
+	{
+		if(!file_exists(BACKGROUNDS_PATH . $_SESSION["user_id"]))
+			mkdir(BACKGROUNDS_PATH . $_SESSION["user_id"]);
+		move_uploaded_file($_FILES["background"]["tmp_name"], BACKGROUNDS_PATH . $_SESSION["user_id"] . DIRECTORY_SEPARATOR . $_FILES["background"]["name"]);
+	}
+	
+	
 	$db -> close();
 }
 
@@ -652,6 +772,50 @@ function is_date_correct($day, $month, $year)
 			return 0;
 	
 	return 1;
+}
+
+function get_user_avatar_path($u_id = null)
+{
+	$avatar = get_user_avatar($u_id);
+	$path = str_replace("/", DIRECTORY_SEPARATOR, $avatar);
+	return $path;
+}
+
+function get_user_background_type($u_id = null)
+{
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$background = get_user_info("background", $u_id);
+	
+	if(!$background)
+		return BACKGROUND_NONE;
+	else
+	{
+		
+		if(file_exists(BACKGROUNDS_PATH . $u_id . DIRECTORY_SEPARATOR . $background))
+			return BACKGROUND_MAIN;
+		else if(file_exists(BACKGROUNDS_OLD_PATH . $u_id))
+			return BACKGROUND_OLD;
+		else
+			return BACKGROUND_NONE;
+	}
+}
+
+function get_user_background_path($u_id = null)
+{
+	$background = get_user_background($u_id);
+	$path = str_replace("/", DIRECTORY_SEPARATOR, $background);
+	return $path;
+}
+
+function file_extension($file_dir, $dot = false)
+{
+	$extension = "";
+	$path_info = pathinfo($file_dir);
+	if(isset($path_info["extension"]))
+		$extension = (($dot) ? "." : "") . $path_info["extension"];
+	return $extension;
 }
 
 ?>
