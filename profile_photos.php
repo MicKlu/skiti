@@ -31,6 +31,10 @@
 		</form>
 	</div>
 	<?php endif; ?>
+	
+	
+	
+	<!-- Tego tutaj nie ma -->
 	<div class="row">
 		<div class="col-1">
 			<div class="profile-image-box">

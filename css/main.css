@@ -299,6 +299,10 @@
     margin-top: 10px;
 }
 
+.profile-image-buttons > .button-light {
+	margin: 0 2px;
+}
+
 .profile-image-panel {
 	position: relative;
 }

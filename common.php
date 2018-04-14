@@ -272,6 +272,9 @@ function call_action($action)
 		case "get_friends_list":
 			json_get_friends_list($_POST["user_id"]);
 			break;
+		case "get_images":
+			json_get_images($_POST["user_id"]);
+			break;
 		case "avatar_delete":
 			delete_user_avatar();
 			break;
@@ -532,6 +535,43 @@ function json_get_friends_list($user_id = null)
 	}
 	$db -> close();
 	echo json_encode($friends_list);
+}
+
+function json_get_images($user_id = null)
+{
+	global $sqls;
+	session_start();
+	
+	if($user_id == null)
+		$user_id = $_SESSION["user_id"];
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_user_images"]);
+	$stmt -> bind_param("i", $user_id);
+	$stmt -> execute();
+	$stmt -> bind_result($i_id, $filename, $title, $caption);
+	$stmt -> store_result();
+	
+	$image_list = array();
+	
+	while($stmt -> fetch())
+	{
+		if(!$title)
+			$title = $filename;
+		if(!$caption)
+			$caption = "(brak opisu)";
+		$image_list_data = array(
+			"id" => $i_id,
+			"filename" => $filename,
+			"title" => $title, 
+			"caption" => $caption
+		);			
+		$image_list["images"][] = $image_list_data;
+	}
+	if($user_id == $_SESSION["user_id"])
+		$image_list["owner"] = true;
+	$db -> close();
+	echo json_encode($image_list);
 }
 
 function process_update_user_info()

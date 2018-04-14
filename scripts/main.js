@@ -13,9 +13,8 @@ $(function () {
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	
-	normalizeProfileImages();
 	$("#profile-friends").ajaxGetFriends();
-	$(".profile-image-wrapper").addGallery();
+	$("#profile-photos").ajaxGetImages();
 	$(".settings-panel").collapsiblePanel();	
 })
 
@@ -455,8 +454,136 @@ $.fn.extend({
 				}
 			});
 		});
+	},
+	ajaxGetImages: function () {
+		$(this).each(function () {
+			var profilePhotos = $(this);
+			$.ajax("common.php?action=get_images", {
+				method: "post",
+				dataType: "json",
+				data: {
+					user_id: getQueryString().id
+				},
+				success: function(data) {
+					if(!data.images) {
+						profilePhotos.append("<p>Użytkownik nie umieścił żadnych zdjęć.</p>");
+						return;
+					}
+					
+					var row;
+					
+					for(var i = 0; i < data.images.length; i++) {
+						var colI = 0;
+						
+						if(i % 7 == 0)
+							row = profileImageRowCreate(0);
+						else if(i % 7 == 1)
+							row = profileImageRowCreate(1);
+						else if(i % 7 == 3)	//pomijamy 2, żeby nie tworzyć nowego row
+							row = profileImageRowCreate(2);
+						else if(i % 7 == 5)	//jak wyżej
+							row = profileImageRowCreate(3);
+						
+						if(i % 7 == 2 || i % 7 == 4 || i % 7 == 6)
+							colI = 1;
+						
+						data.images[i].localId = i;
+						
+						var cols = row.find(".col-1, .col-2");
+						var profileImageBox = profileImageBoxCreate(data.images[i], data.owner);
+						cols.eq(colI).append(profileImageBox);
+						
+						if(i % 7 != 1 && i % 7 != 3 && i % 7 != 5)
+							profilePhotos.append(row);
+					}
+					console.log(data);
+					normalizeProfileImages();
+				}
+			});
+		});
 	}
 });
+
+function profileImageBoxCreate(imageData, owner) {
+	var profileImageBox = $("<div>").addClass("profile-image-box");
+	var profileImageWrapper = $("<div>").addClass("profile-image-wrapper");
+	var profileImageWrapperImg = $("<img>");
+	var profileImagePanel = $("<div>").addClass("profile-image-panel");
+	var profileImageInfo = $("<div>").addClass("profile-image-info");
+	var profileImageInfoH3 = $("<h3>");
+	var profileImageInfoP = $("<p>");
+	var profileImageButtons = $("<div>").addClass("profile-image-buttons");
+	var profileImageButtonsThumbsUp = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsThumbsUpI = $("<i>").addClass("fas").addClass("fa-thumbs-up");
+	var profileImageButtonsThumbsDown = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsThumbsDownI = $("<i>").addClass("fas").addClass("fa-thumbs-down");
+	var profileImageButtonsComments = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsCommentsI = $("<i>").addClass("fas").addClass("fa-comments");
+	
+	//Appendy
+	profileImageBox.append(profileImageWrapper);
+	profileImageBox.append(profileImagePanel);
+	profileImageWrapper.append(profileImageWrapperImg);
+	profileImagePanel.append(profileImageInfo);
+	profileImagePanel.append(profileImageButtons);
+	profileImageInfo.append(profileImageInfoH3);
+	profileImageInfo.append(profileImageInfoP);
+	profileImageButtons.append(profileImageButtonsThumbsUp);
+	profileImageButtons.append(profileImageButtonsThumbsDown);
+	profileImageButtons.append(profileImageButtonsComments);
+	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpI);
+	profileImageButtonsThumbsDown.append(profileImageButtonsThumbsDownI);
+	profileImageButtonsComments.append(profileImageButtonsCommentsI);
+	
+	if(owner) {
+		var profileImageButtonsEdit = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+		var profileImageButtonsEditI = $("<i>").addClass("fas").addClass("fa-pencil-alt");
+		var profileImageButtonsDelete = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+		var profileImageButtonsDeleteI = $("<i>").addClass("fas").addClass("fa-times");
+		profileImageButtons.append(profileImageButtonsEdit);
+		profileImageButtons.append(profileImageButtonsDelete);
+		profileImageButtonsEdit.append(profileImageButtonsEditI);
+		profileImageButtonsDelete.append(profileImageButtonsDeleteI);
+	}
+	
+	//Wypełnienie wartościami
+	profileImageWrapperImg.attr({src: "img/user_images/" + getQueryString().id + "/" + imageData.filename});
+	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
+	profileImageInfoH3.text(imageData.title);
+	profileImageInfoP.text(imageData.caption);
+	if(imageData.thumbsUp)
+		profileImageButtonsThumbsUp.append(" (x)");
+	if(imageData.thumbsDown)
+		profileImageButtonsThumbsDown.append(" (x)");
+	if(imageData.comments)
+		profileImageButtonsComments.append(" (x)");
+	
+	profileImageWrapper.addGallery();
+	
+	return profileImageBox;
+}
+
+function profileImageRowCreate($type) {
+	var row = $("<div>").addClass("row");
+	var col1 = $("<div>").addClass("col-1");
+	var col1_2 = $("<div>").addClass("col-1");
+	var col2 = $("<div>").addClass("col-2");
+	
+	if($type == 0) {
+		row.append(col1);
+	} else if($type == 1) {
+		row.append(col2);
+		row.append(col1);
+	} else if($type == 2) {
+		row.append(col1);
+		row.append(col1_2);
+	} else if($type == 3) {
+		row.append(col1);
+		row.append(col2);
+	}
+		
+	return row;
+}
 
 function togglePanelEvt(event) {
 	var panelHeader = $(event.currentTarget);
