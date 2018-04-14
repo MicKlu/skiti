@@ -272,6 +272,12 @@ function call_ajax($action)
 		case "get_friends_list":
 			json_get_friends_list($_POST["user_id"]);
 			break;
+		case "avatar_delete":
+			delete_user_avatar();
+			break;
+		case "background_delete":
+			delete_user_background();
+			break;
 	}
 }
 
@@ -425,6 +431,9 @@ function is_user_invited($friend_id)
 	return $invited;
 }
 
+/**
+ * Czy u1 lub u2 wysłali do siebie zaproszenie
+ */
 function is_user_invited_by_user($u1_id, $u2_id)
 {
 	global $sqls;
@@ -440,7 +449,12 @@ function is_user_invited_by_user($u1_id, $u2_id)
 	return $invited;
 }
 
-function is_user_invited_by_anyone() {
+/**
+ * Czy użytkownik został zaproszony przez kogokolwiek
+ * Czyli czy użytkownik ma niezatwierdzone zaproszenia od innych
+ */
+function is_user_invited_by_anyone()
+{
 	global $sqls;
 	$invited = null;
 	$db = db_connect();
@@ -454,7 +468,12 @@ function is_user_invited_by_anyone() {
 	return $invited;
 }
 
-function is_any_friend_invited() {
+/**
+ * Czy użytkownik zaprosił kogokolwiek
+ * Czyli czy użytkownik ma niezatwierdzone zaproszenia przez innych
+ */
+function is_any_friend_invited()
+{
 	global $sqls;
 	$invited = null;
 	$db = db_connect();
@@ -468,7 +487,7 @@ function is_any_friend_invited() {
 	return $invited;
 }
 
-function json_get_friends_list($user_id)
+function json_get_friends_list($user_id = null)
 {
 	global $sqls;
 	session_start();
@@ -622,7 +641,7 @@ function process_update_user_info()
 	if(!empty($_POST["bio"]))
 		$_POST["bio"] = escape_input($_POST["bio"]);
 	udpate_user_info("bio", $_POST["bio"], null, $db);
-	
+
 	//Przesyłanie zdjęcia i tła profilowego
 	if(!empty($_FILES["avatar"]["name"]))
 	{
@@ -644,6 +663,7 @@ function process_update_user_info()
 		udpate_user_info("avatar", $_FILES["avatar"]["name"], null, $db);
 		
 	}
+	
 	if(!empty($_FILES["background"]["name"]))
 	{
 		if($_FILES["background"]["size"] > 8 * 1024 * 1024)	//Sprawdzamy rozmiar
@@ -807,6 +827,48 @@ function get_user_background_path($u_id = null)
 	$background = get_user_background($u_id);
 	$path = str_replace("/", DIRECTORY_SEPARATOR, $background);
 	return $path;
+}
+
+function delete_user_avatar($u_id = null)
+{
+	session_start();
+	
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$avatar_path = get_user_avatar_path($u_id);
+	$avatar_type = get_user_avatar_type($u_id);
+	udpate_user_info("avatar", null, $u_id);
+	if($avatar_type != AVATAR_PLACEHOLDER)
+		unlink($avatar_path);
+	else
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	echo '{"success": true}';
+}
+
+function delete_user_background($u_id = null)
+{
+	session_start();
+	
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	$background_path = get_user_background_path($u_id);
+	$background_type = get_user_background_type($u_id);
+	udpate_user_info("background", null, $u_id);
+	if($background_type != BACKGROUND_NONE)
+		unlink($background_path);
+	else
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	echo '{"success": true}';
 }
 
 function file_extension($file_dir, $dot = false)

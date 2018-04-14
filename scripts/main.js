@@ -8,6 +8,8 @@ $(function () {
 	$("#friend-accept").click(ajaxAcceptInvite);
 	$("#friend-reject").click(ajaxRejectInvite);
 	$("#friend-delete").click(ajaxDeleteFriend);
+	$("#avatar-delete").click(ajaxDeleteAvatar);
+	$("#background-delete").click(ajaxDeleteBackground);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	
@@ -31,7 +33,7 @@ function showLoginAlert() {
 	}
 }
 
-function showUserUpdateInfoAlert() {
+function showUserUpdateInfoErrorAlert() {
 	if(getCookie("user-info-update-error")) {
 		$("#user-info-update-error").show();
 		deleteCookie("user-info-update-error");
@@ -40,7 +42,6 @@ function showUserUpdateInfoAlert() {
 
 function ajaxSendInvite() {
 	var profileId = $(this).data("id");
-	console.log(profileId);
 	$.ajax("common.php?action=friend_send_invite", {
 		method: "post",
 		dataType: "json",
@@ -127,9 +128,6 @@ function ajaxDeleteFriend() {
 		data: {
 			"friend-id": profileId
 		},
-		error: function (x) {
-			console.log(x);
-		},
 		success: function (data) {
 			if(!data.success)
 				return;
@@ -139,6 +137,32 @@ function ajaxDeleteFriend() {
 			$("#friend-cancel-invite").hide();
 			$("#friend-accept").hide();
 			$("#friend-reject").hide();
+		}
+	});
+}
+
+function ajaxDeleteAvatar() {
+	$.ajax("common.php?action=avatar_delete", {
+		method: "post",
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#avatar-delete").hide();
+		}
+	});
+}
+
+function ajaxDeleteBackground() {
+	$.ajax("common.php?action=background_delete", {
+		method: "post",
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			$("#background-delete").hide();
 		}
 	});
 }

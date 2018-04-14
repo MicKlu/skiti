@@ -15,7 +15,7 @@
 <main id="profile-settings">
 	<div id="user-info-update-error">
 		<p><?php get_user_info_update_alert(); ?></p>
-		<script>showUserUpdateInfoAlert();</script>
+		<script>showUserUpdateInfoErrorAlert();</script>
 	</div>
 	<div id="user-info-update-success">
 		<p>Zmiany zostały zapisane</p>
@@ -97,8 +97,9 @@
 							<label class="button file-button">
 								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="avatar">
 							</label>
-							<?php?>
-							<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+							<?php if(get_user_avatar_type() != AVATAR_PLACEHOLDER) : ?>
+							<button class="button" id="avatar-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+							<?php endif;?>
 						</div>
 					</div>
 					<div class="row input-group">
@@ -109,8 +110,9 @@
 							<label class="button file-button">
 								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="background">
 							</label>
-							<?php?>
-							<button class="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+							<?php if(get_user_background_type() != BACKGROUND_NONE) : ?>
+							<button class="button" id="background-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+							<?php endif;?>
 						</div>
 					</div>
 				</div>
