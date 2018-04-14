@@ -55,4 +55,14 @@ CREATE TABLE images (
 	PRIMARY KEY(i_id)
 );
 
+CREATE TABLE images_thumbs (
+	it_id int AUTO_INCREMENT,
+	i_id int NOT NULL,
+	u_id int NOT NULL,
+	thumb varchar(1) NOT NULL,	--1 up; 0 down
+	FOREIGN KEY (i_id) REFERENCES images(i_id),
+	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	PRIMARY KEY(it_id)
+);
+
 COMMIT;

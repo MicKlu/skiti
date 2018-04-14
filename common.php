@@ -284,6 +284,9 @@ function call_action($action)
 		case "add_image":
 			add_image();
 			break;
+		case "image_thumb":
+			give_image_thumb($_POST["image_id"], $_POST["thumb"]);
+			break;
 	}
 }
 
@@ -564,7 +567,11 @@ function json_get_images($user_id = null)
 			"id" => $i_id,
 			"filename" => $filename,
 			"title" => $title, 
-			"caption" => $caption
+			"caption" => $caption,
+			"thumbsUp" => get_image_thumbs_count($i_id, "up"),
+			"thumbsDown" => get_image_thumbs_count($i_id, "down"),
+			"thumbUpGiven" => is_image_thumb_given($i_id, "up"),
+			"thumbDownGiven" => is_image_thumb_given($i_id, "down")
 		);			
 		$image_list["images"][] = $image_list_data;
 	}
@@ -992,6 +999,125 @@ function get_add_image_alert()
 		$errno = $_COOKIE["add-image-error"];
 		echo $msgs["add_image"][$errno];
 	}
+}
+
+function give_image_thumb($i_id, $thumb)
+{
+	global $sqls;
+	session_start();
+	
+	if($thumb === "up" || $thumb === 1)
+		$thumb = 1;
+	else if($thumb === "down" || $thumb === 0)
+		$thumb = 0;
+	else
+	{
+		echo '{"success": false}';
+		return;
+	}
+
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["give_thumb"]);
+	$stmt -> bind_param("iis", $i_id, $_SESSION["user_id"], $thumb);
+	
+	if(is_image_thumb_given($i_id, $thumb))
+	{
+		if(take_image_thumb($i_id, $thumb))
+			echo '{"success": true, "thumbsUp": ' . get_image_thumbs_count($i_id, "up") . ', "thumbsDown": ' . get_image_thumbs_count($i_id, "down") . '}';
+		else
+			echo '{"success": false}';
+		return;
+	}
+	if(is_image_thumb_given($i_id, !$thumb))
+	{
+		if(!take_image_thumb($i_id, !$thumb))
+		{
+			echo '{"success": false}';
+			return;
+		}
+	}
+	
+	$stmt -> execute();
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	echo '{"success": true, "thumbsUp": ' . get_image_thumbs_count($i_id, "up") . ', "thumbsDown": ' . get_image_thumbs_count($i_id, "down") . '}';
+}
+
+function take_image_thumb($i_id, $thumb)
+{
+	global $sqls;
+	
+	if($thumb === "up" || $thumb === 1)
+		$thumb = 1;
+	else if($thumb === "down" || $thumb === 0)
+		$thumb = 0;
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["take_thumb"]);
+	$stmt -> bind_param("ii", $i_id, $_SESSION["user_id"]);
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+		return 0;
+	
+	$db -> close();
+	return 1;
+}
+
+function is_image_thumb_given($i_id, $thumb)
+{
+	global $sqls;
+	
+	if($thumb === "up" || $thumb === 1)
+		$thumb = 1;
+	else if($thumb === "down" || $thumb === 0)
+		$thumb = 0;
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["is_thumb_given"]);
+	$stmt -> bind_param("ii", $i_id, $_SESSION["user_id"]);
+	$stmt -> execute();
+	$stmt -> bind_result($given_thumb);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	$db -> close();
+	if($thumb == $given_thumb && $given_thumb !== null)
+		return 1;
+	
+	return 0;
+}
+
+function get_image_thumbs_count($i_id, $thumb)
+{
+	global $sqls;
+	
+	if($thumb === "up" || $thumb === 1)
+		$thumb = 1;
+	else if($thumb === "down" || $thumb === 0)
+		$thumb = 0;
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_thumbs_count"]);
+	$stmt -> bind_param("ii", $i_id, $thumb);
+	$stmt -> execute();
+	$stmt -> bind_result($count);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	
+	if($stmt -> errno)
+		return 0;
+	
+	if($count == null)
+		$count = 0;
+	
+	$db -> close();
+	
+	return $count;
 }
 
 ?>

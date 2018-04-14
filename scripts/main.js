@@ -497,93 +497,14 @@ $.fn.extend({
 							profilePhotos.append(row);
 					}
 					console.log(data);
-					normalizeProfileImages();
+					
+					//Bezpośrednio po usunięciu cache przeglądarki normalizacja nie jest przeprowadzana prawidłowo,
+					setTimeout(normalizeProfileImages, 50);	//więc delikatnie ją opóźniamy.
 				}
 			});
 		});
 	}
 });
-
-function profileImageBoxCreate(imageData, owner) {
-	var profileImageBox = $("<div>").addClass("profile-image-box");
-	var profileImageWrapper = $("<div>").addClass("profile-image-wrapper");
-	var profileImageWrapperImg = $("<img>");
-	var profileImagePanel = $("<div>").addClass("profile-image-panel");
-	var profileImageInfo = $("<div>").addClass("profile-image-info");
-	var profileImageInfoH3 = $("<h3>");
-	var profileImageInfoP = $("<p>");
-	var profileImageButtons = $("<div>").addClass("profile-image-buttons");
-	var profileImageButtonsThumbsUp = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
-	var profileImageButtonsThumbsUpI = $("<i>").addClass("fas").addClass("fa-thumbs-up");
-	var profileImageButtonsThumbsDown = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
-	var profileImageButtonsThumbsDownI = $("<i>").addClass("fas").addClass("fa-thumbs-down");
-	var profileImageButtonsComments = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
-	var profileImageButtonsCommentsI = $("<i>").addClass("fas").addClass("fa-comments");
-	
-	//Appendy
-	profileImageBox.append(profileImageWrapper);
-	profileImageBox.append(profileImagePanel);
-	profileImageWrapper.append(profileImageWrapperImg);
-	profileImagePanel.append(profileImageInfo);
-	profileImagePanel.append(profileImageButtons);
-	profileImageInfo.append(profileImageInfoH3);
-	profileImageInfo.append(profileImageInfoP);
-	profileImageButtons.append(profileImageButtonsThumbsUp);
-	profileImageButtons.append(profileImageButtonsThumbsDown);
-	profileImageButtons.append(profileImageButtonsComments);
-	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpI);
-	profileImageButtonsThumbsDown.append(profileImageButtonsThumbsDownI);
-	profileImageButtonsComments.append(profileImageButtonsCommentsI);
-	
-	if(owner) {
-		var profileImageButtonsEdit = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
-		var profileImageButtonsEditI = $("<i>").addClass("fas").addClass("fa-pencil-alt");
-		var profileImageButtonsDelete = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
-		var profileImageButtonsDeleteI = $("<i>").addClass("fas").addClass("fa-times");
-		profileImageButtons.append(profileImageButtonsEdit);
-		profileImageButtons.append(profileImageButtonsDelete);
-		profileImageButtonsEdit.append(profileImageButtonsEditI);
-		profileImageButtonsDelete.append(profileImageButtonsDeleteI);
-	}
-	
-	//Wypełnienie wartościami
-	profileImageWrapperImg.attr({src: "img/user_images/" + getQueryString().id + "/" + imageData.filename});
-	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
-	profileImageInfoH3.text(imageData.title);
-	profileImageInfoP.text(imageData.caption);
-	if(imageData.thumbsUp)
-		profileImageButtonsThumbsUp.append(" (x)");
-	if(imageData.thumbsDown)
-		profileImageButtonsThumbsDown.append(" (x)");
-	if(imageData.comments)
-		profileImageButtonsComments.append(" (x)");
-	
-	profileImageWrapper.addGallery();
-	
-	return profileImageBox;
-}
-
-function profileImageRowCreate($type) {
-	var row = $("<div>").addClass("row");
-	var col1 = $("<div>").addClass("col-1");
-	var col1_2 = $("<div>").addClass("col-1");
-	var col2 = $("<div>").addClass("col-2");
-	
-	if($type == 0) {
-		row.append(col1);
-	} else if($type == 1) {
-		row.append(col2);
-		row.append(col1);
-	} else if($type == 2) {
-		row.append(col1);
-		row.append(col1_2);
-	} else if($type == 3) {
-		row.append(col1);
-		row.append(col2);
-	}
-		
-	return row;
-}
 
 function togglePanelEvt(event) {
 	var panelHeader = $(event.currentTarget);
@@ -610,4 +531,139 @@ function hidePanel(panel) {
 	var panelContentWrapper = panel.find(".settings-panel-content-wrapper");
 	panel.addClass("collapsed");
 	panelContentWrapper.hide();
+}
+
+function profileImageBoxCreate(imageData, owner) {
+	var profileImageBox = $("<div>").addClass("profile-image-box");
+	var profileImageWrapper = $("<div>").addClass("profile-image-wrapper");
+	var profileImageWrapperImg = $("<img>");
+	var profileImagePanel = $("<div>").addClass("profile-image-panel");
+	var profileImageInfo = $("<div>").addClass("profile-image-info");
+	var profileImageInfoH3 = $("<h3>");
+	var profileImageInfoP = $("<p>");
+	var profileImageButtons = $("<div>").addClass("profile-image-buttons");
+	var profileImageButtonsThumbsUp = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsThumbsUpI = $("<i>").addClass("fas").addClass("fa-thumbs-up");
+	var profileImageButtonsThumbsUpSpan = $("<span>");
+	var profileImageButtonsThumbsDown = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsThumbsDownI = $("<i>").addClass("fas").addClass("fa-thumbs-down");
+	var profileImageButtonsThumbsDownSpan = $("<span>");
+	var profileImageButtonsComments = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+	var profileImageButtonsCommentsI = $("<i>").addClass("fas").addClass("fa-comments");
+	var profileImageButtonsCommentsSpan = $("<span>");
+	
+	//Appendy
+	profileImageBox.append(profileImageWrapper);
+	profileImageBox.append(profileImagePanel);
+	profileImageWrapper.append(profileImageWrapperImg);
+	profileImagePanel.append(profileImageInfo);
+	profileImagePanel.append(profileImageButtons);
+	profileImageInfo.append(profileImageInfoH3);
+	profileImageInfo.append(profileImageInfoP);
+	profileImageButtons.append(profileImageButtonsThumbsUp);
+	profileImageButtons.append(profileImageButtonsThumbsDown);
+	profileImageButtons.append(profileImageButtonsComments);
+	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpI);
+	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpSpan);
+	profileImageButtonsThumbsDown.append(profileImageButtonsThumbsDownI);
+	profileImageButtonsThumbsDown.append(profileImageButtonsThumbsDownSpan);
+	profileImageButtonsComments.append(profileImageButtonsCommentsI);
+	profileImageButtonsComments.append(profileImageButtonsCommentsSpan);
+	
+	if(owner) {
+		var profileImageButtonsEdit = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+		var profileImageButtonsEditI = $("<i>").addClass("fas").addClass("fa-pencil-alt");
+		var profileImageButtonsDelete = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
+		var profileImageButtonsDeleteI = $("<i>").addClass("fas").addClass("fa-times");
+		profileImageButtons.append(profileImageButtonsEdit);
+		profileImageButtons.append(profileImageButtonsDelete);
+		profileImageButtonsEdit.append(profileImageButtonsEditI);
+		profileImageButtonsDelete.append(profileImageButtonsDeleteI);
+	}
+	
+	//Eventy
+	profileImageButtonsThumbsUp.click(ajaxImageThumbUp);
+	profileImageButtonsThumbsDown.click(ajaxImageThumbDown);
+	profileImageWrapper.addGallery();
+	
+	//Wypełnienie wartościami
+	profileImageButtons.find("a").attr({href: "javascript:;"});
+	profileImageWrapperImg.attr({src: "img/user_images/" + getQueryString().id + "/" + imageData.filename});
+	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
+	profileImageInfoH3.text(imageData.title);
+	profileImageInfoP.text(imageData.caption);
+	profileImageButtonsThumbsUp.data({"image-id": imageData.id});
+	profileImageButtonsThumbsDown.data({"image-id": imageData.id});
+	if(imageData.thumbsUp)
+		profileImageButtonsThumbsUpSpan.text(" (" + imageData.thumbsUp + ")");
+	if(imageData.thumbsDown)
+		profileImageButtonsThumbsDownSpan.text(" (" + imageData.thumbsDown + ")");
+	if(imageData.comments)
+		profileImageButtonsCommentsSpan.text(" (" + imageData.comments + ")");
+	
+	if(imageData.thumbUpGiven)
+		profileImageButtonsThumbsUp.addClass("thumbed");
+	if(imageData.thumbDownGiven)
+		profileImageButtonsThumbsDown.addClass("thumbed");
+	
+	return profileImageBox;
+}
+
+function profileImageRowCreate($type) {
+	var row = $("<div>").addClass("row");
+	var col1 = $("<div>").addClass("col-1");
+	var col1_2 = $("<div>").addClass("col-1");
+	var col2 = $("<div>").addClass("col-2");
+	
+	if($type == 0) {
+		row.append(col1);
+	} else if($type == 1) {
+		row.append(col2);
+		row.append(col1);
+	} else if($type == 2) {
+		row.append(col1);
+		row.append(col1_2);
+	} else if($type == 3) {
+		row.append(col1);
+		row.append(col2);
+	}
+		
+	return row;
+}
+
+function ajaxImageThumbUp() {
+	ajaxImageThumb("up", this);
+}
+
+function ajaxImageThumbDown() {
+	ajaxImageThumb("down", this);
+}
+
+function ajaxImageThumb(thumb, self) {
+	var self = $(self);
+	var imageId = self.data("image-id");
+	
+	$.ajax("common.php?action=image_thumb", {
+		method: "post",
+		data: {
+			"image_id": imageId,
+			"thumb": thumb
+		},
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			var buttons = self.parent(".profile-image-buttons").find(".button");
+			console.log(buttons);
+			buttons.eq(0).find("span").text((data.thumbsUp) ? " (" + data.thumbsUp + ")": "");
+			buttons.eq(1).find("span").text((data.thumbsDown) ? " (" + data.thumbsDown + ")": "");
+			
+			var wasThumbed = self.hasClass("thumbed");
+			self.parent(".profile-image-buttons").find(".button").removeClass("thumbed");
+			if(!wasThumbed)
+				self.addClass("thumbed");
+		
+		}
+	});
 }
