@@ -30,6 +30,7 @@ $sqls = array (
 	"is_any_friend_invited" => "SELECT COUNT(*) FROM friends WHERE u1_id = ? AND pending = 1",
 	"select_user_friends_list" => "SELECT u_id FROM users_friends AS uf JOIN users AS u ON u.u_id = uf.u2_id WHERE u1_id = ? ORDER BY f_id ASC",	//users_friends jest widokiem
 	"update_user_info" => "UPDATE users SET {info_col} = ? WHERE u_id = ?",
+	"add_image" => "INSERT INTO images(u_id, filename, title, caption) VALUES (?, ?, ?, ?)"
 );
 
 ?>

@@ -51,4 +51,11 @@ $msgs["user_info_update"] = array (
 	USER_INFO_UPDATE_ERROR_BACKGROUND_SMALL		=> "Tło profilu musi mieć wymiary co najmniej 1024x250 pikseli."
 );
 
+$msgs["add_image"] = array (
+	ADD_IMAGE_ERROR_DEFAULT		=> "Podczas przesyłania zdjęcia wystąpił błąd. Spróbuj ponownie później.",
+	ADD_IMAGE_ERROR_NO_FILE		=> "Należy wybrać plik do przesłania.",
+	ADD_IMAGE_ERROR_BIG_SIZE	=> $msgs["user_info_update"][USER_INFO_UPDATE_ERROR_AVATAR_BIG_SIZE],
+	ADD_IMAGE_ERROR_FORMAT		=> $msgs["user_info_update"][USER_INFO_UPDATE_ERROR_AVATAR_FORMAT]
+)
+
 ?>

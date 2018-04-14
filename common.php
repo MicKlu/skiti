@@ -3,7 +3,7 @@ include_once "consts.php";
 include_once "db.php";
 
 if(basename($_SERVER["PHP_SELF"]) == "common.php" && $_SERVER["REQUEST_METHOD"] == "POST")
-	call_ajax($_GET["action"]);
+	call_action($_GET["action"]);
 
 function get_profile_page()
 {
@@ -250,7 +250,7 @@ function escape_input($input)
 	return $input;
 }
 
-function call_ajax($action)
+function call_action($action)
 {
 	switch($action)
 	{
@@ -277,6 +277,9 @@ function call_ajax($action)
 			break;
 		case "background_delete":
 			delete_user_background();
+			break;
+		case "add_image":
+			add_image();
 			break;
 	}
 }
@@ -879,6 +882,76 @@ function file_extension($file_dir, $dot = false)
 	if(isset($path_info["extension"]))
 		$extension = (($dot) ? "." : "") . $path_info["extension"];
 	return $extension;
+}
+
+function add_image($u_id = null)
+{
+	global $sqls;
+	session_start();
+	
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	
+	print_r($_POST);
+	echo "<br />";
+	print_r($_FILES);
+	
+	if(!isset($_POST["title"]) || !isset($_POST["caption"]))
+		add_image_error(ADD_IMAGE_ERROR_DEFAULT, $u_id);
+	if(empty($_FILES["image"]["name"]))
+		add_image_error(ADD_IMAGE_ERROR_NO_FILE, $u_id);
+	
+	$_POST["title"] = escape_input($_POST["title"]);
+	$_POST["caption"] = escape_input($_POST["caption"]);
+	
+	if($_FILES["image"]["size"] > 8 * 1024 * 1024)	//Sprawdzamy rozmiar
+		add_image_error(ADD_IMAGE_ERROR_BIG_SIZE, $u_id);
+		
+	if(strpos(mime_content_type($_FILES["image"]["tmp_name"]), "image/") === false) //Sprawdzamy typ
+		add_image_error(ADD_IMAGE_ERROR_FORMAT, $u_id);
+	
+	if(!file_exists(IMAGES_PATH . $u_id))
+		mkdir(IMAGES_PATH . $u_id);
+	
+	$i = 0;
+	$filename = $_FILES["image"]["name"];
+	$extension = file_extension($_FILES["image"]["name"]);
+	
+	while(file_exists(IMAGES_PATH . $u_id . DIRECTORY_SEPARATOR . $_FILES["image"]["name"]))	//Zmieniamy nazwę pliku jeśli taki już istnieje
+	{
+		$_FILES["image"]["name"] = $filename;
+		$_FILES["image"]["name"] = basename($_FILES["image"]["name"], "." . $extension) . "_" . $i . "." . $extension;
+		$i++;
+	}
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["add_image"]);
+	$stmt -> bind_param("isss", $u_id, $_FILES["image"]["name"], $_POST["title"], $_POST["caption"]);
+	$stmt -> execute();
+	if($stmt -> errno)
+		add_image_error(ADD_IMAGE_ERROR_DEFAULT, $u_id);
+	
+	move_uploaded_file($_FILES["image"]["tmp_name"], IMAGES_PATH . $u_id . DIRECTORY_SEPARATOR . $_FILES["image"]["name"]);
+	
+	$db -> close();
+	header("Location: profil.php?id=" . $u_id . "&tab=zdjecia");
+}
+
+function add_image_error($errno, $u_id)
+{
+	setcookie("add-image-error", $errno);
+	header("Location: profil.php?id=" . $u_id . "&tab=zdjecia");
+	die();
+}
+
+function get_add_image_alert()
+{
+	global $msgs;
+	if(isset($_COOKIE["add-image-error"]))
+	{
+		$errno = $_COOKIE["add-image-error"];
+		echo $msgs["add_image"][$errno];
+	}
 }
 
 ?>

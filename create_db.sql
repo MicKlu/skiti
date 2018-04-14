@@ -45,4 +45,14 @@ UNION
 SELECT f_id, u2_id, u1_id FROM friends AS f
 ORDER BY f_id ASC
 
+CREATE TABLE images (
+	i_id int AUTO_INCREMENT,
+	u_id int NOT NULL,
+	filename varchar(255) NOT NULL,
+	title varchar(255),
+	caption varchar(255),
+	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	PRIMARY KEY(i_id)
+);
+
 COMMIT;

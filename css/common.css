@@ -117,12 +117,11 @@ textarea.input {
 	height: 100px;
 }
 
-/* .file-input { */
-	/* padding: 12px; */
-	/* display: flex; */
-	/* align-items: center; */
-	/* width: 400px; */
-/* } */
+.file-input {
+	margin-left: 5px;
+	height: 34px;
+	width: 300px;
+}
 
 .button.file-button input[type="file"] {
 	display: none;

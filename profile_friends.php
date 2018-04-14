@@ -1,10 +1,6 @@
-<?php
-	$profile_id = null;	//Profil zalogowanego użytkownika
-	if(!empty($_GET["id"]) && does_user_exist($_GET["id"]) && $_GET["id"] != $_SESSION["user_id"])
-		$profile_id = $_GET["id"];	//Profil przeglądanego użytkownika
-?>
+<?php global $profile_id; ?>
 <section id="profile-friends">
-	<?php if($profile_id === null) :	//Linia 2. ?>
+	<?php if($profile_id === null) :	//Profil zalogowanego użytkownika. ?>
 	<?php if(is_user_invited_by_anyone()) : ?>
 	<h2>Oczekujące zaproszenia</h2>
 	<div class="row" id="profile-friends-user-invited">

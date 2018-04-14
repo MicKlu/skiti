@@ -110,7 +110,8 @@
 }
 
 #register-error,
-#user-info-update-error {
+#user-info-update-error,
+#add-image-error {
 	display: none;
 	border: 1px solid #bd0000;
 	background: #ffcccc;
@@ -486,6 +487,11 @@
 	padding: 0 7px 15px 7px;
 	/* border: 1px solid #565656; */
 	/* border-radius: 10px; */
+}
+
+#profile-photos-add,
+#profile-wall-new-topic-form {
+	margin-top: 15px;
 }
 
 .profile-topic-container {

@@ -91,7 +91,6 @@ function setCookie(key, value, expires, path, domain, maxAge) {
 
 function getCookie(key) {
 	var cookies = document.cookie.split("; ");
-	console.log(cookies);
 	for(var i = 0; i < cookies.length; i++) {
 		var cookie = cookies[i].split("=");
 		if(cookie[0] == key)

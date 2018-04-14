@@ -19,25 +19,29 @@ $(function () {
 	$(".settings-panel").collapsiblePanel();	
 })
 
-function showRegisterAlert() {
-	if(getCookie("register-error")) {
-		$("#register-error").show();
-		deleteCookie("register-error");
+
+
+function showAlert(type) {
+	if(getCookie(type)) {
+		$("#" + type).show();
+		deleteCookie(type);
 	}
+}
+
+function showRegisterAlert() {
+	showAlert("register-error");
 }
 
 function showLoginAlert() {
-	if(getCookie("login-error")) {
-		$("#login-error").show();
-		deleteCookie("login-error");
-	}
+	showAlert("login-error");
 }
 
 function showUserUpdateInfoErrorAlert() {
-	if(getCookie("user-info-update-error")) {
-		$("#user-info-update-error").show();
-		deleteCookie("user-info-update-error");
-	}
+	showAlert("user-info-update-error");
+}
+
+function showAddImageErrorAlert() {
+	showAlert("add-image-error");
 }
 
 function ajaxSendInvite() {
