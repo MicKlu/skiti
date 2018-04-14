@@ -508,7 +508,8 @@ function json_get_friends_list($user_id = null)
 	{
 		$friend_list_data = array(
 			"id" => $friend_id,
-			"fullname" => get_user_full_name($friend_id)
+			"fullname" => get_user_full_name($friend_id),
+			"avatar" => get_user_avatar($friend_id)
 		);
 		
 		if($user_id != $_SESSION["user_id"])

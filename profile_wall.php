@@ -20,7 +20,11 @@
 			<div class="profile-topic-container">
 				<div class="profile-topic-sender">
 					<div class="profile-comment">
-						<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+						<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 						<div class="profile-comment-content">
 							<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 							<p>{Data}</p>
@@ -34,21 +38,33 @@
 					</div>
 					<div class="profile-topic-posts">
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
@@ -66,7 +82,11 @@
 			<div class="profile-topic-container">
 				<div class="profile-topic-sender">
 					<div class="profile-comment">
-						<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+						<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 						<div class="profile-comment-content">
 							<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 							<p>{Data}</p>
@@ -83,7 +103,11 @@
 							<a class="button" href="#">Pokaż więcej odpowiedzi</a>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
@@ -103,7 +127,11 @@
 			<div class="profile-topic-container">
 				<div class="profile-topic-sender">
 					<div class="profile-comment">
-						<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+						<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 						<div class="profile-comment-content">
 							<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 							<p>{Data}</p>
@@ -117,14 +145,22 @@
 					</div>
 					<div class="profile-topic-posts">
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
@@ -142,7 +178,11 @@
 			<div class="profile-topic-container">
 				<div class="profile-topic-sender">
 					<div class="profile-comment">
-						<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+						<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 						<div class="profile-comment-content">
 							<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 							<p>{Data}</p>
@@ -156,28 +196,44 @@
 					</div>
 					<div class="profile-topic-posts">
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>
 							</div>
 						</div>
 						<div class="profile-comment">
-							<div class="profile-comment-avatar"><img class="profile-avatar-mini" src="img/avatar_placeholder.png" /></div>
+							<div class="profile-comment-avatar">
+								<div class="profile-avatar-mini">
+									<img src="img/avatar_placeholder.png" />
+								</div>
+							</div>
 							<div class="profile-comment-content">
 								<h6>{Imię} {Nazwisko} <small>{Data}</small></h6>
 								<p>{Komentarz}</p>

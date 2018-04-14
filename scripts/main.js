@@ -419,20 +419,22 @@ $.fn.extend({
 					for(var i = 0; i < data.length; i++) {
 						var profileFriendBox = $("<a>").addClass("profile-friend-box");
 						var profileFriendAvatar = $("<div>").addClass("profile-friend-avatar");
-						var profileAvatarMini = $("<img>").addClass("profile-avatar-mini");
+						var profileAvatarMini = $("<div>").addClass("profile-avatar-mini");
+						var profileAvatarMiniImg = $("<img>");
 						var profileFriendInfo = $("<div>").addClass("profile-friend-info");
 						var profileFriendInfoH6 = $("<h6>");
 						
-						profileAvatarMini.attr({src: "img/avatar_placeholder.png"});
+						//profileAvatarMini.attr({src: "img/avatar_placeholder.png"});
 						
 						profileFriendBox.append(profileFriendAvatar);
 						profileFriendBox.append(profileFriendInfo);
 						profileFriendAvatar.append(profileAvatarMini);
+						profileAvatarMini.append(profileAvatarMiniImg);
 						profileFriendInfo.append(profileFriendInfoH6);
 					
 						profileFriendBox.attr({href: "profil.php?id=" + data[i].id});
 						profileFriendInfoH6.text(data[i].fullname);
-						//profileAvatarMini.attr({src: data[i].avatar});
+						profileAvatarMiniImg.attr({src: data[i].avatar});
 						
 						if(data[i].friendInvited) {
 							PFFIcols.eq(j % 3).append(profileFriendBox);
