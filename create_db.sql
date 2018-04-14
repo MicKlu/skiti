@@ -65,4 +65,15 @@ CREATE TABLE images_thumbs (
 	PRIMARY KEY(it_id)
 );
 
+CREATE TABLE images_comments (
+	ic_id int AUTO_INCREMENT,
+	i_id int NOT NULL,
+	u_id int NOT NULL,
+	content varchar(1023),
+	comment_date varchar(31),
+	FOREIGN KEY (i_id) REFERENCES images(i_id),
+	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	PRIMARY KEY(ic_id)
+);
+
 COMMIT;

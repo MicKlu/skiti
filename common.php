@@ -287,6 +287,12 @@ function call_action($action)
 		case "image_thumb":
 			give_image_thumb($_POST["image_id"], $_POST["thumb"]);
 			break;
+		case "image_comments":
+			get_image_comments($_POST["image_id"]);
+			break;
+		case "image_post_comment":
+			post_image_comment($_POST["image_id"], $_POST["comment"]);
+			break;
 	}
 }
 
@@ -565,6 +571,7 @@ function json_get_images($user_id = null)
 			$caption = "(brak opisu)";
 		$image_list_data = array(
 			"id" => $i_id,
+			"userId" => $user_id,
 			"filename" => $filename,
 			"title" => $title, 
 			"caption" => $caption,
@@ -1118,6 +1125,79 @@ function get_image_thumbs_count($i_id, $thumb)
 	$db -> close();
 	
 	return $count;
+}
+
+function get_image_comments($i_id)
+{
+	global $sqls;
+	session_start();
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_image_comments"]);
+	$stmt -> bind_param("i", $i_id);
+	$stmt -> execute();
+	$stmt -> bind_result($u_id, $content, $date);
+	$stmt -> store_result();
+	
+	$comments_list["comments"] = array();
+	while($stmt -> fetch())
+	{
+		$comments_list_item = array(
+			"userId" => $u_id,
+			"fullname" => get_user_full_name($u_id),
+			"avatar" => get_user_avatar($u_id),
+			"content" => $content,
+			"date" => date("d.m.Y H:i", $date)
+		);
+		$comments_list["comments"][] = $comments_list_item;
+	}
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	$comments_list["success"] = true;
+	
+	echo json_encode($comments_list);
+	
+}
+
+function post_image_comment($i_id, $comment)
+{
+	global $sqls;
+	session_start();
+
+	if(empty($comment)){
+		echo '{"success": false}';
+		return;
+	}
+	$comment = escape_input($comment);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["post_image_comment"]);
+	$stmt -> bind_param("iiss", $i_id, $_SESSION["user_id"], $comment, time());
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	$result = array();
+	$result["success"] = true;
+	$result["comment"] = array(
+		"userId" => $_SESSION["user_id"],
+		"fullname" => get_user_full_name($_SESSION["user_id"]),
+		"avatar" => get_user_avatar($_SESSION["user_id"]),
+		"content" => $comment,
+		"date" => date("d.m.Y H:i")
+	);
+	echo json_encode($result);
 }
 
 ?>

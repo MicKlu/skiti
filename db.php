@@ -35,7 +35,9 @@ $sqls = array (
 	"give_thumb" => "INSERT INTO images_thumbs(i_id, u_id, thumb) VALUES (?, ?, ?)",
 	"is_thumb_given" => "SELECT thumb FROM images_thumbs WHERE i_id = ? AND u_id = ?",
 	"take_thumb" => "DELETE FROM images_thumbs WHERE i_id = ? AND u_id = ?",
-	"select_thumbs_count" => "SELECT COUNT(*) FROM images_thumbs WHERE i_id = ? AND thumb = ? GROUP BY i_id"
+	"select_thumbs_count" => "SELECT COUNT(*) FROM images_thumbs WHERE i_id = ? AND thumb = ? GROUP BY i_id",
+	"select_image_comments" => "SELECT u_id, content, comment_date FROM images_comments WHERE i_id = ?",
+	"post_image_comment" => "INSERT INTO images_comments(i_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)"
 );
 
 ?>

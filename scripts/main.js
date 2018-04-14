@@ -427,8 +427,6 @@ $.fn.extend({
 						var profileFriendInfo = $("<div>").addClass("profile-friend-info");
 						var profileFriendInfoH6 = $("<h6>");
 						
-						//profileAvatarMini.attr({src: "img/avatar_placeholder.png"});
-						
 						profileFriendBox.append(profileFriendAvatar);
 						profileFriendBox.append(profileFriendInfo);
 						profileFriendAvatar.append(profileAvatarMini);
@@ -584,16 +582,18 @@ function profileImageBoxCreate(imageData, owner) {
 	//Eventy
 	profileImageButtonsThumbsUp.click(ajaxImageThumbUp);
 	profileImageButtonsThumbsDown.click(ajaxImageThumbDown);
+	profileImageButtonsComments.click(toggleOpenComments);
 	profileImageWrapper.addGallery();
 	
 	//Wypełnienie wartościami
 	profileImageButtons.find("a").attr({href: "javascript:;"});
-	profileImageWrapperImg.attr({src: "img/user_images/" + getQueryString().id + "/" + imageData.filename});
+	profileImageWrapperImg.attr({src: "img/user_images/" + imageData.userId + "/" + imageData.filename});
 	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
 	profileImageInfoH3.text(imageData.title);
 	profileImageInfoP.text(imageData.caption);
 	profileImageButtonsThumbsUp.data({"image-id": imageData.id});
 	profileImageButtonsThumbsDown.data({"image-id": imageData.id});
+	profileImageButtonsComments.data({"image-id": imageData.id});
 	if(imageData.thumbsUp)
 		profileImageButtonsThumbsUpSpan.text(" (" + imageData.thumbsUp + ")");
 	if(imageData.thumbsDown)
@@ -655,7 +655,6 @@ function ajaxImageThumb(thumb, self) {
 				return;
 			
 			var buttons = self.parent(".profile-image-buttons").find(".button");
-			console.log(buttons);
 			buttons.eq(0).find("span").text((data.thumbsUp) ? " (" + data.thumbsUp + ")": "");
 			buttons.eq(1).find("span").text((data.thumbsDown) ? " (" + data.thumbsDown + ")": "");
 			
@@ -663,7 +662,143 @@ function ajaxImageThumb(thumb, self) {
 			self.parent(".profile-image-buttons").find(".button").removeClass("thumbed");
 			if(!wasThumbed)
 				self.addClass("thumbed");
+		}
+	});
+}
+
+function toggleOpenComments() {
+	var self = $(this);
+	var profileImagePanel = self.parents(".profile-image-panel");
+	if(!profileImagePanel.find(".profile-image-comment-box").length)
+		ajaxOpenComments(self.data("image-id"), profileImagePanel);
+	else
+		closeComments(profileImagePanel);
 		
+}
+
+function closeComments(profileImagePanel) {
+	profileImagePanel.find(".profile-image-comment-box").remove();
+}
+
+function ajaxOpenComments(imageId, profileImagePanel) {
+	$.ajax("common.php?action=image_comments", {
+		method: "post",
+		data: {
+			"image_id": imageId
+		},
+		dataType: "json",
+		success: function (data) {
+			console.log(data);
+			if(!data.success)
+				return;
+			
+			var profileImageCommentBox = profileImageCommentBoxCreate(imageId, data.comments);
+			profileImagePanel.append(profileImageCommentBox);
+		}
+	});
+}
+
+function profileImageCommentBoxCreate(imageId, comments) {
+	var profileImageCommentBox = $("<div>").addClass("profile-image-comment-box");
+	var profileImageCommentInnerBox = $("<div>").addClass("profile-image-comment-inner-box");
+	var profileImageComments = $("<div>").addClass("profile-image-comments");
+	var profileImageCommentForm = $("<div>").addClass("profile-image-comment-form");
+	var profileImageCommentFormTextArea = $("<textarea>");
+	var profileImageCommentFormButton = $("<button>").addClass("button-light").addClass("button-primary");
+	
+	//Appendy
+	profileImageCommentBox.append(profileImageCommentInnerBox);
+	profileImageCommentInnerBox.append(profileImageComments);
+	profileImageCommentInnerBox.append(profileImageCommentForm);
+	profileImageCommentForm.append(profileImageCommentFormTextArea);
+	profileImageCommentForm.append(profileImageCommentFormButton);
+	
+	//Wypełnienie danych
+	profileImageCommentForm.data({"image-id": imageId});
+	profileImageCommentFormButton.text("Wyślij komentarz");
+	
+	if(!comments.length)
+		profileImageComments.html("<span>Brak komentarzy</span>");
+	
+	for(var i = 0; i < comments.length; i++)
+		profileImageComments.append(profileCommentCreate(comments[i]));
+	
+	//Eventy
+	profileImageCommentFormButton.click(ajaxSendImageComment);
+	profileImageCommentFormTextArea.keydown(ajaxSendImageComment)
+	
+	return profileImageCommentBox;
+}
+
+function profileCommentCreate(commentData) {
+	var profileComment = $("<div>").addClass("profile-comment");
+	var profileCommentAvatar = $("<div>").addClass("profile-comment-avatar");
+	var profileAvatarMini = $("<div>").addClass("profile-avatar-mini");
+	var profileAvatarMiniA = $("<a>");
+	var profileAvatarMiniImg = $("<img>");
+	var profileCommentContent = $("<div>").addClass("profile-comment-content");
+	var profileCommentContentH6 = $("<h6>");
+	var profileCommentContentH6A = $("<a>");
+	var profileCommentContentH6Small = $("<small>");
+	var profileCommentContentP = $("<p>");
+	
+	//Appendy
+	profileComment.append(profileCommentAvatar);
+	profileComment.append(profileCommentContent);
+	profileCommentAvatar.append(profileAvatarMini);
+	profileCommentAvatar.append(profileAvatarMiniA);
+	profileAvatarMiniA.append(profileAvatarMini);
+	profileAvatarMini.append(profileAvatarMiniImg);
+	profileCommentContent.append(profileCommentContentH6);
+	profileCommentContent.append(profileCommentContentP);
+	profileCommentContentH6.append(profileCommentContentH6A);
+	profileCommentContentH6.append(profileCommentContentH6Small);
+	
+	//Wypełnienie danych
+	profileAvatarMiniImg.attr({src: commentData.avatar});
+	profileCommentContentH6A.attr({href: "profil.php?id=" + commentData.userId});
+	profileCommentContentH6A.text(commentData.fullname + " ");
+	profileCommentContentH6Small.text(commentData.date);
+	profileCommentContentP.text(commentData.content);
+	
+	return profileComment;
+}
+
+
+function ajaxSendImageComment() {
+	console.log(event);
+	if(event.type == "keydown")
+		if(event.keyCode == 13)
+			event.preventDefault();
+		else
+			return;
+
+	var self = $(this);
+	var profileImageCommentForm = self.parents(".profile-image-comment-form");
+	var profileImageCommentFormTextArea = profileImageCommentForm.children("textarea");
+	var comment = profileImageCommentFormTextArea.val();
+	profileImageCommentFormTextArea.val("").val("");
+	var imageId = profileImageCommentForm.data("image-id");
+	
+	if(!comment.length)
+		return;
+	
+	$.ajax("common.php?action=image_post_comment", {
+		method: "post",
+		data: {
+			"image_id": imageId,
+			"comment": comment
+		},
+		dataType: "json",
+		success: function (data) {
+			console.log(data);
+			if(!data.success)
+				return;
+			
+			var profileComment = profileCommentCreate(data.comment);
+			var profileImageComments = profileImageCommentForm.parents(".profile-image-comment-inner-box").find(".profile-image-comments");
+			profileImageComments.find("span").remove();
+			profileImageComments.append(profileComment);
 		}
 	});
 }
