@@ -93,7 +93,7 @@ function get_user_full_name($u_id = null)
 	$nick = get_user_info("nickname", $u_id);
 	$sname = get_user_info("surname", $u_id);
 	
-	return "$fname " . (($nick) ? "\"$nick\"" : "") . $sname;
+	return "$fname " . (($nick) ? "\"$nick\" " : "") . $sname;
 }
 
 //Tylko dane niewymagające "obróbki"
@@ -448,65 +448,126 @@ function json_get_friends_list($user_id)
 function process_update_user_info()
 {
 	global $regexps;
+	global $countries;
+	
+	$db = db_connect();
+	$db -> begin_transaction();
 	
 	//Walidacja
 	///Wypełnienie wymaganych pól
 	if(empty($_POST["firstname"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_FNAME);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_FNAME, $db);
 	
 	if(empty($_POST["surname"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SNAME);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SNAME, $db);
 
 	if(empty($_POST["email"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_EMAIL);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_EMAIL, $db);
 
 	if(empty($_POST["birthday"]) || empty($_POST["birthmonth"]) || empty($_POST["birthyear"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_BIRTH);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_BIRTH, $db);
 
 	if(empty($_POST["sex"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SEX);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_SEX, $db);
 	
+	if(empty($_POST["country"]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_NO_COUNTRY, $db);	
+
 	///Poprawność pól
 	
 	if(!preg_match($regexps["name"], $_POST["firstname"]) || mb_strlen($_POST["firstname"]) < 3)
-		user_info_update_error(USER_INFO_UPDATE_ERROR_FNAME_FORMAT);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_FNAME_FORMAT, $db);
 
 	if(!preg_match($regexps["surname"], $_POST["surname"]) || mb_strlen($_POST["surname"]) < 3)
-		user_info_update_error(USER_INFO_UPDATE_ERROR_SNAME_FORMAT);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_SNAME_FORMAT, $db);
 
 	if(!preg_match($regexps["email"], $_POST["email"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_EMAIL_FORMAT);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_EMAIL_FORMAT, $db);
 	
 	if(!is_date_correct($_POST["birthday"], $_POST["birthmonth"], $_POST["birthyear"]))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_DATE_FAKE);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_DATE_FAKE, $db);
 
 	if(!($_POST["sex"] == "m" || $_POST["sex"] == "k"))
-		user_info_update_error(USER_INFO_UPDATE_ERROR_SEX_FAKE);
+		user_info_update_error(USER_INFO_UPDATE_ERROR_SEX_FAKE, $db);
+	
+	if(!isset($countries[$_POST["country"] - 1]))
+		user_info_update_error(USER_INFO_UPDATE_ERROR_COUNTRY_FAKE, $db);
+	
+	$birthdate_timestamp = strtotime($_POST["birthday"] . "." . $_POST["birthmonth"] . "." . $_POST["birthyear"]);
+	
+	udpate_user_info("firstname", $_POST["firstname"], null, $db);
+	udpate_user_info("surname", $_POST["surname"], null, $db);
+	udpate_user_info("email", $_POST["email"], null, $db);
+	udpate_user_info("birthdate", $birthdate_timestamp, null, $db);
+	udpate_user_info("sex", $_POST["sex"], null, $db);
+	udpate_user_info("country", $_POST["country"], null, $db);
 	
 	///Zmiana hasła
 	if(!empty($_POST["password"]))
 	{
 		if(empty($_POST["rpassword"]))
-			user_info_update_error(USER_INFO_UPDATE_ERROR_NO_PASSWORD);
+			user_info_update_error(USER_INFO_UPDATE_ERROR_NO_PASSWORD, $db);
 		
 		if(!is_safe_password($_POST["password"]))
-			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_FORMAT);
+			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_FORMAT, $db);
 
 		if($_POST["password"] != $_POST["rpassword"])
-			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_NO_MATCH);
+			user_info_update_error(USER_INFO_UPDATE_ERROR_PASSWORD_NO_MATCH, $db);
+		
+		$hashed_password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+		udpate_user_info("password", $hashed_password, null, $db);
 	}
 	
 	///Pola opcjonalne
 	if(!empty($_POST["secondname"]))
-	{
-		
-	}
+		if(!preg_match($regexps["name"], $_POST["secondname"]) || mb_strlen($_POST["secondname"]) < 3)
+			user_info_update_error(USER_INFO_UPDATE_ERROR_SECONDNAME_FORMAT, $db);
+	udpate_user_info("secondname", $_POST["secondname"], null, $db);
+	
+	if(!empty($_POST["nickname"]))
+		$_POST["nickname"] = escape_input($_POST["nickname"]);
+	udpate_user_info("nickname", $_POST["nickname"], null, $db);
+	
+	if(!empty($_POST["region"]))
+		$_POST["region"] = escape_input($_POST["region"]);
+	udpate_user_info("region", $_POST["region"], null, $db);
+	
+	if(!empty($_POST["city"]))
+		$_POST["city"] = escape_input($_POST["city"]);
+	udpate_user_info("city", $_POST["city"], null, $db);
+	
+	if(!empty($_POST["phone_number"]))
+		if(!preg_match($regexps["phone_number"], $_POST["phone_number"]))
+			user_info_update_error(USER_INFO_UPDATE_ERROR_PHONE_FORMAT, $db);
+	udpate_user_info("phone_number", $_POST["phone_number"], null, $db);
+	
+	if(!empty($_POST["skype"]))
+		$_POST["skype"] = escape_input($_POST["skype"]);
+	udpate_user_info("skype", $_POST["skype"], null, $db);
+	
+	if(!empty($_POST["www"]))
+		if(!preg_match($regexps["www"], $_POST["www"]))
+			user_info_update_error(USER_INFO_UPDATE_ERROR_WWW_FORMAT, $db);
+	udpate_user_info("www", $_POST["www"], null, $db);
+	
+	if(!empty($_POST["bio"]))
+		$_POST["bio"] = escape_input($_POST["bio"]);
+	udpate_user_info("bio", $_POST["bio"], null, $db);
+	
+	//Przesyłanie zdjęcia i tła profilowego
 	//...
 	
+	//Aktualizacja bazy danych
+	//...
+	
+	$db -> commit();
+	$db -> close();
 }
 
-function user_info_update_error($errno)
+function user_info_update_error($errno, $db)
 {
+	$db -> rollback();
+	$db -> close();
 	setcookie("user-info-update-error", $errno);
 	header("Location: ustawienia.php");
 	die();
@@ -520,6 +581,32 @@ function get_user_info_update_alert()
 		$errno = $_COOKIE["user-info-update-error"];
 		echo $msgs["user_info_update"][$errno];
 	}
+}
+
+function udpate_user_info($info_col, $value, $u_id = null, $db = null)
+{
+	global $sqls;
+	$passed_db = $db;
+	
+	if($u_id == null)
+		$u_id = $_SESSION["user_id"];
+	if($db == null)
+		$db = db_connect();
+	
+	
+	$query = str_replace("{info_col}", $info_col, $sqls["update_user_info"]);
+	
+	$stmt = $db -> prepare($query);
+	$stmt -> bind_param("si", $value, $u_id);
+	$stmt -> execute();
+	
+	if($stmt -> errno == 1062)
+		user_info_update_error(USER_INFO_UPDATE_ERROR_EXISTS, $db);
+	else if($stmt -> errno)
+		user_info_update_error(USER_INFO_UPDATE_ERROR_DEFAULT, $db);
+	
+	if($passed_db == null)
+		$db -> close();
 }
 
 function is_safe_password($password)

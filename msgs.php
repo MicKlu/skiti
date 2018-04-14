@@ -40,6 +40,11 @@ $msgs["user_info_update"] = array (
 	USER_INFO_UPDATE_ERROR_DATE_FAKE 			=> $msgs["register"][REGISTER_ERROR_DATE_FAKE],
 	USER_INFO_UPDATE_ERROR_SEX_FAKE 			=> $msgs["register"][REGISTER_ERROR_SEX_FAKE],
 	USER_INFO_UPDATE_ERROR_EXISTS 				=> $msgs["register"][REGISTER_ERROR_EXISTS],
+	USER_INFO_UPDATE_ERROR_SECONDNAME_FORMAT	=> "Drugie imię musi zaczynać się od wielkiej litery i składać się z minimum 3 znaków.",
+	USER_INFO_UPDATE_ERROR_PHONE_FORMAT			=> "Podaj prawidłowy numer telefonu.",
+	USER_INFO_UPDATE_ERROR_WWW_FORMAT			=> "Podaj prawidłowy adres WWW.",
+	USER_INFO_UPDATE_ERROR_NO_COUNTRY			=> "Podaj kraj.",
+	USER_INFO_UPDATE_ERROR_COUNTRY_FAKE			=> "Podaj prawidłowy kraj.",
 );
 
 ?>

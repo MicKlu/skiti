@@ -18,7 +18,7 @@ CREATE TABLE users (
 	sex varchar(1) NOT NULL,
 	www varchar(255),
 	bio text,
-	country varchar(63),
+	country varchar(63) DEFAULT 135,	--Polska
 	region varchar(255),
 	city varchar(255),
 	phone_number varchar(15),

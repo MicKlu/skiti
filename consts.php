@@ -27,7 +27,7 @@ define("USER_INFO_UPDATE_ERROR_NO_SNAME",			3);
 define("USER_INFO_UPDATE_ERROR_NO_EMAIL",			4);
 define("USER_INFO_UPDATE_ERROR_NO_PASSWORD",		5);
 define("USER_INFO_UPDATE_ERROR_NO_BIRTH",			6);
-define("USER_INFO_UPDATE_ERROR_NO_SEX",			7);
+define("USER_INFO_UPDATE_ERROR_NO_SEX",				7);
 define("USER_INFO_UPDATE_ERROR_FNAME_FORMAT",		8);
 define("USER_INFO_UPDATE_ERROR_SNAME_FORMAT",		9);
 define("USER_INFO_UPDATE_ERROR_EMAIL_FORMAT",		1);
@@ -35,19 +35,26 @@ define("USER_INFO_UPDATE_ERROR_PASSWORD_FORMAT",	10);
 define("USER_INFO_UPDATE_ERROR_PASSWORD_NO_MATCH",	11);
 define("USER_INFO_UPDATE_ERROR_DATE_FAKE",			12);
 define("USER_INFO_UPDATE_ERROR_SEX_FAKE",			13);
-define("USER_INFO_UPDATE_ERROR_EXISTS",			14);
+define("USER_INFO_UPDATE_ERROR_EXISTS",				14);
+define("USER_INFO_UPDATE_ERROR_SECONDNAME_FORMAT",	15);
+define("USER_INFO_UPDATE_ERROR_PHONE_FORMAT",		16);
+define("USER_INFO_UPDATE_ERROR_WWW_FORMAT",			17);
+define("USER_INFO_UPDATE_ERROR_NO_COUNTRY",			17);
+define("USER_INFO_UPDATE_ERROR_COUNTRY_FAKE",		18);
 
 $regexps = array (
 	"name" => "/^[A-ZĄ-ŻŁŃ][a-zą-żłń]+$/",
 	"surname" => "/^[A-ZĄ-ŻŁŃ][a-zą-żłń]+(?:-[A-ZĄ-ŻŁŃ][a-za-ż]+)?$/",
-	"email" => "/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/",
+	"email" => '/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/',
 	"special_characters" => '/\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\||\{|\}|\:|\"|<|>|\?|`|\-|\=|\\|\[|\]|\;|\'|\,|\.|\//',
 	"uppercase_letters" => "/[A-ZĄ-ŻŁŃ]/",
 	"lowercase_letters" => "/[a-zą-żłń]/",
 	"numbers" => "/[0-9]/",
+	"phone_number" => '/^\+?[0-9\- ]+$/',
+	"www" => '%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu',
 );
 
-$COUNTRIES = array (
+$countries = array (
 	"Afganistan",
 	"Albania",
 	"Algieria",

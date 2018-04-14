@@ -17,6 +17,10 @@
 		<p><?php get_user_info_update_alert(); ?></p>
 		<script>showUserUpdateInfoAlert();</script>
 	</div>
+	<div id="user-info-update-success">
+		<p>Zmiany zostały zapisane</p>
+		<script></script>
+	</div>
 	<form method="post">
 		<div class="settings-panel">
 			<div class="settings-panel-header">
@@ -126,7 +130,11 @@
 							<label>Kraj:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="country" value="<?php user_info("country", null, true) ?>" />
+							<select name="country">
+								<?php foreach($countries as $i => $country) : ?>
+								<option value="<?php echo ($i + 1) ?>" <?php echo (get_user_info("country", null, true) == $i + 1) ? "selected" : "" ?>><?php echo $country ?></option>
+								<?php endforeach;?>
+							</select>
 						</div>
 					</div>
 					<div class="row input-group">
