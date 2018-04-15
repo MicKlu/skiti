@@ -46,7 +46,7 @@ $sqls = array (
 	"post_thread_comment" => "INSERT INTO threads_comments(t_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
 	"select_thread_comments" => "SELECT u_id, content, comment_date FROM threads_comments WHERE t_id = ?",
 	"delete_thread" => "DELETE FROM threads WHERE t_id = ? AND (user_id = ? OR author_id = ?)",
-	"update_thread" => "UPDATE threads SET topic = ?, msg = ? WHERE t_id = ? AND author_id = ?"
+	"search_page" => "SELECT u_id FROM users WHERE CONCAT_WS(firstname, secondname, surname, nickname, email, www, country, region, city, phone_number, skype) LIKE ? LIMIT 5"
 );
 
 ?>

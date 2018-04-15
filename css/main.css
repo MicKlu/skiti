@@ -2,7 +2,7 @@
 	height: 60px;
 	background: #353535;
 	padding: 0 50px;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 #navbar a {
@@ -78,6 +78,51 @@
 	margin-left: -5px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
+}
+
+#search-form {
+	position: relative;
+}
+
+#search-results {
+	display: none;
+	position: absolute;
+	background: white;
+	width: 100%;
+	border: 1px solid #565656;
+    z-index: 30;
+}
+
+#search-results .search-results-item {
+	color: inherit;
+	display: block;
+	margin: 0;
+	background: #fafafa;
+	border-bottom: 1px solid #565656;
+}
+
+#search-results .search-results-item:last-child {	
+	border-bottom: none;
+}
+
+#search-results .search-results-item:hover {
+	background: #e6e6e6;
+}
+
+.search-results-no-results {
+	text-align: center;
+	padding: 5px;
+}
+
+.search-results-avatar {
+	display: table-cell;
+	padding: 10px 5px;
+	line-height: 0;	
+}
+
+.search-results-info {
+	display: table-cell;
+    vertical-align: middle;
 }
 
 .jumbotron {
@@ -448,7 +493,8 @@
 }
 
 .profile-comment-content h6,
-.profile-friend-info h6 {
+.profile-friend-info h6,
+.search-results-info h6 {
 	font-weight: bold;
 	font-size: 0.9rem;
 	margin: 0;

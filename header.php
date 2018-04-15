@@ -22,10 +22,11 @@
 					<img class="logo" src="img/logo.png" /> dsa
 				</a>
 				<?php if(isset($_SESSION["user_id"])) : ?>
-				<form class="input-search" action="">
-					<input type="text" placeholder="Wyszukaj" size="48" />
-					<button type="submit"><i class="fas fa-search"></i></button>
-				</form>
+				<div id="search-form" class="input-search">
+					<input id="search" type="text" placeholder="Wyszukaj" size="48" autocomplete="off" />
+					<button><i class="fas fa-search"></i></button>
+					<div id="search-results"></div>
+				</div>
 				<?php endif; ?>
 			</div>
 			<div class="right-pane">

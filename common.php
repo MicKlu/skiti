@@ -316,6 +316,9 @@ function call_action($action)
 		case "topic_edit":
 			edit_thread($_POST["thread_id"], $_POST["topic"], $_POST["msg"]);
 			break;
+		case "search_page":
+			search_page($_POST["query"]);
+			break;
 	}
 }
 
@@ -1515,6 +1518,50 @@ function get_new_thread_alert()
 		$errno = $_COOKIE["new-thread-error"];
 		echo $msgs["new_thread"][$errno];
 	}
+}
+
+function search_page($query)
+{
+	global $sqls;
+	
+	if(is_input_blank($query))
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$query = "%" . escape_input($query) . "%";
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["search_page"]);
+	$stmt -> bind_param("s", $query);
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$stmt -> store_result();
+	$stmt -> bind_result($u_id);
+	
+	$result = array();
+	$result["items"] = array();
+	while($stmt -> fetch())
+	{
+		$search_result_item = array(
+			"id" => $u_id,
+			"fullname" => get_user_full_name($u_id),
+			"avatar" => get_user_avatar($u_id)
+		);
+		$result["items"][] = $search_result_item;
+	}
+	
+	$db -> close();
+	
+	$result["success"] = true;
+	echo json_encode($result);
 }
 
 ?>

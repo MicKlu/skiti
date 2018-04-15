@@ -10,6 +10,8 @@ $(function () {
 	$("#friend-delete").click(ajaxDeleteFriend);
 	$("#avatar-delete").click(ajaxDeleteAvatar);
 	$("#background-delete").click(ajaxDeleteBackground);
+	$("#search").keyup(ajaxSearch);
+	$("#search-form button").click(ajaxSearch);
 	$(window).on("resize", normalizeProfileImages);
 	$(window).on("resize", galleryResize);
 	
@@ -18,8 +20,6 @@ $(function () {
 	$("#profile-wall").ajaxGetThreads();
 	$(".settings-panel").collapsiblePanel();
 })
-
-
 
 function showAlert(type) {
 	if(getCookie(type)) {
@@ -755,7 +755,6 @@ function ajaxEditThread() {
 		},
 		dataType: "json",
 		success: function (data) {
-			console.log(data);
 			if(!data.success)
 				return;
 			
@@ -1185,3 +1184,70 @@ function ajaxEditImage() {
 		}
 	});
 }
+
+function ajaxSearch() {
+	var self = $(this);
+	
+	if(event.type == "click")
+		self = self.siblings("#search");
+	
+	var searchResults = self.siblings("#search-results");
+	if(event.keyCode == 27)
+	{
+		searchResults.hide();
+		return;
+	}
+	
+	var query = self.val();
+	$.ajax("common.php?action=search_page", {
+		method: "post",
+		data: {
+			"query": query,
+		},
+		dataType: "json",
+		success: function (data) {
+			if(!data.success) {
+				searchResults.hide();
+				return;
+			}
+
+			searchResults.html("");
+			searchResults.show();
+			
+			if(!data.items.length) {
+				var searchResultsNoResultsSpan = $("<div>").addClass("search-results-no-results");
+				searchResultsNoResultsSpan.text("brak wyników");
+				searchResults.html(searchResultsNoResultsSpan);
+				return;
+			}
+			
+			for(var i = 0; i < data.items.length; i++) {
+				searchResults.append(searchResultItemCreate(data.items[i]));
+			}
+		}
+	});
+}
+
+function searchResultItemCreate(searchItemData) {
+	var searchResultItem = $("<a>").addClass("search-results-item");
+	var searchResultsAvatar = $("<div>").addClass("search-results-avatar");
+	var searchResultsInfo = $("<div>").addClass("search-results-info");
+	var profileAvatarMini = $("<div>").addClass("profile-avatar-mini");
+	var profileAvatarMiniImg = $("<img>");
+	var searchResultsInfoH6 = $("<h6>");
+	
+	//Appendy
+	searchResultItem.append(searchResultsAvatar);
+	searchResultItem.append(searchResultsInfo);
+	searchResultsAvatar.append(profileAvatarMini);
+	profileAvatarMini.append(profileAvatarMiniImg);
+	searchResultsInfo.append(searchResultsInfoH6);
+	
+	//Wypełnienie danych
+	searchResultItem.attr({href: "profil.php?id=" + searchItemData.id});
+	profileAvatarMiniImg.attr({src: searchItemData.avatar});
+	searchResultsInfoH6.text(searchItemData.fullname);
+	
+	return searchResultItem;
+}
+

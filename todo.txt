@@ -1,6 +1,10 @@
 Little ones:
 *Przyciski "Dodaj zdjêcie", "Zostaw wiadomoœæ" chowaj¹ i pokazuj¹ formularz
 *ustawienia "Zmiany zosta³y zapisane" alert do ogarniêcia
+*header linkuje do tablicy
+*header logo do index.php
+*pole dodaj plik wype³nia siê nazw¹ pliku
+
 
 The tiniest:
 *scroll przy dodawaniu komentarza
