@@ -686,7 +686,50 @@ function ajaxSendThreadComment() {
 }
 
 function toggleEditThread() {
+	var self = $(this);
+	var threadId = self.data("thread-id");
+	var profileThreadContent = self.parents(".profile-thread-content");
+	var profileThreadMsg = profileThreadContent.find(".profile-thread-msg");
+	if(profileThreadMsg.find("h4").length)
+		switchOnEditThread(profileThreadMsg, threadId);
+	else
+		switchOffEditThread(profileThreadMsg);
+}
+
+function switchOnEditThread(profileThreadMsg, threadId) {
+	var profileThreadButtons = profileThreadMsg.siblings(".profile-thread-buttons");
+	var profileThreadMsgH4 = profileThreadMsg.find("h4");
+	var profileThreadMsgP = profileThreadMsg.find("p");
 	
+	var profileThreadMsgInputTopic = $("<input>").attr({type: "text", placeholder: "Tytuł"}).addClass("thread-edit-input").addClass("topic");
+	var profileThreadMsgInputMsg = $("<input>").attr({type: "text", placeholder: "Podpis"}).addClass("thread-edit-input").addClass("msg");
+	var profileThreadButtonsSaveButton = $("<button>").addClass("thread-save-edit").addClass("button-primary").addClass("button-light").text("Zapisz");
+	
+	profileThreadMsgInputTopic.val(profileThreadMsgH4.text());
+	profileThreadMsgInputTopic.data({"default": profileThreadMsgH4.text()});
+	profileThreadMsgInputMsg.val(profileThreadMsgP.text());
+	profileThreadMsgInputMsg.data({"default": profileThreadMsgP.text()});
+	
+	profileThreadMsgH4.replaceWith(profileThreadMsgInputTopic);
+	profileThreadMsgP.replaceWith(profileThreadMsgInputMsg);
+	
+	profileThreadButtons.prepend(profileThreadButtonsSaveButton);
+	profileThreadButtonsSaveButton.data({"thread-id": threadId});
+	//profileThreadButtonsSaveButton.click(ajaxEditThread);
+}
+
+function switchOffEditThread(profileThreadMsg) {
+	var profileThreadButtons = profileThreadMsg.siblings(".profile-thread-buttons"); 
+	var profileThreadMsgInputTopic = profileThreadMsg.find(".thread-edit-input.topic");
+	var profileThreadMsgInputMsg = profileThreadMsg.find(".thread-edit-input.msg");
+	var profileThreadButtonsSaveButton = profileThreadButtons.find(".thread-save-edit");
+	var profileThreadMsgH4 = $("<h4>");
+	var profileThreadMsgP = $("<p>");
+	profileThreadMsgH4.text(profileThreadMsgInputTopic.data("default"))
+	profileThreadMsgP.text(profileThreadMsgInputMsg.data("default"))
+	profileThreadMsgInputTopic.replaceWith(profileThreadMsgH4);
+	profileThreadMsgInputMsg.replaceWith(profileThreadMsgP);
+	profileThreadButtonsSaveButton.remove();
 }
 
 function ajaxDeleteThread() {

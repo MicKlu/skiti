@@ -615,3 +615,8 @@
 .image-edit-input.title {
 	font-size: 1.75rem;
 }
+
+.thread-edit-input.topic {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
