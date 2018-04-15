@@ -232,7 +232,7 @@ function galleryOpen() {
 	
 	var imageData = {};
 	imageData.src = profileImage.attr("src");
-	imageData.galleryId = profileImage.attr("data-gallery-image-id");
+	imageData.galleryId = profileImage.data("gallery-image-id");
 	galleryCreate(imageData, profileImageTitle, profileImageCaption);
 	galleryResize();	
 }
@@ -482,6 +482,8 @@ $.fn.extend({
 						else if(i % 7 == 5)	//jak wyżej
 							row = profileImageRowCreate(3);
 						
+						
+						
 						if(i % 7 == 2 || i % 7 == 4 || i % 7 == 6)
 							colI = 1;
 						
@@ -491,10 +493,9 @@ $.fn.extend({
 						var profileImageBox = profileImageBoxCreate(data.images[i], data.owner);
 						cols.eq(colI).append(profileImageBox);
 						
-						if(i % 7 != 1 && i % 7 != 3 && i % 7 != 5)
+						if((i % 7 != 1 && i % 7 != 3 && i % 7 != 5) || ((i % 7 == 1 || i % 7 == 3 || i % 7 == 5) && i == data.images.length - 1))
 							profilePhotos.append(row);
 					}
-					console.log(data);
 					
 					//Bezpośrednio po usunięciu cache przeglądarki normalizacja nie jest przeprowadzana prawidłowo,
 					setTimeout(normalizeProfileImages, 50);	//więc delikatnie ją opóźniamy.
@@ -573,10 +574,19 @@ function profileImageBoxCreate(imageData, owner) {
 		var profileImageButtonsEditI = $("<i>").addClass("fas").addClass("fa-pencil-alt");
 		var profileImageButtonsDelete = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileImageButtonsDeleteI = $("<i>").addClass("fas").addClass("fa-times");
+		
+		//Appendy właściciela
 		profileImageButtons.append(profileImageButtonsEdit);
 		profileImageButtons.append(profileImageButtonsDelete);
 		profileImageButtonsEdit.append(profileImageButtonsEditI);
 		profileImageButtonsDelete.append(profileImageButtonsDeleteI);
+		
+		//Eventy właściciela
+		//profileImageButtonsEdit
+		profileImageButtonsDelete.click(ajaxDeleteImage);
+
+		//Wypełnienie wartościami właściciela
+		profileImageButtonsDelete.data({"image-id": imageData.id});
 	}
 	
 	//Eventy
@@ -589,6 +599,7 @@ function profileImageBoxCreate(imageData, owner) {
 	profileImageButtons.find("a").attr({href: "javascript:;"});
 	profileImageWrapperImg.attr({src: "img/user_images/" + imageData.userId + "/" + imageData.filename});
 	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
+	
 	profileImageInfoH3.text(imageData.title);
 	profileImageInfoP.text(imageData.caption);
 	profileImageButtonsThumbsUp.data({"image-id": imageData.id});
@@ -688,7 +699,6 @@ function ajaxOpenComments(imageId, profileImagePanel) {
 		},
 		dataType: "json",
 		success: function (data) {
-			console.log(data);
 			if(!data.success)
 				return;
 			
@@ -764,9 +774,7 @@ function profileCommentCreate(commentData) {
 	return profileComment;
 }
 
-
 function ajaxSendImageComment() {
-	console.log(event);
 	if(event.type == "keydown")
 		if(event.keyCode == 13)
 			event.preventDefault();
@@ -791,7 +799,6 @@ function ajaxSendImageComment() {
 		},
 		dataType: "json",
 		success: function (data) {
-			console.log(data);
 			if(!data.success)
 				return;
 			
@@ -799,6 +806,24 @@ function ajaxSendImageComment() {
 			var profileImageComments = profileImageCommentForm.parents(".profile-image-comment-inner-box").find(".profile-image-comments");
 			profileImageComments.find("span").remove();
 			profileImageComments.append(profileComment);
+		}
+	});
+}
+
+function ajaxDeleteImage() {
+	var self = $(this);
+	var imageId = self.data("image-id");
+	$.ajax("common.php?action=image_delete", {
+		method: "post",
+		data: {
+			"image_id": imageId,
+		},
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			self.parents(".profile-image-box").remove();
 		}
 	});
 }

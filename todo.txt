@@ -1,0 +1,6 @@
+Little ones:
+*Przyciski "Dodaj zdjêcie", "Zostaw wiadomoœæ" chowaj¹ i pokazuj¹ formularz
+*ustawienia "Zmiany zosta³y zapisane" alert do ogarniêcia
+
+The tiniest:
+*scroll przy dodawaniu komentarza

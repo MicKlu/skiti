@@ -31,13 +31,15 @@ $sqls = array (
 	"select_user_friends_list" => "SELECT u_id FROM users_friends AS uf JOIN users AS u ON u.u_id = uf.u2_id WHERE u1_id = ? ORDER BY f_id ASC",	//users_friends jest widokiem
 	"update_user_info" => "UPDATE users SET {info_col} = ? WHERE u_id = ?",
 	"add_image" => "INSERT INTO images(u_id, filename, title, caption) VALUES (?, ?, ?, ?)",
-	"select_user_images" => "SELECT i_id, filename, title, caption FROM images WHERE u_id = ?",
+	"select_user_images" => "SELECT i_id, filename, title, caption FROM images WHERE u_id = ? ORDER BY i_id DESC",
 	"give_thumb" => "INSERT INTO images_thumbs(i_id, u_id, thumb) VALUES (?, ?, ?)",
 	"is_thumb_given" => "SELECT thumb FROM images_thumbs WHERE i_id = ? AND u_id = ?",
 	"take_thumb" => "DELETE FROM images_thumbs WHERE i_id = ? AND u_id = ?",
 	"select_thumbs_count" => "SELECT COUNT(*) FROM images_thumbs WHERE i_id = ? AND thumb = ? GROUP BY i_id",
 	"select_image_comments" => "SELECT u_id, content, comment_date FROM images_comments WHERE i_id = ?",
-	"post_image_comment" => "INSERT INTO images_comments(i_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)"
+	"post_image_comment" => "INSERT INTO images_comments(i_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
+	"delete_image" => "DELETE FROM images WHERE i_id = ? AND u_id = ?",
+	"select_image_filename" => "SELECT filename FROM images WHERE i_id = ?"
 );
 
 ?>

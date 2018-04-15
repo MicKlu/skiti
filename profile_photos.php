@@ -31,4 +31,5 @@
 		</form>
 	</div>
 	<?php endif; ?>
+	<!-- Tutaj generują się obrazy -->
 </section>

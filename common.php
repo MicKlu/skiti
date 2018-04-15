@@ -293,6 +293,9 @@ function call_action($action)
 		case "image_post_comment":
 			post_image_comment($_POST["image_id"], $_POST["comment"]);
 			break;
+		case "image_delete":
+			delete_image($_POST["image_id"]);
+			break;
 	}
 }
 
@@ -1198,6 +1201,36 @@ function post_image_comment($i_id, $comment)
 		"date" => date("d.m.Y H:i")
 	);
 	echo json_encode($result);
+}
+
+function delete_image($i_id)
+{
+	global $sqls;
+	session_start();
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_image_filename"]);
+	$stmt -> bind_param("i", $i_id);
+	$stmt -> execute();
+	$stmt -> bind_result($filename);
+	$stmt -> store_result();
+	$stmt -> fetch();
+	
+	$stmt = $db -> prepare($sqls["delete_image"]);
+	$stmt -> bind_param("ii", $i_id, $_SESSION["user_id"]);
+	$stmt -> execute();
+	
+	if($stmt -> errno || !$stmt -> affected_rows)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	unlink(IMAGES_PATH . DIRECTORY_SEPARATOR . $_SESSION["user_id"] . DIRECTORY_SEPARATOR . $filename);
+	
+	$db -> close();
+	
+	echo '{"success": true}';
 }
 
 ?>
