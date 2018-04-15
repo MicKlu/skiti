@@ -16,7 +16,7 @@ $(function () {
 	$("#profile-friends").ajaxGetFriends();
 	$("#profile-photos").ajaxGetImages();
 	$("#profile-wall").ajaxGetThreads();
-	$(".settings-panel").collapsiblePanel();	
+	$(".settings-panel").collapsiblePanel();
 })
 
 
@@ -577,23 +577,29 @@ function profileThreadContainerCreate(threadData) {
 	profileThreadMsg.append(profileThreadMsgH4);
 	profileThreadMsg.append(profileThreadMsgP);
 	
-	if(threadData.owner) {
+	if(threadData.author) {
 		var profileThreadButtonsEdit =  $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileThreadButtonsEditI =  $("<i>").addClass("fas").addClass("fa-pencil-alt");
+		
+		profileThreadButtons.append(profileThreadButtonsEdit);
+		profileThreadButtonsEdit.append(profileThreadButtonsEditI);
+		
+		profileThreadButtonsEdit.data({"thread-id": threadData.id});
+		profileThreadButtonsEdit.click(toggleEditThread);
+	}
+	
+	if(threadData.owner || threadData.author) {
 		var profileThreadButtonsDelete =  $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileThreadButtonsDeleteI =  $("<i>").addClass("fas").addClass("fa-times");
 		
-		profileThreadButtons.append(profileThreadButtonsEdit);
 		profileThreadButtons.append(profileThreadButtonsDelete);
-		profileThreadButtonsEdit.append(profileThreadButtonsEditI);
 		profileThreadButtonsDelete.append(profileThreadButtonsDeleteI);
 		
-		profileThreadButtonsEdit.data({"thread-id": threadData.id});
 		profileThreadButtonsDelete.data({"thread-id": threadData.id});
-		
-		profileThreadButtonsEdit.click(toggleEditThread);
 		profileThreadButtonsDelete.click(ajaxDeleteThread);
 	}
+	
+	
 	
 	if(!threadData.comments.length) {
 		var profileThreadNoCommentsP = $("<p>").addClass("profile-thread-no-comments");
@@ -715,7 +721,7 @@ function switchOnEditThread(profileThreadMsg, threadId) {
 	
 	profileThreadButtons.prepend(profileThreadButtonsSaveButton);
 	profileThreadButtonsSaveButton.data({"thread-id": threadId});
-	//profileThreadButtonsSaveButton.click(ajaxEditThread);
+	profileThreadButtonsSaveButton.click(ajaxEditThread);
 }
 
 function switchOffEditThread(profileThreadMsg) {
@@ -730,6 +736,34 @@ function switchOffEditThread(profileThreadMsg) {
 	profileThreadMsgInputTopic.replaceWith(profileThreadMsgH4);
 	profileThreadMsgInputMsg.replaceWith(profileThreadMsgP);
 	profileThreadButtonsSaveButton.remove();
+}
+
+function ajaxEditThread() {
+	var self = $(this);
+	var threadId = self.data("thread-id");
+	var profileThreadContent = self.parents(".profile-thread-content");
+	var profileThreadMsg = profileThreadContent.find(".profile-thread-msg");
+	var profileThreadMsgInputTopic = profileThreadMsg.find(".thread-edit-input.topic");
+	var profileThreadMsgInputMsg = profileThreadMsg.find(".thread-edit-input.msg");
+	
+	$.ajax("common.php?action=topic_edit", {
+		method: "post",
+		data: {
+			"thread_id": threadId,
+			"topic": profileThreadMsgInputTopic.val(),
+			"msg": profileThreadMsgInputMsg.val(),
+		},
+		dataType: "json",
+		success: function (data) {
+			console.log(data);
+			if(!data.success)
+				return;
+			
+			profileThreadMsgInputTopic.data({"default": data.topic});
+			profileThreadMsgInputMsg.data({"default": data.msg});
+			switchOffEditThread(profileThreadMsg);
+		}
+	});
 }
 
 function ajaxDeleteThread() {

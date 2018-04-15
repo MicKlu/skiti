@@ -313,6 +313,9 @@ function call_action($action)
 		case "thread_delete":
 			delete_thread($_POST["thread_id"]);
 			break;
+		case "topic_edit":
+			edit_thread($_POST["thread_id"], $_POST["topic"], $_POST["msg"]);
+			break;
 	}
 }
 
@@ -636,10 +639,14 @@ function json_get_threads($user_id = null)
 			"fullname" => get_user_full_name($author_id),
 			"avatar" => get_user_avatar($author_id),
 			"comments" => get_thread_comments($t_id),
-			"owner" => false
+			"owner" => false,
+			"author" => false
 		);			
-		if($user_id == $_SESSION["user_id"] || $author_id == $_SESSION["user_id"])
+		if($user_id == $_SESSION["user_id"])
 			$threads_list_data["owner"] = true;
+		if($author_id == $_SESSION["user_id"])
+			$threads_list_data["author"] = true;
+			
 		$threads_list["threads"][] = $threads_list_data;
 	}
 	
@@ -674,6 +681,41 @@ function get_thread_comments($t_id)
 	
 	$db -> close();
 	return $comments_list;
+}
+
+function edit_thread($t_id, $topic, $msg)
+{
+	global $sqls;
+	session_start();
+	
+	if(is_input_blank($topic) || is_input_blank($msg))
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$topic = escape_input($topic);
+	$msg = escape_input($msg);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["update_thread"]);
+	$stmt -> bind_param("ssii", $topic, $msg, $t_id, $_SESSION["user_id"]);
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	
+	$result = array();
+	$result["success"] = true;
+	$result["topic"] = $topic;
+	$result["msg"] = $msg;
+	
+	echo json_encode($result);
 }
 
 function delete_thread($t_id)
@@ -1426,7 +1468,7 @@ function new_thread()
 	print_r($_POST);
 	
 	if(is_input_blank($_POST["topic"]) || is_input_blank($_POST["msg"]))
-		new_thread_error(NEW_THREAD_ERROR_CONTENT, $u_id);
+		new_thread_error(NEW_THREAD_ERROR_CONTENT, $_GET["u_id"]);
 	
 	$_GET["u_id"] = escape_input($_GET["u_id"]);
 	$_POST["topic"] = escape_input($_POST["topic"]);
@@ -1442,10 +1484,10 @@ function new_thread()
 	$stmt -> bind_param("iisss", $_GET["u_id"], $_SESSION["user_id"], $_POST["topic"], $_POST["msg"], time());
 	$stmt -> execute();
 	if($stmt -> errno)
-		new_thread_error(NEW_THREAD_ERROR_DEFAULT, $u_id);
+		new_thread_error(NEW_THREAD_ERROR_DEFAULT, $_GET["u_id"]);
 	
 	$db -> close();
-	header("Location: profil.php?id=" . $u_id . "&tab=tablica");
+	header("Location: profil.php?id=" . $_GET["u_id"] . "&tab=tablica");
 }
 
 function new_thread_error($errno, $u_id)

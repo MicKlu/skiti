@@ -241,6 +241,7 @@
 
 #profile-manage-friend button {
 	display: none;
+	margin: 0 2px;
 }
 
 #profile-content {
