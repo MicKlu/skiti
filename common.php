@@ -310,6 +310,9 @@ function call_action($action)
 		case "thread_post_comment":
 			post_thread_comment($_POST["thread_id"], $_POST["comment"]);
 			break;
+		case "thread_delete":
+			delete_thread($_POST["thread_id"]);
+			break;
 	}
 }
 
@@ -671,6 +674,27 @@ function get_thread_comments($t_id)
 	
 	$db -> close();
 	return $comments_list;
+}
+
+function delete_thread($t_id)
+{
+	global $sqls;
+	session_start();
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["delete_thread"]);
+	$stmt -> bind_param("iii", $t_id, $_SESSION["user_id"], $_SESSION["user_id"]);
+	$stmt -> execute();
+	
+	if($stmt -> errno || !$stmt -> affected_rows)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	
+	echo '{"success": true}';
 }
 
 function process_update_user_info()
@@ -1336,6 +1360,7 @@ function delete_image($i_id)
 	
 	$filename = get_image_filename($i_id);
 	
+	$db = db_connect();
 	$stmt = $db -> prepare($sqls["delete_image"]);
 	$stmt -> bind_param("ii", $i_id, $_SESSION["user_id"]);
 	$stmt -> execute();

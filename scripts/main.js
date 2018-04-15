@@ -518,7 +518,6 @@ $.fn.extend({
 					user_id: getQueryString().id
 				},
 				success: function(data) {
-					console.log(data);
 					if(!data.threads) {
 						profileWall.append("<p>Tablica wiadomości jest pusta.</p>");
 						return;
@@ -538,7 +537,7 @@ $.fn.extend({
 	}
 });
 
-function profileThreadContainerCreate(topicData) {
+function profileThreadContainerCreate(threadData) {
 	var profileThreadContainer = $("<div>").addClass("profile-thread-container");
 	var profileThreadSender = $("<div>").addClass("profile-thread-sender");
 	var profileComment = $("<div>").addClass("profile-comment");
@@ -578,39 +577,46 @@ function profileThreadContainerCreate(topicData) {
 	profileThreadMsg.append(profileThreadMsgH4);
 	profileThreadMsg.append(profileThreadMsgP);
 	
-	if(topicData.owner) {
+	if(threadData.owner) {
 		var profileThreadButtonsEdit =  $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileThreadButtonsEditI =  $("<i>").addClass("fas").addClass("fa-pencil-alt");
 		var profileThreadButtonsDelete =  $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileThreadButtonsDeleteI =  $("<i>").addClass("fas").addClass("fa-times");
+		
 		profileThreadButtons.append(profileThreadButtonsEdit);
 		profileThreadButtons.append(profileThreadButtonsDelete);
 		profileThreadButtonsEdit.append(profileThreadButtonsEditI);
 		profileThreadButtonsDelete.append(profileThreadButtonsDeleteI);
+		
+		profileThreadButtonsEdit.data({"thread-id": threadData.id});
+		profileThreadButtonsDelete.data({"thread-id": threadData.id});
+		
+		profileThreadButtonsEdit.click(toggleEditThread);
+		profileThreadButtonsDelete.click(ajaxDeleteThread);
 	}
 	
-	if(!topicData.comments.length) {
+	if(!threadData.comments.length) {
 		var profileThreadNoCommentsP = $("<p>").addClass("profile-thread-no-comments");
 		profileThreadNoCommentsP.text("Brak komentarzy");
 		profileThreadPosts.append(profileThreadNoCommentsP);
 	}
 	
-	for(var i = 0; i < topicData.comments.length; i++)
-		profileThreadPosts.append(profileThreadCommentCreate(topicData.comments[i]));
+	for(var i = 0; i < threadData.comments.length; i++)
+		profileThreadPosts.append(profileThreadCommentCreate(threadData.comments[i]));
 	
 	profileThreadContent.append(profileThreadForm);
 	profileThreadForm.append(profileThreadFormTextArea);
 	profileThreadForm.append(profileThreadFormButton);
 	
 	//Wypełnienie danych
-	profileCommentAvatarA.attr({href: "profil.php?id=" + topicData.authorId});
-	profileAvatarMiniImg.attr({src: topicData.avatar});
-	profileCommentContentH6A.attr({href: "profil.php?id=" + topicData.authorId});
-	profileCommentContentH6A.html(topicData.fullname + "<br />");
-	profileCommentContentH6Small.text(topicData.date);
-	profileThreadMsgH4.text(topicData.topic);
-	profileThreadMsgP.html(topicData.msg);
-	profileThreadFormButton.data({"thread-id": topicData.id})
+	profileCommentAvatarA.attr({href: "profil.php?id=" + threadData.authorId});
+	profileAvatarMiniImg.attr({src: threadData.avatar});
+	profileCommentContentH6A.attr({href: "profil.php?id=" + threadData.authorId});
+	profileCommentContentH6A.html(threadData.fullname + "<br />");
+	profileCommentContentH6Small.text(threadData.date);
+	profileThreadMsgH4.text(threadData.topic);
+	profileThreadMsgP.html(threadData.msg);
+	profileThreadFormButton.data({"thread-id": threadData.id})
 	profileThreadFormButton.text("Odpowiedz");
 	
 	//Eventy
@@ -647,7 +653,7 @@ function profileThreadCommentCreate(commentData) {
 	profileCommentAvatarA.attr({"href": "profil.php?id=" + commentData.id});
 	profileAvatarMiniImg.attr({src: commentData.avatar});
 	profileCommentContentH6A.attr({"href": "profil.php?id=" + commentData.id});
-	profileCommentContentH6A.text(commentData.fullname);
+	profileCommentContentH6A.text(commentData.fullname + " ");
 	profileCommentContentH6Small.text(commentData.date);
 	profileCommentContentP.text(commentData.content);
 	
@@ -666,7 +672,6 @@ function ajaxSendThreadComment() {
 		},
 		dataType: "json",
 		success: function (data) {
-			console.log(data);
 			if(!data.success)
 				return;
 			
@@ -676,6 +681,28 @@ function ajaxSendThreadComment() {
 			profileThreadFormTextArea.val("");
 			profileThreadPosts.append(profileThreadCommentCreate(data.comment))
 			
+		}
+	});
+}
+
+function toggleEditThread() {
+	
+}
+
+function ajaxDeleteThread() {
+	var self = $(this);
+	var threadId = self.data("thread-id");
+	$.ajax("common.php?action=thread_delete", {
+		method: "post",
+		data: {
+			"thread_id": threadId,
+		},
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			self.parents(".profile-thread-container").remove();
 		}
 	});
 }

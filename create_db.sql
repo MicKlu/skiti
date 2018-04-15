@@ -35,8 +35,8 @@ CREATE TABLE friends (
 	u2_id int NOT NULL,
 	pending int NOT NULL DEFAULT 1,
 	PRIMARY KEY(f_id),
-	FOREIGN KEY (u1_id) REFERENCES users(u_id),
-	FOREIGN KEY (u2_id) REFERENCES users(u_id)
+	FOREIGN KEY (u1_id) REFERENCES users(u_id) ON DELETE CASCADE,
+	FOREIGN KEY (u2_id) REFERENCES users(u_id) ON DELETE CASCADE
 );
 
 CREATE VIEW users_friends AS
@@ -51,7 +51,7 @@ CREATE TABLE images (
 	filename varchar(255) NOT NULL,
 	title varchar(255),
 	caption varchar(255),
-	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(i_id)
 );
 
@@ -60,8 +60,8 @@ CREATE TABLE images_thumbs (
 	i_id int NOT NULL,
 	u_id int NOT NULL,
 	thumb varchar(1) NOT NULL,	--1 up; 0 down
-	FOREIGN KEY (i_id) REFERENCES images(i_id),
-	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	FOREIGN KEY (i_id) REFERENCES images(i_id) ON DELETE CASCADE,
+	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(it_id)
 );
 
@@ -71,8 +71,8 @@ CREATE TABLE images_comments (
 	u_id int NOT NULL,
 	content varchar(1023) NOT NULL,
 	comment_date varchar(31) NOT NULL,
-	FOREIGN KEY (i_id) REFERENCES images(i_id),
-	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	FOREIGN KEY (i_id) REFERENCES images(i_id) ON DELETE CASCADE,
+	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(ic_id)
 );
 
@@ -83,8 +83,8 @@ CREATE TABLE threads (
 	topic varchar(255) NOT NULL,
 	msg text NOT NULL,
 	thread_date  varchar(31) NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(u_id),
-	FOREIGN KEY (author_id) REFERENCES users(u_id),
+	FOREIGN KEY (user_id) REFERENCES users(u_id) ON DELETE CASCADE,
+	FOREIGN KEY (author_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(t_id)
 );
 
@@ -94,8 +94,8 @@ CREATE TABLE threads_comments (
 	u_id int NOT NULL,
 	content varchar(1023) NOT NULL,
 	comment_date varchar(31) NOT NULL,
-	FOREIGN KEY (t_id) REFERENCES threads(t_id),
-	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	FOREIGN KEY (t_id) REFERENCES threads(t_id) ON DELETE CASCADE,
+	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(tc_id)
 );
 

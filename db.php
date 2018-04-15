@@ -45,6 +45,7 @@ $sqls = array (
 	"select_user_threads" => "SELECT t_id, author_id, topic, msg, thread_date FROM threads WHERE user_id = ? ORDER BY t_id DESC",
 	"post_thread_comment" => "INSERT INTO threads_comments(t_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
 	"select_thread_comments" => "SELECT u_id, content, comment_date FROM threads_comments WHERE t_id = ?",
+	"delete_thread" => "DELETE FROM threads WHERE t_id = ? AND (user_id = ? OR author_id = ?)"
 );
 
 ?>
