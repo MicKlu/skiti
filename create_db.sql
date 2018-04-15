@@ -69,11 +69,34 @@ CREATE TABLE images_comments (
 	ic_id int AUTO_INCREMENT,
 	i_id int NOT NULL,
 	u_id int NOT NULL,
-	content varchar(1023),
-	comment_date varchar(31),
+	content varchar(1023) NOT NULL,
+	comment_date varchar(31) NOT NULL,
 	FOREIGN KEY (i_id) REFERENCES images(i_id),
 	FOREIGN KEY (u_id) REFERENCES users(u_id),
 	PRIMARY KEY(ic_id)
+);
+
+CREATE TABLE threads (
+	t_id int AUTO_INCREMENT,
+	user_id int NOT NULL,
+	author_id int NOT NULL,
+	topic varchar(255) NOT NULL,
+	msg text NOT NULL,
+	thread_date  varchar(31) NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users(u_id),
+	FOREIGN KEY (author_id) REFERENCES users(u_id),
+	PRIMARY KEY(t_id)
+);
+
+CREATE TABLE threads_comments (
+	tc_id int AUTO_INCREMENT,
+	t_id int NOT NULL,
+	u_id int NOT NULL,
+	content varchar(1023) NOT NULL,
+	comment_date varchar(31) NOT NULL,
+	FOREIGN KEY (t_id) REFERENCES threads(t_id),
+	FOREIGN KEY (u_id) REFERENCES users(u_id),
+	PRIMARY KEY(tc_id)
 );
 
 COMMIT;

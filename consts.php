@@ -68,6 +68,9 @@ define("ADD_IMAGE_ERROR_NO_FILE",	2);
 define("ADD_IMAGE_ERROR_BIG_SIZE",	3);
 define("ADD_IMAGE_ERROR_FORMAT",	4);
 
+//NEW_THREAD_ERROR
+define("NEW_THREAD_ERROR_DEFAULT",	1);
+define("NEW_THREAD_ERROR_CONTENT",	2);
 
 $regexps = array (
 	"name" => "/^[A-ZĄ-ŻŁŃ][a-zą-żłń]+$/",

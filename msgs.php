@@ -56,6 +56,11 @@ $msgs["add_image"] = array (
 	ADD_IMAGE_ERROR_NO_FILE		=> "Należy wybrać plik do przesłania.",
 	ADD_IMAGE_ERROR_BIG_SIZE	=> $msgs["user_info_update"][USER_INFO_UPDATE_ERROR_AVATAR_BIG_SIZE],
 	ADD_IMAGE_ERROR_FORMAT		=> $msgs["user_info_update"][USER_INFO_UPDATE_ERROR_AVATAR_FORMAT]
+);
+
+$msgs["new_thread"] = array (
+	NEW_THREAD_ERROR_DEFAULT		=> "Podczas wysyłania wiadomości wystąpił błąd. Spróbuj ponownie później.",
+	NEW_THREAD_ERROR_CONTENT		=> "Podaj temat i treść wiadomości.",
 )
 
 ?>

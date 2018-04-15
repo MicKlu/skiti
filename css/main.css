@@ -111,7 +111,8 @@
 
 #register-error,
 #user-info-update-error,
-#add-image-error {
+#add-image-error,
+#new-thread-error {
 	display: none;
 	border: 1px solid #bd0000;
 	background: #ffcccc;
@@ -266,7 +267,7 @@
 }
 
 #profile-photos-menu/*,
-#profile-wall-new-topic*/ {
+#profile-wall-new-thread*/ {
 	margin: 0 15px 15px 15px;
 }
 
@@ -292,14 +293,25 @@
 	position: relative;
 }
 
-.profile-image-buttons {
-	border-top: 1px solid #565656;
+.profile-image-buttons,
+.profile-thread-buttons {
 	padding-top: 5px;
 	text-align: right;
+}
+
+.profile-image-buttons {
+	border-top: 1px solid #565656;
     margin-top: 10px;
 }
 
-.profile-image-buttons .button-light {
+.profile-thread-buttons {
+	border-bottom: 1px solid #bfbfbf;
+	padding-top: 0;
+	padding-bottom: 5px;
+}
+
+.profile-image-buttons .button-light,
+.profile-thread-buttons .button-light {
 	margin: 0 2px;
 }
 
@@ -461,7 +473,7 @@
 }
 
 .profile-image-comment-form textarea,
-.profile-topic-form textarea {
+.profile-thread-form textarea {
 	width: 100%;
 	height: 50px;
 }
@@ -486,7 +498,7 @@
 	vertical-align: middle;
 }
 
-#profile-wall-new-topic {
+#profile-wall-new-thread {
 	margin: 0 7px 15px 7px;
 	padding: 0 7px 15px 7px;
 	/* border: 1px solid #565656; */
@@ -494,45 +506,53 @@
 }
 
 #profile-photos-add,
-#profile-wall-new-topic-form {
+#profile-wall-new-thread-form {
 	margin-top: 15px;
 }
 
-.profile-topic-container {
+.profile-thread-container {
 	border: 1px solid #565656;
 	border-radius: 10px;
 	margin: 0 7px 15px 7px;
     background: #fdfdfd;
 }
 
-.profile-topic-sender {
+.profile-thread-sender {
 	padding: 5px;
 	border-bottom: 1px solid #565656;
 }
 
-.profile-topic-sender > .profile-comment {
+.profile-thread-sender > .profile-comment {
 	margin-bottom: initial;
 }
 
-.profile-topic-content {
+.profile-thread-sender .profile-comment-content {
+	vertical-align: middle;
+}
+
+.profile-thread-content {
 	margin: 10px;
 }
 
-.profile-topic-msg h4 {
+.profile-thread-msg h4 {
 	font-weight: bold;
 }
 
-.profile-topic-msg {
-	padding-bottom: 10px;
-	border-bottom: 1px solid #bfbfbf;
+.profile-thread-msg {
+	padding-bottom: 5px;
 }
 
-.profile-topic-posts {
+.profile-thread-posts,
+.profile-thread-form {
 	margin-left: 40px;
 	margin-top: 10px;
 }
 
-.profile-topic-form {
+.profile-thread-no-comments {
+	margin-bottom: 10px;
+}
+
+.profile-thread-form {
 	border-top: 1px solid #bfbfbf;
 	padding-top: 10px;
 	text-align: right;

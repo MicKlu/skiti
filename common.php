@@ -22,6 +22,8 @@ function get_profile_page()
 			case "zdjecia":
 				include "profile_photos.php";
 				break;
+			default:
+				include "profile_about.php";
 		}
 	}
 }
@@ -275,6 +277,9 @@ function call_action($action)
 		case "get_images":
 			json_get_images($_POST["user_id"]);
 			break;
+		case "get_threads":
+			json_get_threads($_POST["user_id"]);
+			break;
 		case "avatar_delete":
 			delete_user_avatar();
 			break;
@@ -298,6 +303,12 @@ function call_action($action)
 			break;
 		case "image_edit":
 			edit_image($_POST["image_id"], $_POST["title"], $_POST["caption"]);
+			break;
+		case "new_thread":
+			new_thread();
+			break;
+		case "thread_post_comment":
+			post_thread_comment($_POST["thread_id"], $_POST["comment"]);
 			break;
 	}
 }
@@ -592,6 +603,74 @@ function json_get_images($user_id = null)
 		$image_list["owner"] = true;
 	$db -> close();
 	echo json_encode($image_list);
+}
+
+function json_get_threads($user_id = null)
+{
+	global $sqls;
+	session_start();
+	
+	if($user_id == null)
+		$user_id = $_SESSION["user_id"];
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_user_threads"]);
+	$stmt -> bind_param("i", $user_id);
+	$stmt -> execute();
+	$stmt -> bind_result($t_id, $author_id, $topic, $msg, $thread_date);
+	$stmt -> store_result();
+	
+	$threads_list = array();
+	
+	while($stmt -> fetch())
+	{
+		$threads_list_data = array(
+			"id" => $t_id,
+			"authorId" => $author_id,
+			"topic" => $topic,
+			"msg" => nl2br($msg),
+			"date" => date("d.m.Y H:i", $thread_date),
+			"fullname" => get_user_full_name($author_id),
+			"avatar" => get_user_avatar($author_id),
+			"comments" => get_thread_comments($t_id),
+			"owner" => false
+		);			
+		if($user_id == $_SESSION["user_id"] || $author_id == $_SESSION["user_id"])
+			$threads_list_data["owner"] = true;
+		$threads_list["threads"][] = $threads_list_data;
+	}
+	
+	$db -> close();
+	echo json_encode($threads_list);
+}
+
+function get_thread_comments($t_id)
+{
+	global $sqls;
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["select_thread_comments"]);
+	$stmt -> bind_param("i", $t_id);
+	$stmt -> execute();
+	$stmt -> bind_result($u_id, $content, $comment_date);
+	$stmt -> store_result();
+	
+	$comments_list = array();
+	
+	while($stmt -> fetch())
+	{
+		$threads_list_data = array(
+			"id" => $u_id,
+			"content" => $content,
+			"date" => date("d.m.Y H:i", $comment_date),
+			"fullname" => get_user_full_name($u_id),
+			"avatar" => get_user_avatar($u_id)
+		);			
+		$comments_list[] = $threads_list_data;
+	}
+	
+	$db -> close();
+	return $comments_list;
 }
 
 function process_update_user_info()
@@ -952,10 +1031,6 @@ function add_image($u_id = null)
 	if($u_id == null)
 		$u_id = $_SESSION["user_id"];
 	
-	print_r($_POST);
-	echo "<br />";
-	print_r($_FILES);
-	
 	if(!isset($_POST["title"]) || !isset($_POST["caption"]))
 		add_image_error(ADD_IMAGE_ERROR_DEFAULT, $u_id);
 	if(empty($_FILES["image"]["name"]))
@@ -1176,7 +1251,7 @@ function post_image_comment($i_id, $comment)
 	global $sqls;
 	session_start();
 
-	if(empty($comment) && !is_numeric($comment)){
+	if(is_input_blank($comment)){
 		echo '{"success": false}';
 		return;
 	}
@@ -1185,6 +1260,41 @@ function post_image_comment($i_id, $comment)
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["post_image_comment"]);
 	$stmt -> bind_param("iiss", $i_id, $_SESSION["user_id"], $comment, time());
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	$result = array();
+	$result["success"] = true;
+	$result["comment"] = array(
+		"userId" => $_SESSION["user_id"],
+		"fullname" => get_user_full_name($_SESSION["user_id"]),
+		"avatar" => get_user_avatar($_SESSION["user_id"]),
+		"content" => $comment,
+		"date" => date("d.m.Y H:i")
+	);
+	echo json_encode($result);
+}
+
+function post_thread_comment($t_id, $comment)
+{
+	global $sqls;
+	session_start();
+
+	if(is_input_blank($comment)){
+		echo '{"success": false}';
+		return;
+	}
+	$comment = escape_input($comment);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["post_thread_comment"]);
+	$stmt -> bind_param("iiss", $t_id, $_SESSION["user_id"], $comment, time());
 	$stmt -> execute();
 	
 	if($stmt -> errno)
@@ -1248,9 +1358,9 @@ function edit_image($i_id, $title, $caption)
 	global $sqls;
 	session_start();
 	
-	if(empty($title) && !is_numeric($title))
+	if(is_blank($title))
 		$title = "";
-	if(empty($caption) && !is_numeric($caption))
+	if(is_blank($caption))
 		$caption = "";
 	
 	$title = escape_input($title);
@@ -1280,6 +1390,64 @@ function edit_image($i_id, $title, $caption)
 	$result["caption"] = $caption;
 	
 	echo json_encode($result);
+}
+
+function new_thread()
+{
+	global $sqls;
+	session_start();
+
+	
+	print_r($_POST);
+	
+	if(is_input_blank($_POST["topic"]) || is_input_blank($_POST["msg"]))
+		new_thread_error(NEW_THREAD_ERROR_CONTENT, $u_id);
+	
+	$_GET["u_id"] = escape_input($_GET["u_id"]);
+	$_POST["topic"] = escape_input($_POST["topic"]);
+	$_POST["msg"] = escape_input($_POST["msg"]);
+	
+	if(is_input_blank($_GET["u_id"]))
+		$_GET["u_id"] = $_SESSION["user_id"];
+	
+	print_r($_GET);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["new_thread"]);
+	$stmt -> bind_param("iisss", $_GET["u_id"], $_SESSION["user_id"], $_POST["topic"], $_POST["msg"], time());
+	$stmt -> execute();
+	if($stmt -> errno)
+		new_thread_error(NEW_THREAD_ERROR_DEFAULT, $u_id);
+	
+	$db -> close();
+	header("Location: profil.php?id=" . $u_id . "&tab=tablica");
+}
+
+function new_thread_error($errno, $u_id)
+{
+	setcookie("new-thread-error", $errno);
+	header("Location: profil.php?id=" . $u_id . "&tab=tablica");
+	die();
+}
+
+function is_blank($value)
+{
+	return empty($value) && !is_numeric($value);
+}
+
+function is_input_blank($value)
+{
+	return is_blank(escape_input($value));
+}
+
+function get_new_thread_alert()
+{
+	global $msgs;
+	if(isset($_COOKIE["new-thread-error"]))
+	{
+		$errno = $_COOKIE["new-thread-error"];
+		echo $msgs["new_thread"][$errno];
+	}
 }
 
 ?>

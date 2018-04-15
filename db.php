@@ -40,7 +40,11 @@ $sqls = array (
 	"post_image_comment" => "INSERT INTO images_comments(i_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
 	"delete_image" => "DELETE FROM images WHERE i_id = ? AND u_id = ?",
 	"select_image_filename" => "SELECT filename FROM images WHERE i_id = ?",
-	"update_image" => "UPDATE images SET title = ?, caption = ? WHERE i_id = ? AND u_id = ?"
+	"update_image" => "UPDATE images SET title = ?, caption = ? WHERE i_id = ? AND u_id = ?",
+	"new_thread" => "INSERT INTO threads(user_id, author_id, topic, msg, thread_date) VALUES (?, ?, ?, ?, ?)",
+	"select_user_threads" => "SELECT t_id, author_id, topic, msg, thread_date FROM threads WHERE user_id = ? ORDER BY t_id DESC",
+	"post_thread_comment" => "INSERT INTO threads_comments(t_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
+	"select_thread_comments" => "SELECT u_id, content, comment_date FROM threads_comments WHERE t_id = ?",
 );
 
 ?>
