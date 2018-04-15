@@ -1324,11 +1324,13 @@ function post_image_comment($i_id, $comment)
 		echo '{"success": false}';
 		return;
 	}
+	
 	$comment = escape_input($comment);
+	$timestamp = time();
 	
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["post_image_comment"]);
-	$stmt -> bind_param("iiss", $i_id, $_SESSION["user_id"], $comment, time());
+	$stmt -> bind_param("iiss", $i_id, $_SESSION["user_id"], $comment, $timestamp);
 	$stmt -> execute();
 	
 	if($stmt -> errno)
@@ -1355,15 +1357,17 @@ function post_thread_comment($t_id, $comment)
 	global $sqls;
 	session_start();
 
-	if(is_input_blank($comment)){
+	if(is_input_blank($comment)) {
 		echo '{"success": false}';
 		return;
 	}
+	
 	$comment = escape_input($comment);
+	$timestamp = time();
 	
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["post_thread_comment"]);
-	$stmt -> bind_param("iiss", $t_id, $_SESSION["user_id"], $comment, time());
+	$stmt -> bind_param("iiss", $t_id, $_SESSION["user_id"], $comment, $timestamp);
 	$stmt -> execute();
 	
 	if($stmt -> errno)
@@ -1466,9 +1470,6 @@ function new_thread()
 {
 	global $sqls;
 	session_start();
-
-	
-	print_r($_POST);
 	
 	if(is_input_blank($_POST["topic"]) || is_input_blank($_POST["msg"]))
 		new_thread_error(NEW_THREAD_ERROR_CONTENT, $_GET["u_id"]);
@@ -1480,11 +1481,11 @@ function new_thread()
 	if(is_input_blank($_GET["u_id"]))
 		$_GET["u_id"] = $_SESSION["user_id"];
 	
-	print_r($_GET);
+	$timestamp = time();
 	
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["new_thread"]);
-	$stmt -> bind_param("iisss", $_GET["u_id"], $_SESSION["user_id"], $_POST["topic"], $_POST["msg"], time());
+	$stmt -> bind_param("iisss", $_GET["u_id"], $_SESSION["user_id"], $_POST["topic"], $_POST["msg"], $timestamp);
 	$stmt -> execute();
 	if($stmt -> errno)
 		new_thread_error(NEW_THREAD_ERROR_DEFAULT, $_GET["u_id"]);

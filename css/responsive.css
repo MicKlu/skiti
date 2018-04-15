@@ -1,0 +1,19 @@
+@media (max-width: 1200px) {
+	#search-form #search {
+		width: 375px;
+	}
+}
+
+@media (max-width: 1024px) {
+	#navbar a.brand {
+		display: none;
+	}
+	
+	#search-form #search {
+		width: 200px;
+	}
+	
+	#profile-container, #profile-settings {
+		width: 90%;
+	}
+}

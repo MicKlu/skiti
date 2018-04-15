@@ -9,6 +9,7 @@
 		<meta name="author" content="" />
 		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/responsive.css" />
 		<link rel="icon" href="img/favicon.png" />
 		<script src="scripts/jquery-3.3.1.min.js"></script>
 		<script src="scripts/fontawesome-all.min.js"></script>
