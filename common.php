@@ -296,6 +296,9 @@ function call_action($action)
 		case "image_delete":
 			delete_image($_POST["image_id"]);
 			break;
+		case "image_edit":
+			edit_image($_POST["image_id"], $_POST["title"], $_POST["caption"]);
+			break;
 	}
 }
 
@@ -1173,7 +1176,7 @@ function post_image_comment($i_id, $comment)
 	global $sqls;
 	session_start();
 
-	if(empty($comment)){
+	if(empty($comment) && !is_numeric($comment)){
 		echo '{"success": false}';
 		return;
 	}
@@ -1203,11 +1206,9 @@ function post_image_comment($i_id, $comment)
 	echo json_encode($result);
 }
 
-function delete_image($i_id)
+function get_image_filename($i_id)
 {
 	global $sqls;
-	session_start();
-	
 	$db = db_connect();
 	$stmt = $db -> prepare($sqls["select_image_filename"]);
 	$stmt -> bind_param("i", $i_id);
@@ -1215,6 +1216,15 @@ function delete_image($i_id)
 	$stmt -> bind_result($filename);
 	$stmt -> store_result();
 	$stmt -> fetch();
+	return $filename;
+}
+
+function delete_image($i_id)
+{
+	global $sqls;
+	session_start();
+	
+	$filename = get_image_filename($i_id);
 	
 	$stmt = $db -> prepare($sqls["delete_image"]);
 	$stmt -> bind_param("ii", $i_id, $_SESSION["user_id"]);
@@ -1231,6 +1241,45 @@ function delete_image($i_id)
 	$db -> close();
 	
 	echo '{"success": true}';
+}
+
+function edit_image($i_id, $title, $caption)
+{
+	global $sqls;
+	session_start();
+	
+	if(empty($title) && !is_numeric($title))
+		$title = "";
+	if(empty($caption) && !is_numeric($caption))
+		$caption = "";
+	
+	$title = escape_input($title);
+	$caption = escape_input($caption);
+	
+	$db = db_connect();
+	$stmt = $db -> prepare($sqls["update_image"]);
+	$stmt -> bind_param("ssii", $title, $caption, $i_id, $_SESSION["user_id"]);
+	$stmt -> execute();
+	
+	if($stmt -> errno)
+	{
+		echo '{"success": false}';
+		return;
+	}
+	
+	$db -> close();
+	
+	if($title == "")
+		$title = get_image_filename($i_id);
+	if($caption == "")
+		$caption = "(brak opisu)";
+	
+	$result = array();
+	$result["success"] = true;
+	$result["title"] = $title;
+	$result["caption"] = $caption;
+	
+	echo json_encode($result);
 }
 
 ?>

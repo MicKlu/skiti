@@ -541,6 +541,7 @@ function profileImageBoxCreate(imageData, owner) {
 	var profileImageInfoH3 = $("<h3>");
 	var profileImageInfoP = $("<p>");
 	var profileImageButtons = $("<div>").addClass("profile-image-buttons");
+	var profileImageButtonsFeedback = $("<span>").addClass("profile-image-buttons-feedback");
 	var profileImageButtonsThumbsUp = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 	var profileImageButtonsThumbsUpI = $("<i>").addClass("fas").addClass("fa-thumbs-up");
 	var profileImageButtonsThumbsUpSpan = $("<span>");
@@ -559,9 +560,10 @@ function profileImageBoxCreate(imageData, owner) {
 	profileImagePanel.append(profileImageButtons);
 	profileImageInfo.append(profileImageInfoH3);
 	profileImageInfo.append(profileImageInfoP);
-	profileImageButtons.append(profileImageButtonsThumbsUp);
-	profileImageButtons.append(profileImageButtonsThumbsDown);
-	profileImageButtons.append(profileImageButtonsComments);
+	profileImageButtons.append(profileImageButtonsFeedback);
+	profileImageButtonsFeedback.append(profileImageButtonsThumbsUp);
+	profileImageButtonsFeedback.append(profileImageButtonsThumbsDown);
+	profileImageButtonsFeedback.append(profileImageButtonsComments);
 	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpI);
 	profileImageButtonsThumbsUp.append(profileImageButtonsThumbsUpSpan);
 	profileImageButtonsThumbsDown.append(profileImageButtonsThumbsDownI);
@@ -574,18 +576,21 @@ function profileImageBoxCreate(imageData, owner) {
 		var profileImageButtonsEditI = $("<i>").addClass("fas").addClass("fa-pencil-alt");
 		var profileImageButtonsDelete = $("<a>").addClass("button").addClass("button-light").addClass("button-primary");
 		var profileImageButtonsDeleteI = $("<i>").addClass("fas").addClass("fa-times");
+		var profileImageButtonsManage = $("<span>").addClass("profile-image-manage");
 		
 		//Appendy właściciela
-		profileImageButtons.append(profileImageButtonsEdit);
-		profileImageButtons.append(profileImageButtonsDelete);
+		profileImageButtons.append(profileImageButtonsManage);
+		profileImageButtonsManage.append(profileImageButtonsEdit);
+		profileImageButtonsManage.append(profileImageButtonsDelete);
 		profileImageButtonsEdit.append(profileImageButtonsEditI);
 		profileImageButtonsDelete.append(profileImageButtonsDeleteI);
 		
 		//Eventy właściciela
-		//profileImageButtonsEdit
+		profileImageButtonsEdit.click(toggleEditImage);
 		profileImageButtonsDelete.click(ajaxDeleteImage);
 
 		//Wypełnienie wartościami właściciela
+		profileImageButtonsEdit.data({"image-id": imageData.id});
 		profileImageButtonsDelete.data({"image-id": imageData.id});
 	}
 	
@@ -662,15 +667,16 @@ function ajaxImageThumb(thumb, self) {
 		},
 		dataType: "json",
 		success: function (data) {
+			console.log(data);
 			if(!data.success)
 				return;
 			
-			var buttons = self.parent(".profile-image-buttons").find(".button");
+			var buttons = self.parent(".profile-image-buttons-feedback").find(".button");
 			buttons.eq(0).find("span").text((data.thumbsUp) ? " (" + data.thumbsUp + ")": "");
 			buttons.eq(1).find("span").text((data.thumbsDown) ? " (" + data.thumbsDown + ")": "");
 			
 			var wasThumbed = self.hasClass("thumbed");
-			self.parent(".profile-image-buttons").find(".button").removeClass("thumbed");
+			self.parent(".profile-image-buttons-feedback").find(".button").removeClass("thumbed");
 			if(!wasThumbed)
 				self.addClass("thumbed");
 		}
@@ -824,6 +830,79 @@ function ajaxDeleteImage() {
 				return;
 			
 			self.parents(".profile-image-box").remove();
+		}
+	});
+}
+
+function toggleEditImage() {
+	var self = $(this);
+	var imageId = self.data("image-id");
+	var profileImagePanel = self.parents(".profile-image-panel");
+	if(profileImagePanel.find("h3").length)
+		switchOnEditImage(profileImagePanel, imageId);
+	else
+		switchOffEditImage(profileImagePanel);
+	normalizeProfileImages();
+}
+
+function switchOnEditImage(profileImagePanel, imageId) {
+	var profileImageButtons = profileImagePanel.find(".profile-image-buttons");
+	var profileImageButtonsFeedback = profileImageButtons.find(".profile-image-buttons-feedback");
+	var profileImagePanelH3 = profileImagePanel.find("h3");
+	var profileImagePanelP = profileImagePanel.find("p");
+	var profileImagePanelInputTitle = $("<input>").attr({type: "text", placeholder: "Tytuł"}).addClass("image-edit-input").addClass("title");
+	var profileImagePanelInputCaption = $("<input>").attr({type: "text", placeholder: "Podpis"}).addClass("image-edit-input").addClass("caption");
+	var profileImagePanelSaveButton = $("<button>").addClass("image-save-edit").addClass("button-primary").addClass("button-light").text("Zapisz");
+	profileImagePanelInputTitle.val(profileImagePanelH3.text());
+	profileImagePanelInputTitle.data({"default": profileImagePanelH3.text()});
+	profileImagePanelInputCaption.val(profileImagePanelP.text());
+	profileImagePanelInputCaption.data({"default": profileImagePanelP.text()});
+	profileImagePanelH3.replaceWith(profileImagePanelInputTitle);
+	profileImagePanelP.replaceWith(profileImagePanelInputCaption);
+	
+	profileImageButtons.prepend(profileImagePanelSaveButton);
+	profileImagePanelSaveButton.data({"image-id": imageId})
+	profileImagePanelSaveButton.click(ajaxEditImage);
+	profileImageButtonsFeedback.hide();
+	
+}
+
+function switchOffEditImage(profileImagePanel) {
+	var profileImagePanelInputTitle = profileImagePanel.find(".image-edit-input.title");
+	var profileImagePanelInputCaption = profileImagePanel.find(".image-edit-input.caption");
+	var profileImagePanelSaveButton = profileImagePanel.find(".image-save-edit");
+	var profileImageButtonsFeedback = profileImagePanel.find(".profile-image-buttons-feedback");
+	var profileImagePanelH3 = $("<h3>");
+	var profileImagePanelP = $("<p>");
+	profileImagePanelH3.text(profileImagePanelInputTitle.data("default"))
+	profileImagePanelP.text(profileImagePanelInputCaption.data("default"))
+	profileImagePanelInputTitle.replaceWith(profileImagePanelH3);
+	profileImagePanelInputCaption.replaceWith(profileImagePanelP);
+	profileImagePanelSaveButton.remove();
+	profileImageButtonsFeedback.show();
+}
+
+function ajaxEditImage() {
+	var self = $(this);
+	var imageId = self.data("image-id");
+	var profileImagePanel = self.parents(".profile-image-panel");
+	var profileImagePanelInputTitle = profileImagePanel.find(".image-edit-input.title");
+	var profileImagePanelInputCaption = profileImagePanel.find(".image-edit-input.caption");
+	$.ajax("common.php?action=image_edit", {
+		method: "post",
+		data: {
+			"image_id": imageId,
+			"title": profileImagePanelInputTitle.val(),
+			"caption": profileImagePanelInputCaption.val(),
+		},
+		dataType: "json",
+		success: function (data) {
+			if(!data.success)
+				return;
+			
+			profileImagePanelInputTitle.data({"default": data.title});
+			profileImagePanelInputCaption.data({"default": data.caption});
+			switchOffEditImage(profileImagePanel);
 		}
 	});
 }

@@ -39,7 +39,8 @@ $sqls = array (
 	"select_image_comments" => "SELECT u_id, content, comment_date FROM images_comments WHERE i_id = ?",
 	"post_image_comment" => "INSERT INTO images_comments(i_id, u_id, content, comment_date) VALUES (?, ?, ?, ?)",
 	"delete_image" => "DELETE FROM images WHERE i_id = ? AND u_id = ?",
-	"select_image_filename" => "SELECT filename FROM images WHERE i_id = ?"
+	"select_image_filename" => "SELECT filename FROM images WHERE i_id = ?",
+	"update_image" => "UPDATE images SET title = ?, caption = ? WHERE i_id = ? AND u_id = ?"
 );
 
 ?>
