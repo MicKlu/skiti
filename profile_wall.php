@@ -2,7 +2,7 @@
 
 <section id="profile-wall">
 	<div id="profile-wall-new-thread">
-		<button class="button-primary">Zostaw wiadomość</button>
+		<button id="add-thread-button" class="button-primary">Zostaw wiadomość</button>
 		<form id="profile-wall-new-thread-form" method="post" action="common.php?action=new_thread&u_id=<?php echo $profile_id ?>">
 			<div id="new-thread-error">
 				<?php get_new_thread_alert(); ?>

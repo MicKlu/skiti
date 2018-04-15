@@ -10,6 +10,8 @@ $(function () {
 	$("#friend-delete").click(ajaxDeleteFriend);
 	$("#avatar-delete").click(ajaxDeleteAvatar);
 	$("#background-delete").click(ajaxDeleteBackground);
+	$("#add-image-button").click(toggleAddImageForm);
+	$("#add-thread-button").click(toggleAddThreadForm);
 	$("#search").keyup(ajaxSearch);
 	$("#search-form button").click(ajaxSearch);
 	$(window).on("resize", normalizeProfileImages);
@@ -19,7 +21,7 @@ $(function () {
 	$("#profile-photos").ajaxGetImages();
 	$("#profile-wall").ajaxGetThreads();
 	$(".settings-panel").collapsiblePanel();
-})
+});
 
 function showAlert(type) {
 	if(getCookie(type)) {
@@ -46,6 +48,13 @@ function showAddImageErrorAlert() {
 
 function showNewThreadErrorAlert() {
 	showAlert("new-thread-error");
+}
+
+function showUserUpdateInfoSuccessAlert() {
+	if(getCookie("user-info-update-success")) {
+		$("#user-info-update-success").show();
+		deleteCookie("user-info-update-success");
+	}
 }
 
 function ajaxSendInvite() {
@@ -173,6 +182,14 @@ function ajaxDeleteBackground() {
 			$("#background-delete").hide();
 		}
 	});
+}
+
+function toggleAddImageForm() {
+	$("#profile-photos-add").toggle();
+}
+
+function toggleAddThreadForm() {
+	$("#profile-wall-new-thread-form").toggle();
 }
 
 function normalizeProfileImages() {	

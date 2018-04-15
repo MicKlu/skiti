@@ -3,18 +3,18 @@
 <section id="profile-photos">
 	<?php if($profile_id === null) : ?>
 	<div id="profile-photos-menu">
-		<button class="button-primary">Dodaj zdjęcie</button>
+		<button id="add-image-button" class="button-primary">Dodaj zdjęcie</button>
 		<form id="profile-photos-add" method="post" action="common.php?action=add_image" enctype="multipart/form-data">
 			<div id="add-image-error">
 				<?php get_add_image_alert(); ?>
 			</div>
 			<script>showAddImageErrorAlert()</script>
 			<label>Wybierz plik:</label>
-			<div class="input-group">
+			<div class="input-group file-upload">
 				<label class="button file-button">
 					<i class="fas fa-upload"></i> Wybierz plik... <input type="file" accept="image/*" name="image">
 				</label>
-				<div class="input file-input"></div>
+				<div class="input file-input">Nie wybrano pliku</div>
 			</div>
 			<label>Tytuł (opcjonalnie):</label>
 			<div class="input-group">

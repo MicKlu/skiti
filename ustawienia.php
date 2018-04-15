@@ -19,7 +19,7 @@
 	</div>
 	<div id="user-info-update-success">
 		<p>Zmiany zostały zapisane</p>
-		<script></script>
+		<script>showUserUpdateInfoSuccessAlert();</script>
 	</div>
 	<form method="post" enctype="multipart/form-data">
 		<div class="settings-panel">
@@ -94,12 +94,15 @@
 							<label>Zdjęcie profilowe:</label>
 						</div>
 						<div class="col-4">
-							<label class="button file-button">
-								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="avatar">
-							</label>
-							<?php if(get_user_avatar_type() != AVATAR_PLACEHOLDER) : ?>
-							<button class="button" id="avatar-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
-							<?php endif;?>
+							<div class="input-group file-upload">
+								<label class="button file-button">
+									<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="avatar">
+								</label>
+								<div class="input file-input">Nie wybrano pliku</div>
+								<?php if(get_user_avatar_type() != AVATAR_PLACEHOLDER) : ?>
+								<button class="button" id="avatar-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+								<?php endif;?>
+							</div>
 						</div>
 					</div>
 					<div class="row input-group">
@@ -107,12 +110,15 @@
 							<label>Tło profilowe:</label>
 						</div>
 						<div class="col-4">
-							<label class="button file-button">
-								<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="background">
-							</label>
-							<?php if(get_user_background_type() != BACKGROUND_NONE) : ?>
-							<button class="button" id="background-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
-							<?php endif;?>
+							<div class="input-group file-upload">
+								<label class="button file-button">
+									<i class="fas fa-upload"></i> Prześlij plik... <input type="file" accept="image/*" name="background">
+								</label>
+								<div class="input file-input">Nie wybrano pliku</div>
+								<?php if(get_user_background_type() != BACKGROUND_NONE) : ?>
+								<button class="button" id="background-delete" type="button"><i class="fas fa-times"></i> Usuń zdjęcie</button>
+								<?php endif;?>
+							</div>
 						</div>
 					</div>
 				</div>

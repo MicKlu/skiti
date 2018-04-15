@@ -118,9 +118,11 @@ textarea.input {
 }
 
 .file-input {
-	margin-left: 5px;
+	margin: 0 5px;
 	height: 34px;
 	width: 300px;
+    align-items: center;
+    display: flex;
 }
 
 .button.file-button input[type="file"] {

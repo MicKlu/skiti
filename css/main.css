@@ -166,6 +166,16 @@
 	padding: 5px;
 }
 
+#user-info-update-success {
+	display: none;
+	border: 1px solid #008200;
+    background: #ddffcc;
+    color: #008200;
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
 #user-info-update-error {
     margin-bottom: 10px;
 }
@@ -554,6 +564,7 @@
 
 #profile-photos-add,
 #profile-wall-new-thread-form {
+	display: none;
 	margin-top: 15px;
 }
 

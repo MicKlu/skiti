@@ -3,6 +3,7 @@
 $(function () {
 	$("#birthdate").fillDateSelect();
 	$("#birthdate").selectDefaultDate();
+	$(".file-upload").customFileUploadInput();
 })
 
 $.fn.extend({
@@ -69,7 +70,23 @@ $.fn.extend({
 		daySelect.val(day);
 		monthSelect.val(month);
 		yearSelect.val(year);
+	},
+	customFileUploadInput: function () {
+		$(this).each(function () {
+			var fileInput = $(this).find(".file-button input");
+			var customInput = $(this).find(".file-input");
+			fileInput.change(function () {
+				var path = $(this).val();
+				var filename = "Nie wybrano pliku";
+				if(path) {
+					path = path.split(/\/|\\/);
+					filename = path[path.length - 1];
+				}
+				customInput.text(filename);
+			});
+		})
 	}
+
 });
 
 function setCookie(key, value, expires, path, domain, maxAge) {

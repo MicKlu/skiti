@@ -912,7 +912,7 @@ function process_update_user_info()
 		move_uploaded_file($_FILES["background"]["tmp_name"], BACKGROUNDS_PATH . $_SESSION["user_id"] . DIRECTORY_SEPARATOR . $_FILES["background"]["name"]);
 	}
 	
-	
+	setcookie("user-info-update-success", 1);
 	$db -> close();
 }
 

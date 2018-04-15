@@ -18,7 +18,7 @@
 	<body>
 		<nav id="navbar">
 			<div class="left-pane">
-				<a class="brand" href="/">
+				<a class="brand" href="index.php">
 					<img class="logo" src="img/logo.png" /> dsa
 				</a>
 				<?php if(isset($_SESSION["user_id"])) : ?>
@@ -32,7 +32,7 @@
 			<div class="right-pane">
 				<?php if(isset($_SESSION["user_id"])) : ?>
 				<ul class="navbar-menu">
-					<li><a href="profil.php"><div class="navbar-user-avatar"><img src="<?php user_avatar(); ?>" /><?php user_full_name(); ?></div><?php user_full_name(); ?></a></li>
+					<li><a href="profil.php?tab=tablica"><div class="navbar-user-avatar"><img src="<?php user_avatar(); ?>" /><?php user_full_name(); ?></div><?php user_full_name(); ?></a></li>
 					<li><a href="ustawienia.php">Ustawienia</a></li>
 					<li><a href="logout.php">Wyloguj</a></li>
 				</ul>
