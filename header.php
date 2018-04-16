@@ -20,7 +20,7 @@
 		<nav id="navbar">
 			<div class="left-pane">
 				<a class="brand" href="index.php">
-					<img class="logo" src="img/logo.png" /> dsa
+					<img class="logo" src="img/logo.png" /> YourNewIdentity
 				</a>
 				<?php if(isset($_SESSION["user_id"])) : ?>
 				<div id="search-form" class="input-search">

@@ -43,7 +43,7 @@ CREATE VIEW users_friends AS
 SELECT f_id, u1_id, u2_id FROM friends AS f
 UNION
 SELECT f_id, u2_id, u1_id FROM friends AS f
-ORDER BY f_id ASC
+ORDER BY f_id ASC;
 
 CREATE TABLE images (
 	i_id int AUTO_INCREMENT,
