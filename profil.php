@@ -16,12 +16,12 @@
 	<div id="profile-header-container">
 		<div id="profile-background">
 			<?php if(get_user_background_type($profile_id) != BACKGROUND_NONE) : ?>
-			<img src="<?php user_background($profile_id); ?>" />
+			<img src="<?php user_background($profile_id); ?>" alt="background" />
 			<?php endif;?>
 		</div>
 		<div id="profile-header">
 			<div id="profile-avatar">
-				<img src="<?php user_avatar($profile_id); ?>" />
+				<img src="<?php user_avatar($profile_id); ?>" alt="avatar" />
 			</div>
 			<h2><?php user_full_name($profile_id); ?></h2>
 		</div>

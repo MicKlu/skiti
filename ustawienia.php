@@ -30,34 +30,34 @@
 				<div class="settings-panel-content settings-form">
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Imię*:</label>
+							<label for="firstname">Imię*:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="firstname" value="<?php user_info("firstname", null, true) ?>" />
+							<input id="firstname" type="text" name="firstname" value="<?php user_info("firstname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Drugie imię:</label>
+							<label for="secondname">Drugie imię:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="secondname" value="<?php user_info("secondname", null, true) ?>" />
+							<input id="secondname"  type="text" name="secondname" value="<?php user_info("secondname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Nazwisko*:</label>
+							<label for="surname">Nazwisko*:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="surname" value="<?php user_info("surname", null, true) ?>" />
+							<input id="surname"  type="text" name="surname" value="<?php user_info("surname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Ksywka:</label>
+							<label for="nickname">Ksywka:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="nickname" value="<?php user_info("nickname", null, true) ?>" />
+							<input id="nickname"  type="text" name="nickname" value="<?php user_info("nickname", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
@@ -66,9 +66,9 @@
 						</div>
 						<div class="col-4">
 							<div class="input-group" id="birthdate" data-default-date="<?php user_birthdate() ?>">
-								<select class="form-input" name="birthday"></select>
-								<select class="form-input" name="birthmonth"></select>
-								<select class="form-input" name="birthyear"></select>
+								<select class="form-input" name="birthday" aria-label="Dzień"></select>
+								<select class="form-input" name="birthmonth"aria-label="Miesiąc"></select>
+								<select class="form-input" name="birthyear"aria-label="Rok"></select>
 							</div>
 						</div>
 					</div>
@@ -133,7 +133,7 @@
 				<div class="settings-panel-content settings-form">
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Kraj:</label>
+							<label for="country">Kraj:</label>
 						</div>
 						<div class="col-4">
 							<select name="country">
@@ -145,50 +145,50 @@
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Region:</label>
+							<label for="region">Region:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="region" value="<?php user_info("region", null, true) ?>" />
+							<input id="region"  type="text" name="region" value="<?php user_info("region", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Miasto:</label>
+							<label for="city">Miasto:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="city" value="<?php user_info("city", null, true) ?>" />
+							<input id="city"  type="text" name="city" value="<?php user_info("city", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Telefon:</label>
+							<label for="phone_number">Telefon:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="phone_number" value="<?php user_info("phone_number", null, true) ?>" />
+							<input id="phone_number"  type="text" name="phone_number" value="<?php user_info("phone_number", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Skype:</label>
+							<label for="skype">Skype:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="skype" value="<?php user_info("skype", null, true) ?>" />
+							<input id="skype"  type="text" name="skype" value="<?php user_info("skype", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Strona WWW:</label>
+							<label for="www">Strona WWW:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="www" value="<?php user_info("www", null, true) ?>" />
+							<input id="www"  type="text" name="www" value="<?php user_info("www", null, true) ?>" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Biografia:</label>
+							<label for="bio">Biografia:</label>
 						</div>
 						<div class="col-4">
-							<textarea class="input" name="bio"><?php user_info("bio", null, true) ?></textarea>
+							<textarea id="bio" class="input" name="bio"><?php user_info("bio", null, true) ?></textarea>
 						</div>
 					</div>
 				</div>
@@ -203,26 +203,26 @@
 				<div class="settings-panel-content settings-form">
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Zmień hasło:</label>
+							<label for="password">Zmień hasło:</label>
 						</div>
 						<div class="col-4">
-							<input type="password" name="password" />
+							<input id="password"  type="password" name="password" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Powtórz hasło:</label>
+							<label for="rpassword">Powtórz hasło:</label>
 						</div>
 						<div class="col-4">
-							<input type="password" name="rpassword" />
+							<input id="rpassword"  type="password" name="rpassword" />
 						</div>
 					</div>
 					<div class="row input-group">
 						<div class="col-1">
-							<label>Email*:</label>
+							<label for="email">Email*:</label>
 						</div>
 						<div class="col-4">
-							<input type="text" name="email" value="<?php user_info("email", null, true) ?>" />
+							<input id="email"  type="text" name="email" value="<?php user_info("email", null, true) ?>" />
 						</div>
 					</div>
 				</div>

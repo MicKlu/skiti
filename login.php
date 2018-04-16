@@ -45,7 +45,7 @@ session_start();
 $_SESSION["user_id"] = $user_id;
 
 //Przekierowanie
-header("Location: profil.php");
+header("Location: profil.php?tab=tablica");
 die();
 
 ?>

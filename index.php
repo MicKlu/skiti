@@ -9,7 +9,7 @@
 <?php require "header.php" ?>
 <main>
 	<section class="jumbotron">
-		<img class="logo" src="img/logo.png" />
+		<img class="logo" src="img/logo.png" alt="logo" />
 		<h1>YourNewIdentity</h1>
 		<h2>Kolejny portal społecznościowy</h2>
 		<a class="button" href="#register">Zarejestruj się</a>
@@ -48,21 +48,21 @@
 			</div>
 			<form action="register.php" method="post">
 				<div class="input-group">
-					<input type="text" name="firstname" placeholder="Imię" />
-					<input type="text" name="surname" placeholder="Nazwisko" />
+					<input type="text" name="firstname" placeholder="Imię" aria-label="Imię" />
+					<input type="text" name="surname" placeholder="Nazwisko" aria-label="Nazwisko" />
 				</div>
 				<div class="input-group">
-					<input type="text" name="email" placeholder="Email" />
+					<input type="text" name="email" placeholder="Email" aria-label="Email" />
 				</div>
 				<div class="input-group">
-					<input type="password" name="password" placeholder="Hasło" />
-					<input type="password" name="rpassword" placeholder="Powtórz hasło" />
+					<input type="password" name="password" placeholder="Hasło" aria-label="Hasło" />
+					<input type="password" name="rpassword" placeholder="Powtórz hasło" aria-label="Powtórz hasło" />
 				</div>
 				<label>Data urodzenia</label>
 				<div class="input-group" id="birthdate">
-					<select class="form-input" name="birthday"></select>
-					<select class="form-input" name="birthmonth"></select>
-					<select class="form-input" name="birthyear"></select>
+					<select class="form-input" name="birthday" aria-label="Dzień"></select>
+					<select class="form-input" name="birthmonth" aria-label="Miesiąc"></select>
+					<select class="form-input" name="birthyear" aria-label="Rok"></select>
 				</div>
 				<label>Płeć</label>
 				<div class="input-group">

@@ -8,13 +8,13 @@
 				<?php get_new_thread_alert(); ?>
 			</div>
 			<script>showNewThreadErrorAlert()</script>
-			<label>Temat:</label>
+			<label for="topic">Temat:</label>
 			<div class="input-group">
-				<input class="" type="text" name="topic" />
+				<input id="topic" type="text" name="topic" />
 			</div>
-			<label>Treść wiadomości:</label>
+			<label for="msg">Treść wiadomości:</label>
 			<div class="input-group">
-				<textarea class="input" name="msg" ></textarea>
+				<textarea id="msg" class="input" name="msg" ></textarea>
 			</div>
 			<div class="text-right">
 				<button class="button-primary">Wyślij wiadomość</button>

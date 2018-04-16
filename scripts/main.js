@@ -277,7 +277,7 @@ function galleryCreate(imageData, headerTitle, caption) {
 	var galleryCloseI = $("<i>").addClass("fas").addClass("fa-times");
 	
 	//Wpisywanie danych
-	galleryImage.attr({src: imageData.src});
+	galleryImage.attr({src: imageData.src, alt: imageData.src});
 	galleryImage.data("gallery-image-id", imageData.galleryId);
 	galleryProfileImageInfoH3.text(headerTitle);
 	galleryProfileImageInfoP.text(caption);
@@ -457,7 +457,7 @@ $.fn.extend({
 					
 						profileFriendBox.attr({href: "profil.php?id=" + data[i].id});
 						profileFriendInfoH6.text(data[i].fullname);
-						profileAvatarMiniImg.attr({src: data[i].avatar});
+						profileAvatarMiniImg.attr({src: data[i].avatar, alt: data[i].avatar});
 						
 						if(data[i].friendInvited) {
 							PFFIcols.eq(j % 3).append(profileFriendBox);
@@ -633,7 +633,7 @@ function profileThreadContainerCreate(threadData) {
 	
 	//Wypełnienie danych
 	profileCommentAvatarA.attr({href: "profil.php?id=" + threadData.authorId});
-	profileAvatarMiniImg.attr({src: threadData.avatar});
+	profileAvatarMiniImg.attr({src: threadData.avatar, alt: threadData.avatar});
 	profileCommentContentH6A.attr({href: "profil.php?id=" + threadData.authorId});
 	profileCommentContentH6A.html(threadData.fullname + "<br />");
 	profileCommentContentH6Small.text(threadData.date);
@@ -641,6 +641,7 @@ function profileThreadContainerCreate(threadData) {
 	profileThreadMsgP.html(threadData.msg);
 	profileThreadFormButton.data({"thread-id": threadData.id})
 	profileThreadFormButton.text("Odpowiedz");
+	profileThreadFormTextArea.attr({"aria-label": "Komentarz"});
 	
 	//Eventy
 	profileThreadFormButton.click(ajaxSendThreadComment);
@@ -674,7 +675,7 @@ function profileThreadCommentCreate(commentData) {
 	
 	//Wypełnienie danych
 	profileCommentAvatarA.attr({"href": "profil.php?id=" + commentData.id});
-	profileAvatarMiniImg.attr({src: commentData.avatar});
+	profileAvatarMiniImg.attr({src: commentData.avatar, alt: commentData.avatar});
 	profileCommentContentH6A.attr({"href": "profil.php?id=" + commentData.id});
 	profileCommentContentH6A.text(commentData.fullname + " ");
 	profileCommentContentH6Small.text(commentData.date);
@@ -897,7 +898,7 @@ function profileImageBoxCreate(imageData, owner) {
 	
 	//Wypełnienie wartościami
 	profileImageButtons.find("a").attr({href: "javascript:;"});
-	profileImageWrapperImg.attr({src: "img/user_images/" + imageData.userId + "/" + imageData.filename});
+	profileImageWrapperImg.attr({src: "img/user_images/" + imageData.userId + "/" + imageData.filename, alt: imageData.filename});
 	profileImageWrapperImg.data({"gallery-image-id": imageData.localId});
 	
 	profileImageInfoH3.text(imageData.title);
@@ -1026,6 +1027,7 @@ function profileImageCommentBoxCreate(imageId, comments) {
 	//Wypełnienie danych
 	profileImageCommentForm.data({"image-id": imageId});
 	profileImageCommentFormButton.text("Wyślij komentarz");
+	profileImageCommentFormTextArea.attr({"aria-label": "Komentarz"});
 	
 	if(!comments.length)
 		profileImageComments.html("<span>Brak komentarzy</span>");
@@ -1065,7 +1067,7 @@ function profileImageCommentCreate(commentData) {
 	profileCommentContentH6.append(profileCommentContentH6Small);
 	
 	//Wypełnienie danych
-	profileAvatarMiniImg.attr({src: commentData.avatar});
+	profileAvatarMiniImg.attr({src: commentData.avatar, alt: commentData.avatar});
 	profileAvatarMiniA.attr({href: "profil.php?id=" + commentData.userId});
 	profileCommentContentH6A.attr({href: "profil.php?id=" + commentData.userId});
 	profileCommentContentH6A.text(commentData.fullname + " ");
@@ -1262,7 +1264,7 @@ function searchResultItemCreate(searchItemData) {
 	
 	//Wypełnienie danych
 	searchResultItem.attr({href: "profil.php?id=" + searchItemData.id});
-	profileAvatarMiniImg.attr({src: searchItemData.avatar});
+	profileAvatarMiniImg.attr({src: searchItemData.avatar, alt: searchItemData.avatar});
 	searchResultsInfoH6.text(searchItemData.fullname);
 	
 	return searchResultItem;

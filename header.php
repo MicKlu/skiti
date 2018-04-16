@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
 	<head>
-		<title></title>
+		<title>YourNewIdentity</title>
 		<meta charset="UTF-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -20,12 +20,12 @@
 		<nav id="navbar">
 			<div class="left-pane">
 				<a class="brand" href="index.php">
-					<img class="logo" src="img/logo.png" /> YourNewIdentity
+					<img class="logo" src="img/logo.png" alt="logo" /> YourNewIdentity
 				</a>
 				<?php if(isset($_SESSION["user_id"])) : ?>
 				<div id="search-form" class="input-search">
-					<input id="search" type="text" placeholder="Wyszukaj" size="48" autocomplete="off" />
-					<button><i class="fas fa-search"></i></button>
+					<input id="search" type="text" placeholder="Wyszukaj" aria-label="Wyszukaj" size="48" autocomplete="off" />
+					<button aria-label="Szukaj"><i class="fas fa-search"></i></button>
 					<div id="search-results"></div>
 				</div>
 				<?php endif; ?>
@@ -33,7 +33,7 @@
 			<div class="right-pane">
 				<?php if(isset($_SESSION["user_id"])) : ?>
 				<ul class="navbar-menu">
-					<li><a href="profil.php?tab=tablica"><div class="navbar-user-avatar"><img src="<?php user_avatar(); ?>" /><?php user_full_name(); ?></div><?php user_full_name(); ?></a></li>
+					<li><a href="profil.php?tab=tablica"><div class="navbar-user-avatar"><img src="<?php user_avatar(); ?>" alt="avatar" /><?php user_full_name(); ?></div><?php user_full_name(); ?></a></li>
 					<li><a href="ustawienia.php">Ustawienia</a></li>
 					<li><a href="logout.php">Wyloguj</a></li>
 				</ul>
@@ -41,8 +41,8 @@
 				<span id="login-error"><?php get_login_alert(); ?></span>
 				<script>showLoginAlert();</script>
 				<form action="login.php" method="post">
-					<input type="text" name="email" placeholder="Email" />
-					<input type="password" name="password" placeholder="Hasło" />
+					<input type="text" name="email" placeholder="Email" aria-label="Email" />
+					<input type="password" name="password" placeholder="Hasło" aria-label="Hasło" />
 					<input type="submit" value="Zaloguj" />
 				</form>
 				<?php endif; ?>

@@ -16,13 +16,13 @@
 				</label>
 				<div class="input file-input">Nie wybrano pliku</div>
 			</div>
-			<label>Tytuł (opcjonalnie):</label>
+			<label for="title">Tytuł (opcjonalnie):</label>
 			<div class="input-group">
-				<input type="text" name="title" />
+				<input id="title" type="text" name="title" />
 			</div>
-			<label>Podpis (opcjonalnie):</label>
+			<label for="caption">Podpis (opcjonalnie):</label>
 			<div class="input-group">
-				<input type="text" name="caption" />
+				<input id="caption" type="text" name="caption" />
 			</div>
 				
 			<div class="text-right">
