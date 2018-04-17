@@ -62,6 +62,10 @@
 	overflow: hidden;
 }
 
+#navbar .navbar-menu .navbar-user-avatar img {
+	border-radius: inherit;
+}
+
 #login-error {
 	display: none;
 	color: #ff7070;

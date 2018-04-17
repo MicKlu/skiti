@@ -18,7 +18,7 @@ CREATE TABLE users (
 	sex varchar(1) NOT NULL,
 	www varchar(255),
 	bio text,
-	country varchar(63) DEFAULT 135,	--Polska
+	country varchar(63) DEFAULT 135,
 	region varchar(255),
 	city varchar(255),
 	phone_number varchar(15),
@@ -27,7 +27,7 @@ CREATE TABLE users (
 	avatar varchar(255),
 	background varchar(255),
 	PRIMARY KEY(u_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE TABLE friends (
 	f_id int AUTO_INCREMENT,
@@ -37,7 +37,7 @@ CREATE TABLE friends (
 	PRIMARY KEY(f_id),
 	FOREIGN KEY (u1_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	FOREIGN KEY (u2_id) REFERENCES users(u_id) ON DELETE CASCADE
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE VIEW users_friends AS
 SELECT f_id, u1_id, u2_id FROM friends AS f
@@ -53,17 +53,17 @@ CREATE TABLE images (
 	caption varchar(255),
 	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(i_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE TABLE images_thumbs (
 	it_id int AUTO_INCREMENT,
 	i_id int NOT NULL,
 	u_id int NOT NULL,
-	thumb varchar(1) NOT NULL,	--1 up; 0 down
+	thumb varchar(1) NOT NULL,
 	FOREIGN KEY (i_id) REFERENCES images(i_id) ON DELETE CASCADE,
 	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(it_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE TABLE images_comments (
 	ic_id int AUTO_INCREMENT,
@@ -74,7 +74,7 @@ CREATE TABLE images_comments (
 	FOREIGN KEY (i_id) REFERENCES images(i_id) ON DELETE CASCADE,
 	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(ic_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE TABLE threads (
 	t_id int AUTO_INCREMENT,
@@ -86,7 +86,7 @@ CREATE TABLE threads (
 	FOREIGN KEY (user_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	FOREIGN KEY (author_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(t_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 CREATE TABLE threads_comments (
 	tc_id int AUTO_INCREMENT,
@@ -97,6 +97,6 @@ CREATE TABLE threads_comments (
 	FOREIGN KEY (t_id) REFERENCES threads(t_id) ON DELETE CASCADE,
 	FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE,
 	PRIMARY KEY(tc_id)
-);
+); COLLATE "utf8_unicode_ci"
 
 COMMIT;

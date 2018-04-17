@@ -1,4 +1,5 @@
 <?php global $profile_id; ?>
+<?php global $countries; ?>
 <section id="profile-about">
 	<section>
 		<h2>Informacje podstawowe</h2>
@@ -28,7 +29,7 @@
 		<div class="row">
 			<div class="col-1">
 				<ul>
-					<li><span>Kraj</span><?php user_info("country", $profile_id) ?></li>
+					<li><span>Kraj</span><?php echo $countries[get_user_info("country", $profile_id) - 1] ?></li>
 					<li><span>Region</span><?php user_info("region", $profile_id) ?></li>
 					<li><span>Miasto</span><?php user_info("city", $profile_id) ?></li>
 				</ul>
