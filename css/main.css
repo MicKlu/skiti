@@ -408,6 +408,7 @@
 
 .gallery-image-wrapper img {
 	user-select: none;
+	max-width:100%;
 }
 
 .gallery-arrow {

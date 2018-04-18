@@ -192,54 +192,56 @@ function toggleAddThreadForm() {
 	$("#profile-wall-new-thread-form").toggle();
 }
 
-function normalizeProfileImages() {	
-	//Środkowanie małych obrazów
-	$("#profile-photos .profile-image-wrapper > img").each(function () {
-		var image = $(this);
-		var imgHeight = image.height();
-		if(imgHeight < 300) {
-			var offset = (150 - imgHeight / 2);	//(300 / 2) - imgHeight / 2
-			image.css({top: offset + "px"});	//Przesuwamy
-		}
-	});
-	
-	//Środkowanie dużych obrazów i wyrównanie długich opisów
-	$("#profile-photos .row").each(function () {
-		var row = $(this);
-		var imgWrappers = row.find(".profile-image-wrapper");
+function normalizeProfileImages() {
+	$(window).on("load", function () {	//Normalizacja zaczyna się po załadowaniu wszystkiego na stronie
+		//Środkowanie małych obrazów
+		$("#profile-photos .profile-image-wrapper > img").each(function () {
+			var image = $(this);
+			var imgHeight = image.height();
+			if(imgHeight < 300) {
+				var offset = (150 - imgHeight / 2);	//(300 / 2) - imgHeight / 2
+				image.css({top: offset + "px"});	//Przesuwamy
+			}
+		});
 		
-		if(imgWrappers.length == 2) {	//Jeśli w rzędzie są dwa obrazy...
-			var images = imgWrappers.children("img");
-			var captions = row.find(".profile-image-info");
-			var imgWrappersHeights = [];
-			var imgsHeights = [];
-			var captionsHeights = [];
-			imgWrappersHeights[0] = imgWrappers.eq(0).height();
-			imgWrappersHeights[1] = imgWrappers.eq(1).height();
-			imgsHeights[0] = images.eq(0).height();
-			imgsHeights[1] = images.eq(1).height();
-			captionsHeights[0] = captions.eq(0).height();
-			captionsHeights[1] = captions.eq(1).height();
+		//Środkowanie dużych obrazów i wyrównanie długich opisów
+		$("#profile-photos .row").each(function () {
+			var row = $(this);
+			var imgWrappers = row.find(".profile-image-wrapper");
 			
-			//Skalujemy większy obraz do wysokości mniejszego
-			if(imgWrappersHeights[0] > imgWrappersHeights[1]) {			//Pierwszy obraz za duży
-				var offset = (imgWrappersHeights[1] / 2 - imgsHeights[0] / 2);	//newWrapperHeight / 2 - imgHeight / 2
-				imgWrappers.eq(0).height(imgWrappersHeights[1]);	//Skalujemy	
-				images.eq(0).css({top: offset + "px"});	//Przesuwamy
+			if(imgWrappers.length == 2) {	//Jeśli w rzędzie są dwa obrazy...
+				var images = imgWrappers.children("img");
+				var captions = row.find(".profile-image-info");
+				var imgWrappersHeights = [];
+				var imgsHeights = [];
+				var captionsHeights = [];
+				imgWrappersHeights[0] = imgWrappers.eq(0).height();
+				imgWrappersHeights[1] = imgWrappers.eq(1).height();
+				imgsHeights[0] = images.eq(0).height();
+				imgsHeights[1] = images.eq(1).height();
+				captionsHeights[0] = captions.eq(0).height();
+				captionsHeights[1] = captions.eq(1).height();
+				
+				//Skalujemy większy obraz do wysokości mniejszego
+				if(imgWrappersHeights[0] > imgWrappersHeights[1]) {			//Pierwszy obraz za duży
+					var offset = (imgWrappersHeights[1] / 2 - imgsHeights[0] / 2);	//newWrapperHeight / 2 - imgHeight / 2
+					imgWrappers.eq(0).height(imgWrappersHeights[1]);	//Skalujemy	
+					images.eq(0).css({top: offset + "px"});	//Przesuwamy
+				}
+				else if(imgWrappersHeights[0] < imgWrappersHeights[1]) {	//Drugi obraz za duży
+					var offset = (imgWrappersHeights[0] / 2 - imgsHeights[1] / 2);	//newWrapperHeight / 2 - imgHeight / 2
+					imgWrappers.eq(1).height(imgWrappersHeights[0]);	//Skalujemy
+					images.eq(1).css({top: offset + "px"});	//Przesuwamy
+				}
+				
+				//Skalujemy mniejszy opis do wysokości większego
+				if(captionsHeights[0] > captionsHeights[1])			//Pierwszy opis
+					captions.eq(1).height(captionsHeights[0]);	//Skalujemy
+				else if(captionsHeights[0] < captionsHeights[1])	//Drugi opis
+					captions.eq(0).height(captionsHeights[1]);	//Skalujemy
+				
 			}
-			else if(imgWrappersHeights[0] < imgWrappersHeights[1]) {	//Drugi obraz za duży
-				var offset = (imgWrappersHeights[0] / 2 - imgsHeights[1] / 2);	//newWrapperHeight / 2 - imgHeight / 2
-				imgWrappers.eq(1).height(imgWrappersHeights[0]);	//Skalujemy
-				images.eq(1).css({top: offset + "px"});	//Przesuwamy
-			}
-			
-			//Skalujemy mniejszy opis do wysokości większego
-			if(captionsHeights[0] > captionsHeights[1])			//Pierwszy opis
-				captions.eq(1).height(captionsHeights[0]);	//Skalujemy
-			else if(captionsHeights[0] < captionsHeights[1])	//Drugi opis
-				captions.eq(0).height(captionsHeights[1]);	//Skalujemy
-			
-		}
+		});
 	});
 }
 
@@ -518,9 +520,9 @@ $.fn.extend({
 						if((i % 7 != 1 && i % 7 != 3 && i % 7 != 5) || ((i % 7 == 1 || i % 7 == 3 || i % 7 == 5) && i == data.images.length - 1))
 							profilePhotos.append(row);
 					}
-					
-					//Bezpośrednio po usunięciu cache przeglądarki normalizacja nie jest przeprowadzana prawidłowo,
-					setTimeout(normalizeProfileImages, 50);	//więc delikatnie ją opóźniamy.
+				},
+				complete: function () {
+					normalizeProfileImages();
 				}
 			});
 		});
@@ -1077,7 +1079,7 @@ function profileImageCommentCreate(commentData) {
 	return profileComment;
 }
 
-function ajaxSendImageComment() {
+function ajaxSendImageComment(event) {
 	if(event.type == "keydown")
 		if(event.keyCode == 13)
 			event.preventDefault();
@@ -1204,7 +1206,7 @@ function ajaxEditImage() {
 	});
 }
 
-function ajaxSearch() {
+function ajaxSearch(event) {
 	var self = $(this);
 	
 	if(event.type == "click")
